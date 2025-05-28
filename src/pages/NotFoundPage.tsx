@@ -1,4 +1,4 @@
-import NavBar from "../components/NavBar/NavBar";
+import NavBar from '../components/NavBar/NavBar'
 
 const NotFoundPage = () => {
   return (
@@ -13,7 +13,7 @@ const NotFoundPage = () => {
         <NavBar />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default NotFoundPage;
+export default NotFoundPage
