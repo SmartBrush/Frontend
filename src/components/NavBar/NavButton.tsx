@@ -1,14 +1,14 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 
 type NavButtonProps = {
-  to: string;
-  iconSrc: string;
-  alt: string;
-  label: string;
-};
+  to: string
+  iconSrc: string
+  alt: string
+  label: string
+}
 
 const NavButton = ({ to, iconSrc, alt, label }: NavButtonProps) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <button
       onClick={() => navigate(to)}
@@ -20,7 +20,7 @@ const NavButton = ({ to, iconSrc, alt, label }: NavButtonProps) => {
         {label}
       </div>
     </button>
-  );
-};
+  )
+}
 
-export default NavButton;
+export default NavButton

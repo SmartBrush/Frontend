@@ -1,5 +1,5 @@
 const CommunityPage = () => {
-  return <div>추천페이지</div>;
-};
+  return <div>커뮤니티페이지</div>
+}
 
-export default CommunityPage;
+export default CommunityPage

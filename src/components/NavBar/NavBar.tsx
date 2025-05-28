@@ -1,9 +1,9 @@
-import CommunityIcon from "../../assets/Community.svg";
-import ResultIcon from "../../assets/Result.svg";
-import MainIcon from "../../assets/Main.svg";
-import RecommendIcon from "../../assets/Recommendation.svg";
-import MypageIcon from "../../assets/Mypage.svg";
-import NavButton from "./NavButton";
+import CommunityIcon from '../../assets/Community.svg'
+import ResultIcon from '../../assets/Result.svg'
+import MainIcon from '../../assets/Main.svg'
+import RecommendIcon from '../../assets/Recommendation.svg'
+import MypageIcon from '../../assets/Mypage.svg'
+import NavButton from './NavButton'
 
 const NavBar = () => {
   return (
@@ -36,7 +36,7 @@ const NavBar = () => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default NavBar;
+export default NavBar

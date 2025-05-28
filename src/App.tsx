@@ -1,16 +1,16 @@
-import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import RootLayout from "./layout/RootLayout";
-import NotFoundPage from "./pages/NotFoundPage";
-import Main from "./pages/MainPage";
-import CommunityPage from "./pages/CommunityPage";
-import ResultPage from "./pages/ResultPage";
-import RecommendPage from "./pages/RecommendPage";
-import MyPage from "./pages/Mypage";
+import './index.css'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import RootLayout from './layout/RootLayout'
+import NotFoundPage from './pages/NotFoundPage'
+import Main from './pages/MainPage'
+import CommunityPage from './pages/CommunityPage'
+import ResultPage from './pages/ResultPage'
+import RecommendPage from './pages/RecommendPage'
+import MyPage from './pages/Mypage'
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <RootLayout />,
     errorElement: <NotFoundPage />,
     children: [
@@ -19,27 +19,27 @@ const router = createBrowserRouter([
         element: <Main />,
       },
       {
-        path: "community",
+        path: 'community',
         element: <CommunityPage />,
       },
       {
-        path: "result",
+        path: 'result',
         element: <ResultPage />,
       },
       {
-        path: "recommend",
+        path: 'recommend',
         element: <RecommendPage />,
       },
       {
-        path: "mypage",
+        path: 'mypage',
         element: <MyPage />,
       },
     ],
   },
-]);
+])
 
 function App() {
-  return <RouterProvider router={router} />;
+  return <RouterProvider router={router} />
 }
 
-export default App;
+export default App
