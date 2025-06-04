@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom'
 import ScalpStatusCard from '../components/resultPage/ScalpStatusCard'
 import ScalpRadarChart from '../components/resultPage/ScalpRadarChart'
 import StatusSlider from '../components/resultPage/StatusSlider'
@@ -6,6 +7,9 @@ import sample1 from '../assets/sample1.png'
 import sample2 from '../assets/sample2.png'
 
 const ResultPage = () => {
+  const location = useLocation()
+  const uploadedImages = location.state?.images || []
+
   const dummyData = {
     status: '심각',
     score: 5,
@@ -16,10 +20,14 @@ const ResultPage = () => {
       poreSizeValue: 50,
       sebumLevelValue: 20,
     },
-    images: [
-      { id: 1, src: sample1, label: '정수리' },
-      { id: 2, src: sample2, label: '앞머리' },
-    ],
+    // ✅ 전달된 이미지가 있으면 그것을, 없으면 기본 샘플
+    images:
+      uploadedImages.length > 0
+        ? uploadedImages
+        : [
+            { id: 1, src: sample1, label: '정수리' },
+            { id: 2, src: sample2, label: '앞머리' },
+          ],
   }
 
   return (
