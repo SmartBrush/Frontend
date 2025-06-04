@@ -1,4 +1,4 @@
-import { FiSearch } from "react-icons/fi"; // 아이콘 사용 (react-icons 설치 필요)
+import { FiSearch } from 'react-icons/fi' // 아이콘 사용 (react-icons 설치 필요)
 
 const SearchBar = () => {
   return (
@@ -12,7 +12,7 @@ const SearchBar = () => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SearchBar;
+export default SearchBar

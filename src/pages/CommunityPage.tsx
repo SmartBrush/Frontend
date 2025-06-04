@@ -1,9 +1,8 @@
-import React from "react";
-import TabMenu from "../components/Community/TabMenu";
-import SearchBar from "./../components/Community/SearchBar";
-import HotTopicsSection from "../components/Community/HotTopicsSection";
-import SharedConcernsSection from "./../components/Community/SharedConcernsSection";
-
+import React from 'react'
+import TabMenu from '../components/Community/TabMenu'
+import SearchBar from './../components/Community/SearchBar'
+import HotTopicsSection from '../components/Community/HotTopicsSection'
+import SharedConcernsSection from './../components/Community/SharedConcernsSection'
 
 const CommunityPage: React.FC = () => {
   return (
@@ -15,7 +14,7 @@ const CommunityPage: React.FC = () => {
         <SharedConcernsSection />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CommunityPage;
+export default CommunityPage
