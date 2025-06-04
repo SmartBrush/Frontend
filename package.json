@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.8",
     "add": "^2.0.6",
+    "chart.js": "^4.4.9",
     "gitmoji-cli": "^9.7.0",
     "lucide-react": "^0.513.0",
     "react": "^19.1.0",

@@ -1,7 +1,14 @@
-import { Camera } from 'lucide-react'
 import dropletImg from '../../assets/NotDiagnose.svg'
+import CameraUploadButton from '../../components/Main/CameraUploadButton'
+import { useNavigate } from 'react-router-dom'
 
 const TodayScalpStatus = () => {
+  const navigate = useNavigate()
+
+  const handleDiagnosisClick = () => {
+    navigate('/result')
+  }
+
   return (
     <div className="bg-[#DDE4F0] rounded-t-[20px] p-5 pb-[40%] mt-8 text-black ">
       <h2 className="text-[18px] font-semibold mb-4">
@@ -18,11 +25,20 @@ const TodayScalpStatus = () => {
             <div className="absolute w-2 h-2 bg-white rounded-full left-[-35px] bottom-[-29px]" />
           </div>
 
-          <div className="flex items-center gap-2 ml-8 py-5">
-            <span className="text-[14px]">두피 진단 바로가기</span>
-            <button className="w-10 h-10 rounded-full border-2 border-black flex items-center justify-center">
-              <Camera className="w-5 h-5 text-black" />
+          {/* 두 개의 버튼을 나란히 배치 */}
+          <div className="flex items-center gap-3 ml-8 py-5">
+            <button
+              onClick={handleDiagnosisClick}
+              className="px-4 py-2 rounded-full border-2 border-none text-sm text-black cursor-pointer"
+            >
+              두피 진단 바로가기
             </button>
+
+            <CameraUploadButton
+              onFileSelect={(file) => {
+                console.log('선택된 파일:', file)
+              }}
+            />
           </div>
         </div>
       </div>
