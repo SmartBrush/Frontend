@@ -1,6 +1,6 @@
 interface ConcernCardProps {
-  name: string;
-  content: string;
+  name: string
+  content: string
 }
 
 const ConcernCard: React.FC<ConcernCardProps> = ({ name, content }) => {
@@ -12,7 +12,7 @@ const ConcernCard: React.FC<ConcernCardProps> = ({ name, content }) => {
         <p className="text-sm text-gray-500">{content}</p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ConcernCard;
+export default ConcernCard
