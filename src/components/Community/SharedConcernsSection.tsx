@@ -1,5 +1,6 @@
 import ConcernCard from './ConcernCard'
 import { FiChevronRight } from 'react-icons/fi' // 아이콘용
+import { Link } from 'react-router-dom'
 
 const SharedConcernsSection = () => {
   const concerns = [
@@ -12,7 +13,9 @@ const SharedConcernsSection = () => {
       <div className="bg-white border border-gray-200 rounded-xl p-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-base font-semibold">고민을 나눠보아요! 💕</h2>
-          <FiChevronRight className="text-gray-400" />
+          <Link to="/community/concerns">
+            <FiChevronRight className="text-gray-400 cursor-pointer" />
+          </Link>
         </div>
 
         <div className="space-y-3">

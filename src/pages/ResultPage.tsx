@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom'
 import ScalpStatusCard from '../components/resultPage/ScalpStatusCard'
 import ScalpRadarChart from '../components/resultPage/ScalpRadarChart'
 import StatusSlider from '../components/resultPage/StatusSlider'
@@ -7,6 +8,9 @@ import sample1 from '../assets/sample1.png'
 import sample2 from '../assets/sample2.png'
 
 const ResultPage = () => {
+  const location = useLocation()
+  const uploadedImages = location.state?.images || []
+
   const dummyData = {
     radar: {
       scalpSensitivityValue: 70, // 두피민감도 : 높을수록 나쁨 -> 뒤집기
@@ -15,10 +19,12 @@ const ResultPage = () => {
       poreSizeValue: 80, // 모발 굵기 -> 높을수록 좋음
       scalingValue: 60, // 각질/비듬 정도 -> 높을수록 나쁨 -> 뒤집어
     },
+
     images: [
       { id: 1, src: sample1, label: '내 두피 사진' },
       { id: 2, src: sample2, label: '내 두피 사진' },
     ],
+
   }
 
   //

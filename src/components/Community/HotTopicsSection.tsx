@@ -2,6 +2,7 @@ import HotTopicCard from './HotTopicCard'
 import { FiChevronRight } from 'react-icons/fi' // 아이콘용
 import hot1 from '../../assets/hot1.png'
 import hot2 from '../../assets/hot2.png'
+import { Link } from 'react-router-dom'
 
 const HotTopicsSection = () => {
   const data = [
@@ -29,7 +30,9 @@ const HotTopicsSection = () => {
         {/* 상단 제목 + 화살표 */}
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-base font-semibold">지금 가장 핫한 토픽 🔥</h2>
-          <FiChevronRight className="text-gray-400" />
+          <Link to="/community/hot-topics">
+            <FiChevronRight className="text-gray-400 cursor-pointer" />
+          </Link>
         </div>
 
         {/* 핫 토픽 카드들 */}
