@@ -1,9 +1,9 @@
 import { useLocation } from 'react-router-dom'
-import ScalpStatusCard from '../components/resultPage/ScalpStatusCard'
-import ScalpRadarChart from '../components/resultPage/ScalpRadarChart'
-import StatusSlider from '../components/resultPage/StatusSlider'
-import CaptureImage from '../components/resultPage/CaptureImage'
-import ProductRecommendButton from '../components/resultPage/ProductRecommendButton'
+import ScalpStatusCard from './ScalpStatusCard'
+import ScalpRadarChart from './ScalpRadarChart'
+import StatusSlider from './StatusSlider'
+import CaptureImage from './CaptureImage'
+import ProductRecommendButton from './ProductRecommendButton'
 import sample1 from '../assets/sample1.png'
 import sample2 from '../assets/sample2.png'
 
@@ -20,11 +20,14 @@ const ResultPage = () => {
       scalingValue: 60, // 각질/비듬 정도 -> 높을수록 나쁨 -> 뒤집어
     },
 
-    images: [
-      { id: 1, src: sample1, label: '내 두피 사진' },
-      { id: 2, src: sample2, label: '내 두피 사진' },
-    ],
-
+    // ✅ 전달된 이미지가 있으면 그것을, 없으면 기본 샘플
+    images:
+      uploadedImages.length > 0
+        ? uploadedImages
+        : [
+            { id: 1, src: sample1, label: '정수리' },
+            { id: 2, src: sample2, label: '앞머리' },
+          ],
   }
 
   //
