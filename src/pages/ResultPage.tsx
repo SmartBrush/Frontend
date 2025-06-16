@@ -368,6 +368,7 @@ import CaptureImage from '../components/Result/CaptureImage'
 import ProductRecommendButton from '../components/Result/ProductRecommendButton'
 import sample1 from '../assets/sample1.png'
 import sample2 from '../assets/sample2.png'
+import { useEffect } from 'react'
 
 const ResultPage = () => {
   const location = useLocation()
@@ -504,6 +505,20 @@ const ResultPage = () => {
   const status = score <= 4 ? '심각' : score <= 6.5 ? '보통' : '양호'
   const bgColor = getStatusColor(status)
   const valuePosition = Math.round((score / 10) * 100)
+
+  // ✅ 진단 결과를 localStorage에 저장
+  useEffect(() => {
+    const today = new Date()
+    const yyyy = today.getFullYear()
+    const mm = String(today.getMonth() + 1).padStart(2, '0')
+    const dd = String(today.getDate()).padStart(2, '0')
+    const todayStr = `${yyyy}-${mm}-${dd}`
+
+    localStorage.setItem(
+      'scalp_status',
+      JSON.stringify({ date: todayStr, status }),
+    )
+  }, [status])
 
   return (
     <div className="p-4 bg-gray-100 min-h-screen pb-20">

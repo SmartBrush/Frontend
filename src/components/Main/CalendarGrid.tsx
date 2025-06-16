@@ -1,5 +1,8 @@
 import type { DateCount } from './Calendar'
 import blankIcon from '../../assets/Blank.svg'
+import goodIcon from '../../assets/goodIcon.png'
+import normalIcon from '../../assets/normalIcon.png'
+import badIcon from '../../assets/badIcon.png'
 
 interface CalendarGridProps {
   year: number
@@ -22,6 +25,12 @@ function getCalendarDays(year: number, month: number): (number | null)[] {
 function CalendarGrid({ year, month, markedDates }: CalendarGridProps) {
   const calendarDays = getCalendarDays(year, month)
 
+  // ✅ 로컬스토리지에서 상태 불러오기
+  const saved = localStorage.getItem('scalp_status')
+  const parsed = saved ? JSON.parse(saved) : null
+  const todayStatusDate = parsed?.date
+  const todayStatus = parsed?.status
+
   return (
     <>
       <div className="grid grid-cols-7 gap-1 text-center text-sm text-black">
@@ -34,33 +43,37 @@ function CalendarGrid({ year, month, markedDates }: CalendarGridProps) {
         {calendarDays.map((day, idx) => {
           const dateStr =
             day !== null
-              ? `${year}-${String(month + 1).padStart(2, '0')}-${String(
-                  day,
-                ).padStart(2, '0')}`
+              ? `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
               : ''
-          const count = markedDates.find((d) => d.date === dateStr)?.count ?? 0
 
-          if (day === null) return <div key={idx} />
+          const isTodayStatus = dateStr === todayStatusDate
+
+          let statusIcon = blankIcon
+          if (isTodayStatus) {
+            if (todayStatus === '양호') statusIcon = goodIcon
+            else if (todayStatus === '보통') statusIcon = normalIcon
+            else if (todayStatus === '심각') statusIcon = badIcon
+          }
+
+          if (day === null) {
+            return (
+              <div
+                key={idx}
+                className="w-[30.66px] h-[60px] flex flex-col items-center justify-start mx-auto"
+              />
+            )
+          }
 
           return (
             <div
               key={idx}
-              className="w-[30.66px] h-[55px] flex flex-col items-center justify-start mx-auto"
+              className="w-[30.66px] h-[60px] flex flex-col items-center justify-start mx-auto"
             >
-              {count > 0 ? (
-                <span
-                  className={`w-2 h-2 rounded-full mt-[2px] mb-[3px] ${
-                    count > 1 ? 'bg-red-500' : 'bg-orange-400'
-                  }`}
-                />
-              ) : (
-                <img
-                  src={blankIcon}
-                  alt="blank"
-                  className="w-[30.66px] h-[30.66px] mb-[2px]"
-                />
-              )}
-
+              <img
+                src={statusIcon}
+                alt="status"
+                className="w-[28px] h-[35px] mb-[2px]"
+              />
               <span className="text-sm text-black mb-[2px]">{day}</span>
             </div>
           )

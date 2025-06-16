@@ -17,11 +17,19 @@ import TodayScalpStatus from '../components/Main/TodayScalpStatus'
 
 const MainPage = () => {
   return (
+    // <div className="h-screen flex flex-col overflow-hidden">
+    //   <div className="flex-1 h-2/3">
+    //     <Calendar />
+    //   </div>
+    //   <div className="flex-1 h-1/3">
+    //     <TodayScalpStatus />
+    //   </div>
+    // </div>
     <div className="h-screen flex flex-col overflow-hidden">
-      <div className="flex-1 h-1/2">
+      <div className="flex-[0_0_45%]">
         <Calendar />
       </div>
-      <div className="flex-1 h-1/2">
+      <div className="flex-[1] overflow-auto">
         <TodayScalpStatus />
       </div>
     </div>
