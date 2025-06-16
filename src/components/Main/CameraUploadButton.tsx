@@ -14,27 +14,39 @@ const CameraUploadButton = ({ onFileSelect }: CameraUploadButtonProps) => {
     fileInputRef.current?.click()
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       const imageUrl = URL.createObjectURL(file)
 
-      if (onFileSelect) {
-        onFileSelect(file)
-      }
+      const formData = new FormData()
+      formData.append('image', file)
 
-      // ✅ 이미지 정보와 함께 /result 페이지로 이동
-      navigate('/result', {
-        state: {
-          images: [
-            {
-              id: Date.now(), // 고유 ID
-              src: imageUrl,
-              label: '촬영된 이미지',
-            },
-          ],
-        },
-      })
+      try {
+        const response = await fetch(
+          'http://localhost:8080/api/diagnosis/upload',
+          {
+            method: 'POST',
+            body: formData,
+          },
+        )
+        const result = await response.json()
+
+        navigate('/result', {
+          state: {
+            images: [
+              {
+                id: Date.now(),
+                src: imageUrl,
+                label: '촬영된 이미지',
+              },
+            ],
+            diagnosis: result, // ✅ 진단 결과 함께 전달
+          },
+        })
+      } catch (error) {
+        console.error('진단 요청 실패:', error)
+      }
     }
   }
 

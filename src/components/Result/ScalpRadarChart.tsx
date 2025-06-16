@@ -23,17 +23,22 @@ ChartJS.register(
 
 const getLabelFromScore = (value: number, type: string): string => {
   switch (type) {
-    //유분
     case 'sebum':
-      if (value <= 29 || value >= 81) return '심각'
-      else if (value <= 49 || (value >= 70 && value < 81)) return '보통'
+      // if (value <= 29 || value >= 81) return '심각'
+      // else if (value <= 49 || (value >= 70 && value < 81)) return '보통'
+      // else return '양호'
+      if (value <= 30) return '양호'
+      else if (value <= 55) return '보통'
+      else return '심각'
+    case 'density': // ✅ 낮을수록 양호
+      if (value <= 30) return '심각'
+      else if (value <= 55) return '보통'
       else return '양호'
-    case 'density':
-    case 'thickness':
+    case 'thickness': // 굵기 → 높을수록 양호
       if (value >= 60) return '양호'
       else if (value >= 40) return '보통'
       else return '심각'
-    default:
+    default: // 나머지(두피 민감도, 각질 등) → 낮을수록 양호
       if (value >= 70) return '심각'
       else if (value >= 40) return '보통'
       else return '양호'
@@ -234,7 +239,7 @@ const ScalpRadarChart = ({ data }: RadarDataProps) => {
   }, [statusLabels])
 
   const radarData = {
-    labels: ['두피 민감도', '모발 밀도', '유분 정도', '모발 굵기', '각질/비듬'],
+    labels: ['두피 민감도', '모발 밀도', '피지 정도', '모발 굵기', '각질/비듬'],
     datasets: [
       {
         label: '나의 상태',
