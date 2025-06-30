@@ -3,13 +3,57 @@ import InputBox from '../components/Auth/InputBox'
 import BlueBox from '../components/Auth/BlueBox'
 import Line from '../components/Auth/OrLine'
 import KakaoButton from '../components/Auth/KakaoButton'
+import { login } from '../apis/auth'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const SignInPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [errors, setErrors] = useState({ email: '', password: '' })
 
-  const handleLogin = () => {
-    console.log(email, password)
+  const navigate = useNavigate()
+
+  const validateField = (field: string, value: string) => {
+    setErrors((prev) => {
+      const newErrors = { ...prev }
+      switch (field) {
+        case 'email':
+          if (!value.trim()) {
+            newErrors.email = '이메일을 입력해주세요.'
+          } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+            newErrors.email = '올바른 이메일 형식이 아닙니다.'
+          } else {
+            newErrors.email = ''
+          }
+          break
+        case 'password':
+          newErrors.password =
+            value.length >= 8 ? '' : '비밀번호는 8자 이상이어야 합니다.'
+          break
+      }
+      return newErrors
+    })
+  }
+
+  const handleLogin = async () => {
+    if (!email || !password || errors.email || errors.password) {
+      alert('입력값을 다시 확인해주세요.')
+      return
+    }
+
+    try {
+      await login({ email, password })
+      alert('로그인 성공!')
+      navigate('/')
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        const message = error.response.data?.message || '로그인에 실패했습니다.'
+        alert(message)
+      } else {
+        alert('알 수 없는 오류가 발생했습니다.')
+      }
+    }
   }
 
   const handleKakaoLogin = () => {
@@ -25,19 +69,31 @@ const SignInPage = () => {
             label="이메일"
             placeholder="이메일"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value)
+              validateField('email', e.target.value)
+            }}
             name="email"
           />
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+          )}
         </div>
         <div className="mb-5">
           <InputBox
             label="비밀번호"
             placeholder="비밀번호"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value)
+              validateField('password', e.target.value)
+            }}
             name="password"
             type="password"
           />
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+          )}
         </div>
         <div className="mt-10 mb-5">
           <BlueBox text="로그인" onClick={handleLogin} />
