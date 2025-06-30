@@ -9,6 +9,8 @@ import RecommendPage from './pages/RecommendPage'
 import MyPage from './pages/Mypage'
 import HotTopicListPage from './pages/HotTopicListPage'
 import ConcernListPage from './pages/ConcernListPage'
+import SignUpPage from './pages/SignUpPage'
+import SignInPage from './pages/SignInPage'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Main />,
+      },
+      {
+        path: 'login',
+        element: <SignInPage />,
+      },
+      {
+        path: 'signup',
+        element: <SignUpPage />,
       },
       {
         path: 'community',
