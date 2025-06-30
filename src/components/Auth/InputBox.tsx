@@ -1,5 +1,5 @@
 interface InputBoxProps {
-  label: string
+  label?: string
   placeholder?: string
   type?: string
   value: string
@@ -17,7 +17,9 @@ function InputBox({
 }: InputBoxProps) {
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-black text-[20px] font-semibold">{label}</label>
+      {label && (
+        <label className="text-black text-[20px] font-semibold">{label}</label>
+      )}
       <input
         type={type}
         placeholder={placeholder}

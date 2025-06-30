@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import InputBox from '../components/Auth/InputBox'
 import BlueBox from '../components/Auth/BlueBox'
-import Line from '../components/Auth/Line'
+import Line from '../components/Auth/OrLine'
 import KakaoButton from '../components/Auth/KakaoButton'
 
 const SignInPage = () => {
