@@ -43,7 +43,9 @@ const SignInPage = () => {
     }
 
     try {
-      await login({ email, password })
+      const { accessToken } = await login({ email, password })
+      localStorage.setItem('access_token', accessToken)
+
       alert('로그인 성공!')
       navigate('/')
     } catch (error: unknown) {
