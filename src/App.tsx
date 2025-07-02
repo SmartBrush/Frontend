@@ -11,6 +11,7 @@ import HotTopicListPage from './pages/HotTopicListPage'
 import ConcernListPage from './pages/ConcernListPage'
 import SignUpPage from './pages/SignUpPage'
 import SignInPage from './pages/SignInPage'
+import HotTopicDetailPage from './pages/HotTopicDetailPage'
 
 const router = createBrowserRouter([
   {
@@ -34,10 +35,16 @@ const router = createBrowserRouter([
         path: 'community',
         element: <CommunityPage />,
       },
+
       {
         path: 'community/hot-topics',
         element: <HotTopicListPage />,
       },
+      {
+        path: 'community/hot-topics/:id',
+        element: <HotTopicDetailPage />,
+      },
+
       {
         path: 'community/concerns',
         element: <ConcernListPage />,
