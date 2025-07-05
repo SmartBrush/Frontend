@@ -11,6 +11,8 @@ import HotTopicListPage from './pages/HotTopicListPage'
 import ConcernListPage from './pages/ConcernListPage'
 import SignUpPage from './pages/SignUpPage'
 import SignInPage from './pages/SignInPage'
+import ProductRecommendationPage from './pages/ProductRecommendationPage'
+import ProductDetailPage from './pages/ProductDetailPage'
 
 const router = createBrowserRouter([
   {
@@ -53,6 +55,14 @@ const router = createBrowserRouter([
       {
         path: 'mypage',
         element: <MyPage />,
+      },
+      {
+        path: 'productRecommendation',
+        element: <ProductRecommendationPage />,
+      },
+      {
+        path: 'product/:id',
+        element: <ProductDetailPage />,
       },
     ],
   },
