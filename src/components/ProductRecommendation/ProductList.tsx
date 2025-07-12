@@ -1,23 +1,33 @@
 // 내 두피에 맞는 제품 리스트
 import ProductListItem from './ProductListItem'
-import { mockProducts } from '../../data/mockProducts'
-import type { Product } from '../../data/mockProducts'
+import { useFetch } from '../../hooks/useFetch'
+import type { Product } from '../../types/Product'
 
 interface Props {
+  category: string
   onSelect: (id: string) => void
 }
 
-const ProductList: React.FC<Props> = ({ onSelect }) => {
+const ProductList: React.FC<Props> = ({ category, onSelect }) => {
+  const url =
+    category === 'all'
+      ? `${import.meta.env.VITE_API_BASE_URL}/products`
+      : `${import.meta.env.VITE_API_BASE_URL}/products/${category}`
+
+  const { data: products, loading, error } = useFetch<Product[]>(url)
+
+  if (loading) return <div>로딩 중...</div>
+  if (error || !products) return <div>에러가 발생했습니다.</div>
+
   return (
     <div className="grid grid-cols-2 gap-3">
-      {mockProducts.map((item: Product) => (
+      {products.map((item) => (
         <ProductListItem
           key={item.id}
           id={item.id}
-          imageUrl={item.imageUrl}
-          brand={item.brand}
+          imageUrl={item.image}
           name={item.name}
-          price={item.price}
+          price={`₩${item.price}`}
           onClick={() => onSelect(item.id)}
         />
       ))}
