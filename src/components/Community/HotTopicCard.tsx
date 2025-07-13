@@ -7,14 +7,14 @@ interface HotTopicCardProps {
   imageUrl: string
 }
 
-const HotTopicCard: React.FC<HotTopicCardProps> = ({
+const HotTopicCard = ({
   title,
   desc,
   author,
   date,
   tags,
   imageUrl,
-}) => {
+}: HotTopicCardProps) => {
   return (
     <div className="flex border p-3 rounded-lg mb-2 items-start">
       <img
