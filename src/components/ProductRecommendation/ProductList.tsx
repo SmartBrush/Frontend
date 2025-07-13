@@ -8,7 +8,7 @@ interface Props {
   onSelect: (id: string) => void
 }
 
-const ProductList: React.FC<Props> = ({ category, onSelect }) => {
+const ProductList = ({ category, onSelect }: Props) => {
   const url =
     category === 'all'
       ? `${import.meta.env.VITE_API_BASE_URL}/products`

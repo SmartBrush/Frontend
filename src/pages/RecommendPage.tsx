@@ -3,7 +3,7 @@ import TipCarousel from '../components/Recommendation/TipCarousel'
 import ProductPreviewList from '../components/Recommendation/ProductPreviewList'
 import HabitChallengeList from '../components/Recommendation/HabitChallengeList'
 
-const RecommendPage: React.FC = () => {
+const RecommendPage = () => {
   const navigate = useNavigate()
 
   return (

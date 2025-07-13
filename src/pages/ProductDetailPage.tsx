@@ -3,7 +3,7 @@ import ProductInfo from '../components/ProductDetail/ProductInfo'
 import AiChatButton from '../components/ProductDetail/AiChatButton'
 import LinkButton from '../components/ProductDetail/LinkButton'
 
-const ProductDetailPage: React.FC = () => {
+const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
 

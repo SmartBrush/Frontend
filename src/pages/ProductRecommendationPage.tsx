@@ -22,7 +22,7 @@ const CATEGORY_MAP: Record<(typeof FILTERS)[number], string> = {
   '헤어 에센스': 'essence',
 }
 
-const ProductRecommendationPage: React.FC = () => {
+const ProductRecommendationPage = () => {
   const navigate = useNavigate()
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>(FILTERS[0])
 

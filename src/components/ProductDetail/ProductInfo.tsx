@@ -1,25 +1,30 @@
-import { useFetch } from '../../hooks/useFetch'
 import type { Product } from '../../types/Product'
 import Image404 from '../../assets/404.png'
+import { useEffect, useState } from 'react'
+import { fetchProductById } from '../../apis/products'
 // import LikeButton from './LikeButton'
 
 export interface ProductInfoProps {
   id: string
 }
 
-const ProductInfo: React.FC<ProductInfoProps> = ({ id }) => {
-  const {
-    data: products,
-    loading,
-    error,
-  } = useFetch<Product[]>(`${import.meta.env.VITE_API_BASE_URL}/products`)
+const ProductInfo = ({ id }: ProductInfoProps) => {
+  const [product, setProduct] = useState<Product | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
 
-  const index = Number(id) - 1
-  const product = Array.isArray(products) ? products[index] : undefined
+  useEffect(() => {
+    setLoading(true)
+    fetchProductById(id)
+      .then((p) => setProduct(p))
+      .catch((e) => {
+        console.error('fetchProductByID 에러: ', e)
+        setError(e)
+      })
+      .finally(() => setLoading(false))
+  }, [id])
 
-  // 로딩 중
-  if (loading) return <div className="text-center py-8">로딩 중...</div>
-  //에러 발생 or 상품 없으면 404 이미지
+  if (loading) return <div>로딩 중...</div>
   if (error || !product) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -27,7 +32,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ id }) => {
       </div>
     )
   }
-
   return (
     <div className="bg-white rounded-lg p-4 shadow">
       {/* 이미지 + 좋아요 버튼 */}
@@ -35,7 +39,8 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ id }) => {
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-[250px] object-cover rounded"
+          loading="lazy"
+          className="w-full h-[250px] object-cover rounded-lg"
         />
         <div className="absolute bottom-1 right-2">
           {/* LikeButton에 숫자 ID 전달 */}
@@ -51,4 +56,5 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ id }) => {
     </div>
   )
 }
+
 export default ProductInfo

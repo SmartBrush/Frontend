@@ -104,7 +104,7 @@ function sample<T>(arr: T[], count: number): T[] {
   return result
 }
 
-function HabitChallengeList() {
+const HabitChallengeList = () => {
   const [selection, setSelection] = useState<Record<CategoryKey, string[]>>({
     lifestyle: [],
     scalpstyle: [],

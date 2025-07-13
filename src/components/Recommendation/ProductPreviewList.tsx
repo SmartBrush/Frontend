@@ -4,12 +4,15 @@ import { Pagination, Navigation } from 'swiper/modules'
 import { useFetch } from '../../hooks/useFetch'
 import type { Product } from '../../types/Product'
 
-interface Props {
+interface ProductPreviewListProps {
   onSelect: (id: string) => void
   limit?: number
 }
 
-const ProductPreviewList: React.FC<Props> = ({ onSelect, limit = 4 }) => {
+const ProductPreviewList = ({
+  onSelect,
+  limit = 4,
+}: ProductPreviewListProps) => {
   const {
     data: products,
     loading,
