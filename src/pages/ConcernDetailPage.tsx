@@ -42,6 +42,8 @@ const mockData: Record<string, Concern> = {
   },
 }
 
+// ... import 및 mockData 유지
+
 export default function ConcernDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -58,15 +60,16 @@ export default function ConcernDetailPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <div className="flex-1 px-4 pt-4 pb-[110px]">
-        {/* 상단 헤더 */}
+      <div className="flex-1 px-4 pt-4 pb-[120px]">
+        {' '}
+        {/* 하단 입력창+Navbar 피해서 패딩 확보 */}
+        {/* 상단 */}
         <div className="flex items-center gap-2 mb-4">
           <button onClick={() => navigate(-1)} className="text-xl">
             ←
           </button>
           <span className="text-sm font-medium">고민공유</span>
         </div>
-
         {/* 고민 정보 */}
         <div className="mb-6">
           <div className="flex items-center mb-2">
@@ -79,8 +82,7 @@ export default function ConcernDetailPage() {
           </p>
           <p className="text-xs text-gray-400">{concern.date}</p>
         </div>
-
-        {/* 댓글 목록 */}
+        {/* 댓글 리스트 */}
         <div className="space-y-4">
           {concern.comments.map((c) => (
             <div key={c.id} className="border-t pt-3">
@@ -96,7 +98,7 @@ export default function ConcernDetailPage() {
       </div>
 
       {/* 댓글 입력창 */}
-      <div className="fixed bottom-[70px] left-0 w-full bg-white border-t px-4 py-3 z-50 max-w-[400px] mx-auto">
+      <div className="fixed bottom-[150px] left-0 right-0 max-w-[400px] mx-auto px-4 z-50">
         <input
           type="text"
           value={comment}

@@ -8,6 +8,7 @@ import SearchBar from '../components/Community/SearchBar'
 
 const mockData = [
   {
+    id: 1,
     title: '나도 혹시 정수리 탈모?',
     desc: '최근 2030 여성들에게 나타나고 있는...',
     author: '탈모박사',
@@ -16,6 +17,7 @@ const mockData = [
     imageUrl: hot1,
   },
   {
+    id: 2,
     title: '빈 뒤통수! 스트레스 유발',
     desc: '서울시에 거주하는 최모씨(56)는 최근...',
     author: '모발모발',
@@ -24,6 +26,7 @@ const mockData = [
     imageUrl: hot2,
   },
   {
+    id: 3,
     title: '빈 뒤통수! 스트레스 유발',
     desc: '서울시에 거주하는 최모씨(56)는 최근...',
     author: '모발모발',
@@ -32,6 +35,7 @@ const mockData = [
     imageUrl: hot2,
   },
   {
+    id: 4,
     title: '나도 혹시 정수리 탈모?',
     desc: '최근 2030 여성들에게 나타나고 있는...',
     author: '탈모박사',
@@ -40,6 +44,7 @@ const mockData = [
     imageUrl: hot1,
   },
   {
+    id: 5,
     title: '빈 뒤통수! 스트레스 유발',
     desc: '서울시에 거주하는 최모씨(56)는 최근...',
     author: '모발모발',
@@ -51,7 +56,7 @@ const mockData = [
 
 export default function HotTopicListPage() {
   return (
-    <div className="min-h-screen bg-white flex flex-col justify-between">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* 탭 메뉴 */}
       <TabMenu />
 
@@ -59,7 +64,7 @@ export default function HotTopicListPage() {
       <SearchBar />
 
       {/* 콘텐츠 */}
-      <div className="px-4 pt-4 pb-24">
+      <div className="px-4 pb-24">
         <div className="bg-white border border-gray-200 rounded-xl p-4">
           {/* 상단 타이틀 + 링크 아이콘 */}
           <div className="flex items-center justify-between mb-3">
