@@ -1,4 +1,4 @@
-import type { Product } from '../../types/Product'
+import type { Product } from '../../apis/products'
 import Image404 from '../../assets/404.png'
 import { useEffect, useState } from 'react'
 import { fetchProductById } from '../../apis/products'

@@ -1,7 +1,7 @@
 // 내 두피에 맞는 제품 리스트
 import ProductListItem from './ProductListItem'
 import { useFetch } from '../../hooks/useFetch'
-import type { Product } from '../../types/Product'
+import type { Product } from '../../apis/products'
 
 interface Props {
   category: string

@@ -2,7 +2,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination, Navigation } from 'swiper/modules'
 import { useFetch } from '../../hooks/useFetch'
-import type { Product } from '../../types/Product'
+import type { Product } from '../../apis/products'
 
 interface ProductPreviewListProps {
   onSelect: (id: string) => void

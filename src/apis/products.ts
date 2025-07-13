@@ -1,9 +1,26 @@
 import API from './api'
-import type { Product } from '../types/Product'
+
+export interface Product {
+  id: string
+  name: string
+  category: string
+  price: string
+  image: string
+  link: string
+}
 
 // 전체 상품 리스트
 export async function fetchProducts(): Promise<Product[]> {
   const { data } = await API.get<Product[]>('/products')
+  return data
+}
+
+// 카테고리별 상품 리스트 (all이면 전체! )
+export async function fetchProductsByCategory(
+  category: string,
+): Promise<Product[]> {
+  const path = category === 'all' ? '/products' : `/products/${category}`
+  const { data } = await API.get<Product[]>(path)
   return data
 }
 
