@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import hot1 from '../assets/hot1.png'
