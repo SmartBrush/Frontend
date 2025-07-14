@@ -3,7 +3,7 @@ interface ConcernCardProps {
   content: string
 }
 
-const ConcernCard: React.FC<ConcernCardProps> = ({ name, content }) => {
+const ConcernCard = ({ name, content }: ConcernCardProps) => {
   return (
     <div className="flex items-center border rounded-lg px-3 py-2 mb-2">
       <div className="w-10 h-10 bg-blue-500 rounded-full mr-3" />
