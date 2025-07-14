@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { PaperAirplaneIcon } from '@heroicons/react/24/solid' // Heroicons 설치 필요
 
 interface Comment {
   id: number
@@ -42,8 +43,6 @@ const mockData: Record<string, Concern> = {
   },
 }
 
-// ... import 및 mockData 유지
-
 export default function ConcernDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -52,17 +51,43 @@ export default function ConcernDetailPage() {
 
   useEffect(() => {
     if (id && mockData[id]) {
-      setConcern(mockData[id])
+      // mockData 복사해서 set
+      setConcern({ ...mockData[id] })
     }
   }, [id])
+
+  const handleAddComment = () => {
+    if (!comment.trim() || !concern) return
+
+    const newComment: Comment = {
+      id: Date.now(),
+      name: '익명', // 추후 사용자 이름 연결 가능
+      content: comment.trim(),
+      date: new Date().toLocaleString('ko-KR', {
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+    }
+
+    setConcern({
+      ...concern,
+      comments: [...concern.comments, newComment],
+    })
+
+    setComment('')
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') handleAddComment()
+  }
 
   if (!concern) return <div className="p-4">Loading...</div>
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <div className="flex-1 px-4 pt-4 pb-[120px]">
-        {' '}
-        {/* 하단 입력창+Navbar 피해서 패딩 확보 */}
         {/* 상단 */}
         <div className="flex items-center gap-2 mb-4">
           <button onClick={() => navigate(-1)} className="text-xl">
@@ -70,6 +95,7 @@ export default function ConcernDetailPage() {
           </button>
           <span className="text-sm font-medium">고민공유</span>
         </div>
+
         {/* 고민 정보 */}
         <div className="mb-6">
           <div className="flex items-center mb-2">
@@ -82,6 +108,7 @@ export default function ConcernDetailPage() {
           </p>
           <p className="text-xs text-gray-400">{concern.date}</p>
         </div>
+
         {/* 댓글 리스트 */}
         <div className="space-y-4">
           {concern.comments.map((c) => (
@@ -99,13 +126,22 @@ export default function ConcernDetailPage() {
 
       {/* 댓글 입력창 */}
       <div className="fixed bottom-[150px] left-0 right-0 max-w-[400px] mx-auto px-4 z-50">
-        <input
-          type="text"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          placeholder="댓글을 입력하세요."
-          className="w-full px-4 py-2 bg-gray-200 rounded-xl text-sm"
-        />
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="댓글을 입력하세요."
+            className="w-full px-4 py-2 bg-gray-200 rounded-xl text-sm"
+          />
+          <button
+            onClick={handleAddComment}
+            className="p-2 bg-blue-500 rounded-full"
+          >
+            <PaperAirplaneIcon className="h-5 w-5 text-white rotate-90" />
+          </button>
+        </div>
       </div>
     </div>
   )
