@@ -7,6 +7,7 @@ const concerns = [
   { name: '익명', content: '좋은 탈모 샴푸 있나요 ...' },
   { name: '시윤', content: '좋은 탈모 샴푸 있나요 ...' },
   { name: '도영', content: '병원에 가야 할까요?' },
+  { name: '효진', content: '병원에 가야 할까요????' },
   { name: '미주', content: '스트레스로 머리가 빠지는 것 같아요' },
 ]
 
