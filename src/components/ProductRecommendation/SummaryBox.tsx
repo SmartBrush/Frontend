@@ -5,7 +5,7 @@ interface SummaryBoxProps {
   detail: string
 }
 
-const SummaryBox: React.FC<SummaryBoxProps> = ({ summary, detail }) => {
+const SummaryBox = ({ summary, detail }: SummaryBoxProps) => {
   return (
     <div className="bg-white rounded-lg p-4 shadow">
       <p className="font-semibold mb-[8px]">{summary}</p>

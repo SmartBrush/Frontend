@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import TipCarousel from '../components/Recommendation/TipCarousel'
-import ProductPrviewList from '../components/Recommendation/ProductPreviewList'
+import ProductPreviewList from '../components/Recommendation/ProductPreviewList'
 import HabitChallengeList from '../components/Recommendation/HabitChallengeList'
 
-const RecommendPage: React.FC = () => {
+const RecommendPage = () => {
   const navigate = useNavigate()
 
   return (
@@ -21,20 +21,23 @@ const RecommendPage: React.FC = () => {
         <HabitChallengeList />
       </section>
 
-      {/*추천 제품 */}
+      {/* 제품 추천 */}
       <section className="my-[24px]">
         <div className="flex justify-between items-baseline mb-[8px]">
-          <h2 className="text-lg font-semibold mb-[8px]">추천 제품🛍️</h2>
+          <h2 className="text-lg font-semibold">김도영님을 위한 추천 제품🛍️</h2>
+          {/* 전체 추천 페이지로 이동 */}
           <button
             type="button"
             onClick={() => navigate('/productRecommendation')}
             className="text-sm text-gray-500"
           >
-            추천제품 더 보러가기 &gt;
+            더 보기 &gt;
           </button>
         </div>
-        <ProductPrviewList
-          onSelect={(id: string) => navigate(`/product/${id}`)}
+        {/* 한 번만 렌더링 */}
+        <ProductPreviewList
+          onSelect={(id) => navigate(`/product/${id}`)}
+          limit={5}
         />
       </section>
     </div>

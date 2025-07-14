@@ -30,12 +30,10 @@ const tips: Tip[] = [
   },
 ]
 
-interface TipCarouselProps {}
-
-const TipCarousel: React.FC<TipCarouselProps> = () => (
+const TipCarousel = () => (
   <Swiper spaceBetween={16} slidesPerView={'auto'} className="h-[160px]">
     {tips.map((tip) => (
-      <SwiperSlide key={tip.id} className="!w-[140px]">
+      <SwiperSlide key={tip.id} className="!w-[150px]">
         <div className="bg-white rounded-lg overflow-gidden shadow">
           <img
             src={tip.image}
