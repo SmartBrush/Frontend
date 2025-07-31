@@ -26,10 +26,10 @@ function CalendarGrid({ year, month, markedDates }: CalendarGridProps) {
   const calendarDays = getCalendarDays(year, month)
 
   // ✅ 로컬스토리지에서 상태 불러오기
-  const saved = localStorage.getItem('scalp_status')
-  const parsed = saved ? JSON.parse(saved) : null
-  const todayStatusDate = parsed?.date
-  const todayStatus = parsed?.status
+  //const saved = localStorage.getItem('scalp_status')
+  //const parsed = saved ? JSON.parse(saved) : null
+  //const todayStatusDate = parsed?.date
+  //const todayStatus = parsed?.status
 
   return (
     <>
@@ -46,14 +46,22 @@ function CalendarGrid({ year, month, markedDates }: CalendarGridProps) {
               ? `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
               : ''
 
-          const isTodayStatus = dateStr === todayStatusDate
+          // const isTodayStatus = dateStr === todayStatusDate
+
+          const matched = markedDates.find((d) => d.date === dateStr)
 
           let statusIcon = blankIcon
-          if (isTodayStatus) {
-            if (todayStatus === '양호') statusIcon = goodIcon
-            else if (todayStatus === '보통') statusIcon = normalIcon
-            else if (todayStatus === '심각') statusIcon = badIcon
+          if (matched) {
+            if (matched.count === 1) statusIcon = goodIcon
+            else if (matched.count === 2) statusIcon = normalIcon
+            else if (matched.count === 3) statusIcon = badIcon
           }
+
+          // if (isTodayStatus) {
+          //   if (todayStatus === '양호') statusIcon = goodIcon
+          //   else if (todayStatus === '보통') statusIcon = normalIcon
+          //   else if (todayStatus === '심각') statusIcon = badIcon
+          // }
 
           if (day === null) {
             return (

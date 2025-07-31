@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 const HotTopicsSection = () => {
   const data = [
     {
+      id: 1,
       title: '나도 혹시 정수리 탈모?',
       desc: '최근 2030 여성들에게 나타나고 있는...',
       author: '탈모박사',
@@ -15,6 +16,7 @@ const HotTopicsSection = () => {
       imageUrl: hot1,
     },
     {
+      id: 2,
       title: '빈 뒤통수! 스트레스 유발',
       desc: '서울시에 거주하는 최모씨(56)는 최근...',
       author: '모발모발',
@@ -37,8 +39,8 @@ const HotTopicsSection = () => {
 
         {/* 핫 토픽 카드들 */}
         <div className="space-y-3">
-          {data.map((item, idx) => (
-            <HotTopicCard key={idx} {...item} />
+          {data.map((item) => (
+            <HotTopicCard key={item.id} {...item} />
           ))}
         </div>
       </div>

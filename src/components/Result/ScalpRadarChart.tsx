@@ -9,8 +9,9 @@ import {
   Legend,
   type ChartOptions,
   type Chart,
+  type RadialLinearScale as RadialScaleType,
 } from 'chart.js'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
 ChartJS.register(
   RadialLinearScale,
@@ -56,20 +57,30 @@ type RadarDataProps = {
 }
 
 const ScalpRadarChart = ({ data }: RadarDataProps) => {
-  const statusLabels = [
-    getLabelFromScore(data.scalpSensitivityValue, 'sensitivity'),
-    getLabelFromScore(data.densityValue, 'density'),
-    getLabelFromScore(data.sebumLevelValue, 'sebum'),
-    getLabelFromScore(data.poreSizeValue, 'thickness'),
-    getLabelFromScore(data.scalingValue, 'scaling'),
-  ]
+  const statusLabels = useMemo(
+    () => [
+      getLabelFromScore(data.scalpSensitivityValue, 'sensitivity'),
+      getLabelFromScore(data.densityValue, 'density'),
+      getLabelFromScore(data.sebumLevelValue, 'sebum'),
+      getLabelFromScore(data.poreSizeValue, 'thickness'),
+      getLabelFromScore(data.scalingValue, 'scaling'),
+    ],
+    [data],
+  )
 
   useEffect(() => {
     const plugin = {
       id: 'customRadarEnhancement',
       beforeDraw(chart: Chart<'radar'>) {
         const ctx = chart.ctx
-        const scale = chart.scales.r
+        const scale = chart.scales.r as RadialLinearScale & {
+          xCenter: number
+          yCenter: number
+          drawingArea: number
+          _pointLabels: string[]
+          getIndexAngle: (index: number) => number
+        }
+
         const centerX = scale.xCenter
         const centerY = scale.yCenter
         const levels = scale.ticks.length
@@ -77,6 +88,7 @@ const ScalpRadarChart = ({ data }: RadarDataProps) => {
         const pointCount = scale._pointLabels.length
 
         ctx.save()
+
         // 내부 격자 & 축선
         for (let i = 1; i <= levels; i++) {
           const r = step * i
@@ -85,7 +97,11 @@ const ScalpRadarChart = ({ data }: RadarDataProps) => {
             const ang = scale.getIndexAngle(j) - Math.PI / 2
             const x = centerX + Math.cos(ang) * r
             const y = centerY + Math.sin(ang) * r
-            j ? ctx.lineTo(x, y) : ctx.moveTo(x, y)
+            if (j) {
+              ctx.lineTo(x, y)
+            } else {
+              ctx.moveTo(x, y)
+            }
           }
           ctx.closePath()
           if (i === levels) {
@@ -99,6 +115,7 @@ const ScalpRadarChart = ({ data }: RadarDataProps) => {
           }
           ctx.stroke()
         }
+
         ctx.setLineDash([])
         ctx.strokeStyle = 'rgba(181,178,178,0.7)'
         ctx.lineWidth = 1
@@ -111,10 +128,18 @@ const ScalpRadarChart = ({ data }: RadarDataProps) => {
           ctx.lineTo(x, y)
           ctx.stroke()
         }
+
         ctx.restore()
       },
+
       afterDraw(chart: Chart<'radar'>) {
-        const scale = chart.scales.r
+        const scale = chart.scales.r as RadialScaleType & {
+          xCenter: number
+          yCenter: number
+          drawingArea: number
+          _pointLabels: string[]
+          getIndexAngle: (index: number) => number
+        }
         const ctx = chart.ctx as CanvasRenderingContext2D
         const cX = scale.xCenter
         const cY = scale.yCenter
@@ -133,6 +158,7 @@ const ScalpRadarChart = ({ data }: RadarDataProps) => {
         const y0 = cY + Math.sin(ang0) * baseR - additionalShift
         ctx.fillText('두피 민감도', x0, y0)
         ctx.restore()
+
         // 상태 배지 위치를 축 방향으로 대칭 맞춰 조정
         const badgeRadius = scale.drawingArea + 8
         ctx.font = 'bold 12px sans-serif'

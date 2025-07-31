@@ -35,7 +35,7 @@ export default function ConcernListPage() {
           </div>
 
           <div className="space-y-3">
-            {concerns.map((item, idx) => (
+            {concerns.map((item) => (
               <div
                 key={item.id}
                 onClick={() => navigate(`/community/concerns/${item.id}`)}

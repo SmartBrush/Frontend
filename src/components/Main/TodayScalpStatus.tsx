@@ -65,7 +65,7 @@ const TodayScalpStatus = () => {
   // ✅ 로컬 스토리지에서 오늘의 상태 불러오기
   const saved = localStorage.getItem('scalp_status')
   const parsed = saved ? JSON.parse(saved) : null
-  const todayStatus = parsed?.status || null
+  //const todayStatus = parsed?.status || null
 
   // 상태별 이모지 이미지 매핑
   const statusImage = {
@@ -73,6 +73,9 @@ const TodayScalpStatus = () => {
     보통: normalIcon,
     심각: badIcon,
   }
+
+  type StatusType = '양호' | '보통' | '심각' | null
+  const todayStatus: StatusType = parsed?.status || null
 
   return (
     <div className="bg-[#DDE4F0] rounded-t-[20px] px-5 py-4 text-black h-full flex flex-col">
@@ -83,9 +86,14 @@ const TodayScalpStatus = () => {
       {todayStatus ? (
         // ✅ 기록 있을 때 (상태 표시)
         <div className="flex flex-col items-center justify-start mt-5 flex-1 overflow-hidden ">
-          <img
+          {/* <img
             src={statusImage[todayStatus]}
             alt={todayStatus}
+            className="w-[70px] h-auto object-contain mb-2"
+          /> */}
+          <img
+            src={statusImage[todayStatus!]}
+            alt={todayStatus!}
             className="w-[70px] h-auto object-contain mb-2"
           />
           <p className="text-[15px] font-semibold">상태</p>
