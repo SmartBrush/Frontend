@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import { FiChevronRight } from 'react-icons/fi'
+//import { Link } from 'react-router-dom'
+//import { FiChevronRight } from 'react-icons/fi'
 import hot1 from '../assets/hot1.png'
 import hot2 from '../assets/hot2.png'
 import HotTopicCard from '../components/Community/HotTopicCard'

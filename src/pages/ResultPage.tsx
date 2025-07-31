@@ -471,17 +471,17 @@ const ResultPage = () => {
   }
 
   // 유분 점수 변환 (가운데값 기준 대칭)
-  const sebumBadLow = 29
-  const sebumBadHigh = 81
-  const sebumCenter = (sebumBadLow + sebumBadHigh) / 2
-  const sebumMaxOffset = sebumCenter - sebumBadLow
-  const sebumFactor = 100 / sebumMaxOffset
+  //const sebumBadLow = 29
+  //const sebumBadHigh = 81
+  //const sebumCenter = (sebumBadLow + sebumBadHigh) / 2
+  //const sebumMaxOffset = sebumCenter - sebumBadLow
+  //const sebumFactor = 100 / sebumMaxOffset
 
-  const transformsebum = (value: number): number => {
+  /*const transformsebum = (value: number): number => {
     const offset = Math.abs(value - sebumCenter)
     const raw = 100 - offset * sebumFactor
     return raw < 0 ? 0 : raw
-  }
+  }*/
 
   // 평균 점수 계산 (0~10점 환산)
   const {
