@@ -1,48 +1,59 @@
-import HotTopicCard from './HotTopicCard'
-import { FiChevronRight } from 'react-icons/fi' // 아이콘용
+import { useState } from 'react'
+import { useSwipeable } from 'react-swipeable'
 import hot1 from '../../assets/hot1.png'
 import hot2 from '../../assets/hot2.png'
-import { Link } from 'react-router-dom'
+import hot3 from '../../assets/hot3.png'
+
+const baseData = [
+  { id: 1, imageUrl: hot1 },
+  { id: 2, imageUrl: hot2 },
+  { id: 3, imageUrl: hot3 },
+]
+
+// 🔁 반복을 위한 데이터 확장
+const data = [...baseData, ...baseData, ...baseData]
 
 const HotTopicsSection = () => {
-  const data = [
-    {
-      id: 1,
-      title: '나도 혹시 정수리 탈모?',
-      desc: '최근 2030 여성들에게 나타나고 있는...',
-      author: '탈모박사',
-      date: '2025.03.17',
-      tags: ['여성탈모', '탈모고민'],
-      imageUrl: hot1,
+  const initialIndex = baseData.length + 1
+  const [currentIndex, setCurrentIndex] = useState(initialIndex)
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      setCurrentIndex((prev) => (prev + 1) % data.length)
     },
-    {
-      id: 2,
-      title: '빈 뒤통수! 스트레스 유발',
-      desc: '서울시에 거주하는 최모씨(56)는 최근...',
-      author: '모발모발',
-      date: '2025.03.17',
-      tags: ['남성탈모', '가발'],
-      imageUrl: hot2,
+    onSwipedRight: () => {
+      setCurrentIndex((prev) => (prev - 1 < 0 ? data.length - 1 : prev - 1))
     },
-  ]
+    trackMouse: true,
+  })
 
   return (
-    <section className="px-4 mb-6">
-      <div className="bg-white border border-gray-200 rounded-xl p-4">
-        {/* 상단 제목 + 화살표 */}
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-semibold">지금 가장 핫한 토픽 🔥</h2>
-          <Link to="/community/hot-topics">
-            <FiChevronRight className="text-gray-400 cursor-pointer" />
-          </Link>
-        </div>
-
-        {/* 핫 토픽 카드들 */}
-        <div className="space-y-3">
-          {data.map((item) => (
-            <HotTopicCard key={item.id} {...item} />
-          ))}
-        </div>
+    <section className="relative w-full px-4 overflow-hidden">
+      <div
+        {...handlers}
+        className="relative flex transition-transform duration-300 ease-in-out"
+        style={{
+          transform: `translateX(calc(50% - ${(currentIndex + 0.5) * 200}px))`,
+          width: `${data.length * 200}px`,
+        }}
+      >
+        {data.map((item, idx) => {
+          const isCenter = idx === currentIndex
+          return (
+            <div
+              key={`${item.id}-${idx}`}
+              className={`shrink-0 mx-2 transition-all duration-300 ease-in-out rounded-xl overflow-hidden ${
+                isCenter ? 'w-[180px] h-[280px]' : 'w-[140px] h-[240px]'
+              }`}
+            >
+              <img
+                src={item.imageUrl}
+                alt={`topic-${item.id}`}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )
+        })}
       </div>
     </section>
   )

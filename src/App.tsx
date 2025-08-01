@@ -7,7 +7,6 @@ import CommunityPage from './pages/CommunityPage'
 import ResultPage from './pages/ResultPage'
 import RecommendPage from './pages/RecommendPage'
 import MyPage from './pages/Mypage'
-import HotTopicListPage from './pages/HotTopicListPage'
 import ConcernListPage from './pages/ConcernListPage'
 import SignUpPage from './pages/SignUpPage'
 import SignInPage from './pages/SignInPage'
@@ -38,10 +37,6 @@ const router = createBrowserRouter([
       {
         path: 'community',
         element: <CommunityPage />,
-      },
-      {
-        path: 'community/hot-topics',
-        element: <HotTopicListPage />,
       },
       {
         path: 'community/hot-topics/:id',

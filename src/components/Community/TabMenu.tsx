@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 const TabMenu = () => {
-  const tabs = ['인기', '토픽', '고민공유']
+  const tabs = ['인기', '칼럼', '고민공유']
   const navigate = useNavigate()
   const location = useLocation()
   const [activeTab, setActiveTab] = useState('인기')
@@ -10,7 +10,7 @@ const TabMenu = () => {
   // 현재 경로에 따라 탭 상태 설정
   useEffect(() => {
     if (location.pathname.includes('/community/hot-topics')) {
-      setActiveTab('토픽')
+      setActiveTab('칼럼')
     } else if (location.pathname.includes('/community/concerns')) {
       setActiveTab('고민공유')
     } else {
@@ -20,7 +20,7 @@ const TabMenu = () => {
 
   const handleTabClick = (tab: string) => {
     // 클릭 시 경로 이동
-    if (tab === '토픽') {
+    if (tab === '칼럼') {
       navigate('/community/hot-topics')
     } else if (tab === '고민공유') {
       navigate('/community/concerns')
@@ -30,21 +30,32 @@ const TabMenu = () => {
   }
 
   return (
-    <div className="flex justify-center border-b border-gray-200 text-sm font-medium">
-      {tabs.map((tab) => (
-        <button
-          key={tab}
-          onClick={() => handleTabClick(tab)}
-          className={`flex-1 py-2 text-center transition-colors duration-200
+    <div className="flex flex-col font-[Pretendard] border-b border-gray-200 text-sm font-medium">
+      {/* 위쪽: 뒤로가기 + 커뮤니티 텍스트 */}
+      <div className="px-[20px] pt-[20px] flex items-center text-lg font-semibold text-gray-800">
+        <button onClick={() => navigate('/')} className="mr-2 text-xl">
+          {'<'}
+        </button>
+        <span>커뮤니티</span>
+      </div>
+
+      {/* 아래쪽: 탭 메뉴 */}
+      <div className="flex justify-center">
+        {tabs.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => handleTabClick(tab)}
+            className={`flex-1 py-2 text-center transition-colors duration-200
             ${
               activeTab === tab
-                ? 'text-blue-600 border-b-2 border-blue-600 font-semibold'
+                ? 'text-[#4E9366] border-b-2 border-[#4E9366] font-semibold text-[15px]'
                 : 'text-gray-400'
             }`}
-        >
-          {tab}
-        </button>
-      ))}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

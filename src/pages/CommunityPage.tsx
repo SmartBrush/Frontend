@@ -5,7 +5,7 @@ import SharedConcernsSection from './../components/Community/SharedConcernsSecti
 
 const CommunityPage = () => {
   return (
-    <div className="min-h-screen bg-white flex flex-col justify-between">
+    <div className="min-h-screen font-[Pretendard] bg-white flex flex-col justify-between">
       <div>
         <TabMenu />
         <SearchBar />
