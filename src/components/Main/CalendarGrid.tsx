@@ -1,8 +1,8 @@
 import type { DateCount } from './Calendar'
 import blankIcon from '../../assets/Blank.svg'
-import goodIcon from '../../assets/goodIcon.png'
-import normalIcon from '../../assets/normalIcon.png'
-import badIcon from '../../assets/badIcon.png'
+import goodIcon from '../../assets/goodIcon.svg'
+import normalIcon from '../../assets/normalIcon.svg'
+import badIcon from '../../assets/badIcon.svg'
 
 interface CalendarGridProps {
   year: number
@@ -19,17 +19,17 @@ function getCalendarDays(year: number, month: number): (number | null)[] {
   for (let i = 1; i <= lastDate; i++) {
     days.push(i)
   }
+
+  // ✅ 항상 6줄(6*7=42칸) 유지
+  while (days.length < 42) {
+    days.push(null)
+  }
+
   return days
 }
 
 function CalendarGrid({ year, month, markedDates }: CalendarGridProps) {
   const calendarDays = getCalendarDays(year, month)
-
-  // ✅ 로컬스토리지에서 상태 불러오기
-  //const saved = localStorage.getItem('scalp_status')
-  //const parsed = saved ? JSON.parse(saved) : null
-  //const todayStatusDate = parsed?.date
-  //const todayStatus = parsed?.status
 
   return (
     <>
@@ -46,8 +46,6 @@ function CalendarGrid({ year, month, markedDates }: CalendarGridProps) {
               ? `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
               : ''
 
-          // const isTodayStatus = dateStr === todayStatusDate
-
           const matched = markedDates.find((d) => d.date === dateStr)
 
           let statusIcon = blankIcon
@@ -57,17 +55,11 @@ function CalendarGrid({ year, month, markedDates }: CalendarGridProps) {
             else if (matched.count === 3) statusIcon = badIcon
           }
 
-          // if (isTodayStatus) {
-          //   if (todayStatus === '양호') statusIcon = goodIcon
-          //   else if (todayStatus === '보통') statusIcon = normalIcon
-          //   else if (todayStatus === '심각') statusIcon = badIcon
-          // }
-
           if (day === null) {
             return (
               <div
                 key={idx}
-                className="w-[30.66px] h-[60px] flex flex-col items-center justify-start mx-auto"
+                className="w-[30px] h-[52px] flex flex-col items-center justify-start mx-auto"
               />
             )
           }
@@ -75,7 +67,7 @@ function CalendarGrid({ year, month, markedDates }: CalendarGridProps) {
           return (
             <div
               key={idx}
-              className="w-[30.66px] h-[60px] flex flex-col items-center justify-start mx-auto"
+              className="w-[30px] h-[52px] flex flex-col items-center justify-start mx-auto"
             >
               <img
                 src={statusIcon}
