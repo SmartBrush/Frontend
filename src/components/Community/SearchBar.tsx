@@ -8,7 +8,7 @@ const SearchBar = () => {
         <input
           type="text"
           placeholder="두피 관련 고민을 검색해주세요."
-          className="w-full bg-transparent outline-none text-sm text-gray-800 placeholder-gray-300 font-pretendard"
+          className="w-full bg-transparent outline-none text-sm text-gray-800 placeholder-gray-300 font-[Pretendard]"
         />
       </div>
     </div>
