@@ -1,26 +1,21 @@
-import { useParams } from 'react-router-dom'
-import { useFetch } from '../../hooks/useFetch'
 import type { Product } from '../../apis/products'
 
-const LinkButton = () => {
-  const { id } = useParams<{ id: string }>()
-  const { data: products, loading } = useFetch<Product[]>(
-    `${import.meta.env.VITE_API_BASE_URL}/products`,
-  )
+interface LinkButtonProps {
+  product: Product
+  label?: string
+}
 
-  const index = Number(id) - 1
-  const product = Array.isArray(products) ? products[index] : undefined
-
-  if (loading || !product) return null
+const LinkButton = ({ product, label = '구매하러가기' }: LinkButtonProps) => {
+  if (!product || !product.link) console.log('🧪 link:', product.link)
 
   return (
     <a
       href={product.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="block w-full py-[12px] bg-blue-100 text-blue-700 font-bold rounded-lg text-center hover:bg-blue-200 transition "
+      className="inline-block mt-2 px-2 py-1 rounded-full bg-green-200 text-green-900 text-xs font-semibold shadow hover:bg-green-300 transition"
     >
-      올리브영으로 제품 사러가기
+      {label}
     </a>
   )
 }
