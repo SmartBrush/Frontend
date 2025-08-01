@@ -11,7 +11,7 @@ export interface Product {
 
 // 전체 상품 리스트
 export async function fetchProducts(): Promise<Product[]> {
-  const { data } = await API.get<Product[]>('/products')
+  const { data } = await API.get<Product[]>('/api/products')
   return data
 }
 
@@ -19,14 +19,15 @@ export async function fetchProducts(): Promise<Product[]> {
 export async function fetchProductsByCategory(
   category: string,
 ): Promise<Product[]> {
-  const path = category === 'all' ? '/products' : `/products/${category}`
+  const path =
+    category === 'all' ? '/api/products' : `/api/products/${category}`
   const { data } = await API.get<Product[]>(path)
   return data
 }
 
 // 단일 상품 조회
 export async function fetchProductById(id: string): Promise<Product> {
-  const { data: all } = await API.get<Product[]>('/products')
+  const { data: all } = await API.get<Product[]>('/api/products')
   const index = Number(id) - 1
   const prod = all[index]
   if (!prod) {
@@ -40,7 +41,7 @@ export async function fetchLikeStatus(
   productId: number,
 ): Promise<{ liked: boolean }> {
   const { data } = await API.get<{ liked: boolean }>(
-    `/products/${productId}/like/status`,
+    `/api/products/${productId}/like/status`,
   )
   return data
 }
@@ -52,7 +53,7 @@ export async function toggleLike(
 ): Promise<{ liked: boolean }> {
   const method = liked ? 'delete' : 'post'
   const { data } = await API[method]<{ liked: boolean }>(
-    `/products/${productId}/like`,
+    `/api/products/${productId}/like`,
   )
   return data
 }

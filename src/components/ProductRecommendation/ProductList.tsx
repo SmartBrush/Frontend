@@ -11,8 +11,8 @@ interface Props {
 const ProductList = ({ category, onSelect }: Props) => {
   const url =
     category === 'all'
-      ? `${import.meta.env.VITE_API_BASE_URL}/products`
-      : `${import.meta.env.VITE_API_BASE_URL}/products/${category}`
+      ? `${import.meta.env.VITE_API_BASE_URL}/api/products`
+      : `${import.meta.env.VITE_API_BASE_URL}/api/products/${category}`
 
   const { data: products, loading, error } = useFetch<Product[]>(url)
 
@@ -24,10 +24,7 @@ const ProductList = ({ category, onSelect }: Props) => {
       {products.map((item) => (
         <ProductListItem
           key={item.id}
-          id={item.id}
-          imageUrl={item.image}
-          name={item.name}
-          price={`₩${item.price}`}
+          product={item}
           onClick={() => onSelect(item.id)}
         />
       ))}

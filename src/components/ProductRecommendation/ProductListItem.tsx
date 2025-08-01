@@ -1,36 +1,38 @@
 // 제품 아이템 단위 컴포넌트
-
-import type { JSX } from 'react'
+import LinkButton from '../ProductDetail/LinkButton'
+import type { Product } from '../../apis/products'
 
 interface ProductListItemProps {
-  id: string
-  imageUrl: string
-  name: string
-  price: string
+  product: Product
   onClick: () => void
 }
 
-const ProductListItem = ({
-  imageUrl,
-  name,
-  price,
-  onClick,
-}: ProductListItemProps): JSX.Element => (
-  <button
-    type="button"
-    onClick={onClick}
-    className="flex flex-col bg-white rounded-lg shadow overflow-hidden cursor-pointer"
-  >
+const ProductListItem = ({ product, onClick }: ProductListItemProps) => (
+  <div className="relative bg-white rounded-xl shadow-md overflow-hidden cursor-pointer transition hover:shadow-lg">
+    {/* 제품 이미지 */}
     <img
-      src={imageUrl}
+      src={product.image}
       loading="lazy"
-      className="w-full h-[170px] object-cover"
+      alt={product.name}
+      className="w-full h-[180px] object-cover"
+      onClick={onClick}
     />
-    <div className="p-2 flex-1 flex flex-col justify-between">
-      <h4 className="text-sm font-medium text-black line-clamp-2">{name}</h4>
-      <span className="text-xs text-gray-500 mt-[2px]">{price}</span>
+
+    {/* 텍스트 정보 */}
+    <div className="p-3">
+      <h4 className="text-sm font-medium text-gray-900 line-clamp-2 mb-2">
+        {product.name}
+      </h4>
+
+      {/* 가격 + 구매 버튼 */}
+      <div className="flex justify-between items-center">
+        <span className="text-xm font-semibold text-gray-800">
+          ₩{product.price.toLocaleString()}
+        </span>
+        <LinkButton product={product} />
+      </div>
     </div>
-  </button>
+  </div>
 )
 
 export default ProductListItem

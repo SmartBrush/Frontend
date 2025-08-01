@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Heart } from 'lucide-react'
 import { fetchLikeStatus, toggleLike } from '../../apis/products'
 
@@ -7,19 +8,34 @@ interface LikeButtonProps {
 }
 
 const LikeButton = ({ productId }: LikeButtonProps) => {
+  const navigate = useNavigate()
   const [liked, setLiked] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  //Optional : 마운트 시에 이미 좋아요가 눌러져있는지 불러오기
+  //로그인 여부 확인
   useEffect(() => {
+    const token = localStorage.getItem('access_token')
+    setIsLoggedIn(!!token)
+  }, [])
+
+  //로그인 상태일때만 좋아요 상태 조회
+  useEffect(() => {
+    if (!isLoggedIn) return
+
     fetchLikeStatus(productId)
       .then(({ liked }) => setLiked(liked))
       .catch((err) => {
         console.error('좋아요 상태 조회 실패', err)
         setLiked(false)
       })
-  }, [productId])
+  }, [productId, isLoggedIn])
 
   const handleToggle = async () => {
+    if (!isLoggedIn) {
+      alert('로그인이 필요한 기능입니다.')
+      navigate('/login')
+      return
+    }
     try {
       const { liked: newLiked } = await toggleLike(productId, liked)
       setLiked(newLiked)

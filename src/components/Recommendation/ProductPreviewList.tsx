@@ -17,7 +17,7 @@ const ProductPreviewList = ({
     data: products,
     loading,
     error,
-  } = useFetch<Product[]>(`${import.meta.env.VITE_API_BASE_URL}/products`)
+  } = useFetch<Product[]>(`${import.meta.env.VITE_API_BASE_URL}/api/products`)
 
   if (loading) return <div>로딩 중...</div>
   if (error || !products) return <div>에러가 발생했습니다.</div>

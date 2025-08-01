@@ -7,9 +7,9 @@ interface SummaryBoxProps {
 
 const SummaryBox = ({ summary, detail }: SummaryBoxProps) => {
   return (
-    <div className="bg-white rounded-lg p-4 shadow">
-      <p className="font-semibold mb-[8px]">{summary}</p>
-      <p className="text-sm text-gray-700">{detail}</p>
+    <div className="bg-[#e0f5ec] text-[#006644] rounded-xl px-4 py-3 shadow mb-5">
+      <p className="font-bold text-sm mb-[6px]">{summary}</p>
+      <p className="text-sm text-gray-snug">{detail}</p>
     </div>
   )
 }
