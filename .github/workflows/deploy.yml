@@ -6,7 +6,7 @@ on:
       - prod
   pull_request:
     branches:
-      - main  # 또는 배포를 하려는 브랜치로 설정
+      - develop 
 
 jobs:
   deploy:
