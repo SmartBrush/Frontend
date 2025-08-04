@@ -1,9 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import {
-  PaperAirplaneIcon,
-  ChatBubbleOvalLeftEllipsisIcon,
-} from '@heroicons/react/24/solid'
+import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/solid'
 import profileImg from '../assets/profile.png'
 
 interface Comment {
@@ -175,10 +172,6 @@ export default function ConcernDetailPage() {
       console.error('댓글 수정 실패:', err)
       alert('댓글 수정에 실패했습니다.')
     }
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') handleAddComment()
   }
 
   if (!concern) return <div className="p-4">Loading...</div>
