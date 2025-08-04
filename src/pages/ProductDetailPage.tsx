@@ -2,10 +2,23 @@ import { useParams, useNavigate } from 'react-router-dom'
 import ProductInfo from '../components/ProductDetail/ProductInfo'
 import AiChatButton from '../components/ProductDetail/AiChatButton'
 import LinkButton from '../components/ProductDetail/LinkButton'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import { fetchProductById } from '../apis/products'
+import type { Product } from '../apis/products'
 
 const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const [product, setProduct] = useState<Product | null>(null)
+
+  useEffect(() => {
+    if (id) {
+      fetchProductById(id)
+        .then(setProduct)
+        .catch((err) => console.error('상품 정보를 가져오는 데 실패:', err))
+    }
+  }, [id])
 
   return (
     <div className="p-4 bg-blue-50 min-h-screen pb-[80px]">
@@ -31,7 +44,7 @@ const ProductDetailPage = () => {
       {/* 액션 버튼 */}
       <div className="mt-[24px] space-y-[12px]">
         <AiChatButton />
-        <LinkButton />
+        {product && <LinkButton product={product} />}
       </div>
     </div>
   )

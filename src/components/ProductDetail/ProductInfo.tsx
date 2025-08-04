@@ -51,7 +51,9 @@ const ProductInfo = ({ id }: ProductInfoProps) => {
       {/* 제품 정보 */}
       <div className="mt-[12px]">
         <h2 className="text-lg font-bold mt-[4px]">{product.name}</h2>
-        <p className="text-sm text-gray-700 mt-[2px]">{product.price}원</p>
+        <p className="text-sm text-gray-700 mt-[2px]">
+          {Number(product.price).toLocaleString()}원
+        </p>{' '}
       </div>
     </div>
   )

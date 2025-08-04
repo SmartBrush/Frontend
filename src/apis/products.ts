@@ -28,8 +28,7 @@ export async function fetchProductsByCategory(
 // 단일 상품 조회
 export async function fetchProductById(id: string): Promise<Product> {
   const { data: all } = await API.get<Product[]>('/api/products')
-  const index = Number(id) - 1
-  const prod = all[index]
+  const prod = all.find((p) => p.id === id)
   if (!prod) {
     throw new Error('Not Found')
   }

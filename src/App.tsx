@@ -16,6 +16,7 @@ import ProductDetailPage from './pages/ProductDetailPage'
 import HotTopicDetailPage from './pages/HotTopicDetailPage'
 import ConcernDetailPage from './pages/ConcernDetailPage'
 import ConcernPostPage from './pages/ConcernPostPage'
+import ScalpSurveyPage from './pages/ScalpSurveyPage'
 
 const router = createBrowserRouter([
   {
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
       {
         path: 'product/:id',
         element: <ProductDetailPage />,
+      },
+      {
+        path: 'question',
+        element: <ScalpSurveyPage />,
       },
     ],
   },
