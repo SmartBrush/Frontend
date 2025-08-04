@@ -3,10 +3,10 @@ name: AWS 배포 자동화
 on:
   push:
     branches:
-      - prod
+      - develop
   pull_request:
     branches:
-      - develop 
+      - develop
 
 jobs:
   deploy:
@@ -71,8 +71,8 @@ jobs:
         run: |
           yarn test
 
-    # 머지 차단을 위한 실패 시 처리
-    if: failure()
-    run: |
-      echo "빌드 또는 테스트가 실패하여 머지가 차단됩니다."
-      exit 1
+      - name: 머지 차단을 위한 실패 시 처리
+        if: failure()
+        run: |
+          echo "빌드 또는 테스트가 실패하여 머지가 차단됩니다."
+          exit 1
