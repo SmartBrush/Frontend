@@ -100,19 +100,19 @@ export const login = async (data: LoginPayload): Promise<LoginResponse> => {
     }
 
     // ✅ ESP32에 토큰 전송
-    const esp32IP = 'http://172.20.10.3'
-    try {
-      await axios.post(
-        `${esp32IP}/set-token`,
-        { token: accessToken },
-        {
-          headers: { 'Content-Type': 'application/json' },
-        },
-      )
-      console.log('🔐 ESP32-CAM에 토큰 전송 성공')
-    } catch (err) {
-      console.error('🚫 ESP32-CAM에 토큰 전송 실패:', err)
-    }
+    // const esp32IP = 'http://172.20.10.3'
+    // try {
+    //   await axios.post(
+    //     `${esp32IP}/set-token`,
+    //     { token: accessToken },
+    //     {
+    //       headers: { 'Content-Type': 'application/json' },
+    //     },
+    //   )
+    //   console.log('🔐 ESP32-CAM에 토큰 전송 성공')
+    // } catch (err) {
+    //   console.error('🚫 ESP32-CAM에 토큰 전송 실패:', err)
+    // }
 
     return { accessToken }
   } catch (err) {
