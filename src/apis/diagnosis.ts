@@ -7,7 +7,7 @@ export interface TodayDiagnosis {
   date: string
 }
 
-// 오늘의 진단 결과 조회
+// 오늘의 진단 결과    조회
 export async function fetchTodayDiagnosis(): Promise<TodayDiagnosis> {
   const { data } = await API.get<TodayDiagnosis>('/api/main/diagnosis/today')
   return data
