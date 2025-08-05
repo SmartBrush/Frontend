@@ -39,7 +39,7 @@ jobs:
 
       - name: S3로 파일 배포
         run: |
-          aws s3 sync ./dist s3://www.keupang.store --delete
+          aws s3 sync ./dist s3://www.dupiona.site --delete
 
       - name: CloudFront 캐시 무효화
         run: |
