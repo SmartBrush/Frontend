@@ -1,4 +1,5 @@
 // 추천 제품 카드 리스트
+import 'swiper/css'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination, Navigation } from 'swiper/modules'
 import { useFetch } from '../../hooks/useFetch'
@@ -26,30 +27,41 @@ const ProductPreviewList = ({
     <Swiper
       modules={[Pagination, Navigation]}
       spaceBetween={12}
-      slidesPerView={2.5}
+      slidesPerView={2.2}
       pagination={{ clickable: true }}
       navigation
-      className="h-[220px]"
+      className="w-full"
     >
       {products.slice(0, limit).map((p) => (
-        <SwiperSlide key={p.id} className="!w-[140px]">
-          <button
-            type="button"
-            onClick={() => onSelect(p.id)}
-            className="flex flex-col bg-white rounded-lg shadow overflow-hidden cursor-pointer"
-          >
-            <img
-              src={p.image}
-              alt={p.name}
-              className="w-full h-[130px] object-cover"
-            />
-            <div className="p-2 flex-1 flex flex-col justify-between">
-              <h3 className="text-sm font-medium text-black line-clamp-2">
+        <SwiperSlide key={p.id} className="!w-[170px]">
+          <div className="relative bg-white rounded-xl shadow p-3 flex flex-col items-center">
+            <button
+              type="button"
+              onClick={() => onSelect(p.id)}
+              className="flex flex-col items-center w-[160px]"
+            >
+              <img
+                src={p.image}
+                alt={p.name}
+                className="w-[100px] h-[100px] object-contain mx-auto"
+              />
+
+              {/* 제품명 */}
+
+              <h3 className="text-sm font-medium text-black text-center mt-2 line-clamp-2">
                 {p.name}
               </h3>
-              <span className="text-xs text-gray-500 mt-[2px]">₩{p.price}</span>
-            </div>
-          </button>
+              {/* 가격 + 버튼 */}
+              <div className="flex items-center justify-between w-full mt-2 px-1">
+                <span className="text-xs font-semibold text-gray-800 whitespace-nowrap">
+                  ₩ {p.price.toLocaleString()}
+                </span>
+                <button className="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full shadow-sm hover:bg-green-200 transition whitespace-nowrap">
+                  구매하러 가기
+                </button>
+              </div>
+            </button>
+          </div>
         </SwiperSlide>
       ))}
     </Swiper>
