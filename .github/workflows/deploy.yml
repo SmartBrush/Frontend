@@ -28,7 +28,9 @@ jobs:
 
       - name: 프로젝트 빌드
         run: |
-          yarn build
+          VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }} yarn build
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
 
       - name: AWS CLI 설정
         uses: aws-actions/configure-aws-credentials@v2
