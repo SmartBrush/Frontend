@@ -16,6 +16,7 @@ import HotTopicDetailPage from './pages/HotTopicDetailPage'
 import ConcernDetailPage from './pages/ConcernDetailPage'
 import ConcernPostPage from './pages/ConcernPostPage'
 import ScalpSurveyPage from './pages/ScalpSurveyPage'
+import EditProfilePage from './pages/EditProfilePage'
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: 'mypage',
         element: <MyPage />,
+      },
+      {
+        path: 'mypage/edit',
+        element: <EditProfilePage />,
       },
       {
         path: 'productRecommendation',
