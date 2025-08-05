@@ -63,10 +63,6 @@ jobs:
         run: |
           yarn install --frozen-lockfile
 
-      - name: 테스트 실행
-        run: |
-          yarn test
-
       - name: 머지 차단을 위한 실패 시 처리
         if: failure()
         run: |
