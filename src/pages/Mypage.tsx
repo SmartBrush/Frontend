@@ -50,7 +50,6 @@ const MyPage = () => {
           <MyPageMenuItem icon="❤️" label="찜한 제품" />
           <MyPageMenuItem icon="📝" label="내가 작성한 게시물" />
           <MyPageMenuItem icon="💬" label="내가 작성한 댓글" />
-          <MyPageMenuItem icon="🎧" label="고객센터" />
         </div>
 
         <div className="text-center text-gray-500 text-sm mt-6 underline">
