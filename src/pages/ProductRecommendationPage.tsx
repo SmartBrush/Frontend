@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom'
-import SummaryBox from '../components/ProductRecommendation/SummaryBox'
+// import SummaryBox from '../components/ProductRecommendation/SummaryBox'
 import ProductList from '../components/ProductRecommendation/ProductList'
 import { useState } from 'react'
+import MbtiCardList from '../components/ProductRecommendation/MbtiCardList'
 
 //토글 필터
 const FILTERS = [
@@ -41,10 +42,11 @@ const ProductRecommendationPage = () => {
       </div>
 
       {/* Summary Box */}
-      <SummaryBox
-        summary="건조 비듬형"
-        detail="각질/비듬, 유분이 심각하기 때문에 피지 제거 성분인 티트리 오일과 두피 진정 성분인 판테놀을 사용하는 걸 추천드려요. 또 모든 피부 타입에 잘 어울립니다."
-      />
+      <p className="text-gray-600">
+        진단 결과를 바탕으로 내 두피에 맞는 제품을 만나보세요
+      </p>
+
+      <MbtiCardList />
 
       {/* 카테고리 필터 */}
       <div className="flex justify-between mt-6 items-start gap-4">

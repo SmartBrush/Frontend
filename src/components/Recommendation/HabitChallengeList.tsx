@@ -3,19 +3,27 @@
 // 각 카테고리 당 20개의 습관 text들을 랜덤으로 2개씩 노출
 
 import { useEffect, useState } from 'react'
+import { FaCheckSquare, FaRegSquare } from 'react-icons/fa'
+// import { Upload } from 'lucide-react'
 
 type CategoryKey = 'lifestyle' | 'scalpstyle' | 'nutritionstyle'
 
 interface Category {
   id: CategoryKey
   label: string
+  emoji: string
   items: string[]
+}
+
+interface HabitChallengeListProps {
+  onComplete: () => void
 }
 
 const categories: Category[] = [
   {
     id: 'lifestyle',
     label: '생활 습관',
+    emoji: '💡',
     items: [
       '6-8시간 수면 유지',
       '물 2L 마시기',
@@ -42,6 +50,7 @@ const categories: Category[] = [
   {
     id: 'scalpstyle',
     label: '두피 습관',
+    emoji: '💇‍♀️',
     items: [
       '미지근한 물로 샴푸',
       '손톱 대신 손끝으로 마사지',
@@ -68,6 +77,7 @@ const categories: Category[] = [
   {
     id: 'nutritionstyle',
     label: '식습관&영양',
+    emoji: '🍽️',
     items: [
       '하루 1회 단백질- 계란,생선 섭취',
       '철분- 간, 시금치, 굴 섭취',
@@ -104,7 +114,9 @@ function sample<T>(arr: T[], count: number): T[] {
   return result
 }
 
-const HabitChallengeList = () => {
+const HabitChallengeList = ({ onComplete }: HabitChallengeListProps) => {
+  const [checked, setChecked] = useState<Record<string, boolean>>({})
+
   const [selection, setSelection] = useState<Record<CategoryKey, string[]>>({
     lifestyle: [],
     scalpstyle: [],
@@ -120,22 +132,53 @@ const HabitChallengeList = () => {
     setSelection(sel)
   }, [])
 
+  const toggleCheck = (text: string) => {
+    const updated = { ...checked, [text]: !checked[text] }
+    setChecked(updated)
+
+    // 전체 선택된 습관 배열
+    const allSelectedTexts = Object.values(selection).flat()
+
+    //모든 항목이 true인지 확인
+    const allChecked = allSelectedTexts.every((t) => updated[t])
+
+    if (allChecked) {
+      onComplete()
+    }
+  }
+
   if (!selection) return null //아직 로딩 중
 
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="relative bg-white p-4 rounded-xl space-y-4  border border-black">
+      <h2 className="text-sm font-bold text-orange-500">🗓️ 습관 챌린지</h2>
+
       {categories.map((cat) => (
-        <div key={cat.id} className="bg-white rounded-lg p-4 shadow">
-          <h3 className="font-semibold mb-2">{cat.label}</h3>
-          {/* 랜덤으로 뽑힌 두 가지 텍스트*/}
-          <ul className="text-sm mb-3 space-y-1">
-            {selection[cat.id].map((text, i) => (
-              <li key={i}>• {text}</li>
-            ))}
-          </ul>
-          <button className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-xs">
-            완료
-          </button>
+        <div
+          key={cat.id}
+          className="bg-white rounded-xl shadow px-4 py-3 space-y-2  border border-black"
+        >
+          <h3 className="text-sm font-semibold">
+            {cat.emoji}
+            {cat.label}
+          </h3>
+          {selection[cat.id].map((text, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between rounded-lg px-3 py-1"
+            >
+              <div className="text-sm leading-snug">
+                <div>{text}</div>
+              </div>
+              <button onClick={() => toggleCheck(text)}>
+                {checked[text] ? (
+                  <FaCheckSquare className="text-green-500" />
+                ) : (
+                  <FaRegSquare className="text-gray-400" />
+                )}
+              </button>
+            </div>
+          ))}
         </div>
       ))}
     </div>
