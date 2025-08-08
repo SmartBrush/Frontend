@@ -100,7 +100,7 @@ export const login = async (data: LoginPayload): Promise<LoginResponse> => {
     }
 
     // ✅ ESP32에 토큰 전송
-    const esp32IP = 'http://172.20.10.11'
+    const esp32IP = 'http://172.20.10.3'
     try {
       await axios.post(
         `${esp32IP}/set-token`,
