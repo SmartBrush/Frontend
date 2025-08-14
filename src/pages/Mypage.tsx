@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import API from '../apis/api'
-import UserProfile from '../components/Mypage/UserProfile'
-import MyPageMenuItem from '../components/Mypage/MyPageMenuItem'
 import { useNavigate } from 'react-router-dom'
-import { ChevronLeft } from 'lucide-react'
+import Back from '../assets/back.svg'
+import UserProfile from '../components/MyPage/UserProfile'
+import MyPageMenuItem from '../components/MyPage/MyPageMenuItem'
 
 interface MyPageData {
   nickname: string
@@ -33,9 +33,13 @@ const MyPage = () => {
   return (
     <div className="bg-[#f5f5f5] flex flex-col justify-between overflow-hidden">
       <div>
-        <div className="px-[20px] pt-[20px] flex items-center text-[20px] font-semibold text-[#000000] pb-[10px]">
-          <button onClick={() => navigate('/')} className="mr-1">
-            <ChevronLeft size={22} />
+        <div className="px-[20px] pt-[20px] flex items-center text-lg font-semibold text-gray-800">
+          <button
+            onClick={() => navigate('/')}
+            className="mr-2 cursor-pointer"
+            aria-label="뒤로가기"
+          >
+            <img src={Back} alt="뒤로가기" className="w-4 h-4" />
           </button>
           <span>마이 페이지</span>
         </div>

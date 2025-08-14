@@ -6,7 +6,7 @@ const API = axios.create({
   baseURL: API_BASE_URL,
 })
 
-// 요청 시 Authorization 헤더 자동 추가
+// 요청 인터셉터
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem('access_token')
   if (token) {
@@ -15,21 +15,28 @@ API.interceptors.request.use((config) => {
   return config
 })
 
-// 응답 인터셉터: 토큰 만료 시 자동 로그아웃 처리
+// 응답 인터셉터
 API.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (
-      error.response &&
-      (error.response.status === 401 || error.response.status === 403)
-    ) {
-      console.warn('⛔ 토큰 만료 또는 유효하지 않음')
+    const status = error.response?.status
+    const code = error.code
 
-      // 로그아웃 처리
+    if (
+      status === 401 ||
+      status === 403 ||
+      code === 'ERR_NETWORK' ||
+      code === 'ECONNABORTED'
+    ) {
+      console.warn('인증 불가 또는 서버 연결 실패')
+
       localStorage.removeItem('access_token')
 
-      // 현재 페이지에서 /login 으로 강제 이동
-      window.location.href = '/login'
+      // 현재 경로 저장 후 로그인 페이지 이동
+      const here = window.location.pathname + window.location.search
+      if (!window.location.pathname.startsWith('/login')) {
+        window.location.href = `/login?next=${encodeURIComponent(here)}`
+      }
     }
 
     return Promise.reject(error)

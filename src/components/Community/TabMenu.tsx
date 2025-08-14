@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { ChevronLeft } from 'lucide-react'
+import Back from '../../assets/back.svg'
 
 const TabMenu = () => {
   const tabs = ['인기', '칼럼', '고민공유']
@@ -34,8 +34,12 @@ const TabMenu = () => {
     <div className="flex flex-col font-[Pretendard] border-b border-gray-200 text-sm font-medium">
       {/* 위쪽: 뒤로가기 + 커뮤니티 텍스트 */}
       <div className="px-[20px] pt-[20px] flex items-center text-lg font-semibold text-gray-800">
-        <button onClick={() => navigate('/')} className="mr-1">
-          <ChevronLeft size={22} />
+        <button
+          onClick={() => navigate('/')}
+          className="mr-2 cursor-pointer"
+          aria-label="뒤로가기"
+        >
+          <img src={Back} alt="뒤로가기" className="w-4 h-4" />
         </button>
         <span>커뮤니티</span>
       </div>
