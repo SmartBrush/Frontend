@@ -19,7 +19,6 @@ export async function fetchTodayHabits(): Promise<DailyHabitResponseDTO> {
   return res.data
 }
 
-/** 서버에서 완료 상태를 true↔false로 토글 (요청 바디 없음) */
 export async function toggleHabit(id: number): Promise<void> {
   await API.patch(`/api/habits/${id}`)
 }
