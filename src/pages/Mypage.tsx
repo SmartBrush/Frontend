@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import API from '../apis/api'
 import { useNavigate } from 'react-router-dom'
 import Back from '../assets/back.svg'
-import UserProfile from '../components/MyPage/UserProfile'
-import MyPageMenuItem from '../components/MyPage/MyPageMenuItem'
+import UserProfile from '../components/Mypage/UserProfile'
+import MyPageMenuItem from '../components/Mypage/MyPageMenuItem'
 
 interface MyPageData {
   nickname: string
