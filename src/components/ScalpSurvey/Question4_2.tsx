@@ -25,28 +25,32 @@ const sleepTimeOptions = ['오전 12시 이전', '오전 1시 이후']
 
 const Question4_2 = ({ form, onChange, onNext, onPrev }: Question4_2Props) => {
   return (
-    <div className="max-w-sm mx-auto px-4 py-6 space-y-6">
+    <div className="bg-white max-w-[360px] mx-auto px-5 pt-6">
       <ProgressBar step={4} />
 
-      <h2 className="font-bold text-lg">
+      <h2 className="text-2xl font-extrabold leading-snug mt-6">
         정확한 두피 분석을 위해, <br />
         생활 습관을 알려주세요!
       </h2>
 
-      <div>
-        <p className="text-sm mb-2">하루 평균 수면 시간은 어느 정도인가요?</p>
-        <div className="grid gap-2">
+      {/* 수면 시간 */}
+      <div className="mt-6">
+        <p className="text-m text-black font-semibold mb-2">
+          하루 평균 수면 시간은 어느 정도인가요?
+        </p>
+        <div className="grid gap-3">
           {sleepHourOptions.map((opt) => {
             const enumValue = sleepHourMap[opt]
             return (
               <button
                 key={opt}
                 onClick={() => onChange('sleepDuration', enumValue)}
-                className={`w-full py-2 rounded border ${
-                  form.sleepDuration === enumValue
-                    ? 'bg-black text-white'
-                    : 'bg-white text-black'
-                }`}
+                className={`w-full h-12 rounded-xl border px-4 text-left transition-colors
+                  ${
+                    form.sleepDuration === enumValue
+                      ? 'bg-[#4E9366] text-white border-[#4E9366] font-semibold'
+                      : 'bg-white text-[#111] border-gray-300 hover:bg-gray-100'
+                  }`}
               >
                 {opt}
               </button>
@@ -55,20 +59,24 @@ const Question4_2 = ({ form, onChange, onNext, onPrev }: Question4_2Props) => {
         </div>
       </div>
 
-      <div>
-        <p className="text-sm mb-2">평소 취침 시간은 언제인가요?</p>
-        <div className="grid gap-2">
+      {/* 취침 시간 */}
+      <div className="mt-6">
+        <p className="text-m text-black font-semibold mb-2">
+          평소 취침 시간은 언제인가요?
+        </p>
+        <div className="grid gap-3">
           {sleepTimeOptions.map((opt) => {
             const enumValue = sleepTimeMap[opt]
             return (
               <button
                 key={opt}
                 onClick={() => onChange('sleepStartTime', enumValue)}
-                className={`w-full py-2 rounded border ${
-                  form.sleepStartTime === enumValue
-                    ? 'bg-black text-white'
-                    : 'bg-white text-black'
-                }`}
+                className={`w-full h-12 rounded-xl border px-4 text-left transition-colors
+                  ${
+                    form.sleepStartTime === enumValue
+                      ? 'bg-[#4E9366] text-white border-[#4E9366] font-semibold'
+                      : 'bg-white text-[#111] border-gray-300 hover:bg-gray-100'
+                  }`}
               >
                 {opt}
               </button>
@@ -77,16 +85,17 @@ const Question4_2 = ({ form, onChange, onNext, onPrev }: Question4_2Props) => {
         </div>
       </div>
 
-      <div className="flex gap-4 pt-4 pb-28">
+      {/* 하단 버튼 */}
+      <div className="flex gap-4 mt-8 mb-1">
         <button
           onClick={onPrev}
-          className="bg-[#D1D1D1] text-black font-semibold w-full py-3 mt-6 rounded"
+          className="w-full h-12 rounded-xl border border-gray-300 bg-[#E5E7EB] text-[#111] font-semibold transition-colors hover:bg-gray-200 active:bg-[#4E9366] active:text-white active:border-[#4E9366]"
         >
           이전
         </button>
         <button
           onClick={onNext}
-          className="bg-[#D1D1D1] text-black font-semibold w-full py-3 mt-6 rounded"
+          className="w-full h-12 rounded-xl border border-gray-300 bg-[#E5E7EB] text-[#111] font-semibold transition-colors hover:bg-gray-200 active:bg-[#4E9366] active:text-white active:border-[#4E9366]"
         >
           제출하기
         </button>

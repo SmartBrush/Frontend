@@ -6,7 +6,7 @@ import { useFetch } from '../../hooks/useFetch'
 import type { Product } from '../../apis/products'
 
 interface ProductPreviewListProps {
-  onSelect: (id: string) => void
+  onSelect: (id: number) => void
   limit?: number
 }
 

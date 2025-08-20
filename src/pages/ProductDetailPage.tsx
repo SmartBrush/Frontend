@@ -1,50 +1,136 @@
-import { useParams, useNavigate } from 'react-router-dom'
-import ProductInfo from '../components/ProductDetail/ProductInfo'
-import AiChatButton from '../components/ProductDetail/AiChatButton'
-import LinkButton from '../components/ProductDetail/LinkButton'
-import { useState } from 'react'
-import { useEffect } from 'react'
+// src/pages/ProductDetailPage.tsx
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import LikeButton from '../components/ProductDetail/LikeButton'
 import { fetchProductById } from '../apis/products'
 import type { Product } from '../apis/products'
+import Back from '../assets/back.svg'
+
+// (옵션) brand가 비어 있을 때 제품명에서 보조 추출
+const extractBrandFallback = (name: string) => {
+  const n = name.replace(/^\s*(\[[^\]]+\]\s*)+/g, '')
+  const m = n.match(/^([A-Za-z가-힣0-9]+)/)
+  return (m?.[1] ?? '').trim()
+}
 
 const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+
   const [product, setProduct] = useState<Product | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (id) {
-      fetchProductById(id)
-        .then(setProduct)
-        .catch((err) => console.error('상품 정보를 가져오는 데 실패:', err))
-    }
+    if (!id) return
+    ;(async () => {
+      try {
+        setLoading(true)
+        const data = await fetchProductById(id)
+        setProduct(data)
+      } catch (e) {
+        console.error('상품 정보를 가져오는 데 실패:', e)
+        setError('상품 정보를 불러오지 못했습니다.')
+      } finally {
+        setLoading(false)
+      }
+    })()
   }, [id])
 
+  // 화면용 파생값
+  const brand =
+    (product?.brand && product.brand.trim()) ||
+    (product?.name ? extractBrandFallback(product.name) : '')
+
   return (
-    <div className="p-4 bg-blue-50 min-h-screen pb-[80px]">
-      {/* 상단 헤더: 뒤로가기 + 공유 */}
-      <div className="flex items-center justify-between mb-[16px]">
-        <button type="button" onClick={() => navigate(-1)} className="p-2">
-          ←
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            /* TODO: 공유 기능 */
-          }}
-          className="p-2"
-        >
-          🔗
-        </button>
-      </div>
+    <div className="min-h-screen bg-white mt-5">
+      <div className="mx-auto w-full max-w-[360px] px-4 pt-4 pb-24">
+        {/* 헤더 */}
+        <header className="mb-4 flex items-center">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="p-0 bg-transparent" // CHANGED: 배경 제거
+            aria-label="뒤로가기"
+          >
+            <img src={Back} alt="뒤로가기" className="w-4 h-4" />{' '}
+            {/* CHANGED: 아이콘만 */}
+          </button>
+        </header>
 
-      {/* 제품 정보 */}
-      {id && <ProductInfo id={id} />}
+        {/* 이미지 카드 */}
+        <section className="relative rounded-2xl bg-white p-3 shadow">
+          <div className="overflow-hidden rounded-xl bg-gray-50">
+            {loading ? (
+              <div className="aspect-square animate-pulse bg-gray-200" />
+            ) : product ? (
+              // 이미지 비율 유지
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-full object-contain"
+                style={{ aspectRatio: '1 / 1' }}
+              />
+            ) : (
+              <div className="aspect-square grid place-items-center bg-gray-100 text-gray-400">
+                이미지 없음
+              </div>
+            )}
+          </div>
 
-      {/* 액션 버튼 */}
-      <div className="mt-[24px] space-y-[12px]">
-        <AiChatButton />
-        {product && <LinkButton product={product} />}
+          {/* 좋아요 버튼 */}
+          {product && (
+            <div className="absolute bottom-3 right-5">
+              <LikeButton productId={product.id} />
+            </div>
+          )}
+        </section>
+
+        {/* 정보 영역 */}
+        {loading && (
+          <div className="mt-6 animate-pulse space-y-3">
+            <div className="h-3 w-20 rounded bg-gray-200" />
+            <div className="h-6 w-4/5 rounded bg-gray-200" />
+            <div className="h-5 w-24 rounded bg-gray-200" />
+          </div>
+        )}
+
+        {error && (
+          <p className="mt-6 text-center text-sm text-red-600">{error}</p>
+        )}
+
+        {product && !loading && (
+          <>
+            {/* 브랜드 */}
+            {!!brand && (
+              <p className="mt-5 text-medium font-light text-gray-500">
+                {brand}
+              </p>
+            )}
+
+            {/* 제품명 + 가격*/}
+            <div className="mt-1">
+              <h1 className="flex-1 text-xl font-extrabold leading-snug text-gray-900">
+                {product.name}
+              </h1>
+              <div className="mt-2 ml-50 text-right font-bold text-gray-900 text-[18px]">
+                ₩{product.price.toLocaleString()}
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="mt-8">
+              <a
+                href={product.link}
+                target="_blank"
+                rel="noreferrer"
+                className="block w-full rounded-full bg-[#4E9366] py-3 text-center font-semibold text-white shadow-md hover:opacity-95 active:opacity-90"
+              >
+                올리브영 바로가기
+              </a>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

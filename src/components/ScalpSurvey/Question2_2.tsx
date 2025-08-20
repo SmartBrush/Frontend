@@ -23,27 +23,31 @@ const options = Object.keys(washingFrequencyMap)
 
 const Question2_2 = ({ form, onChange, onNext, onPrev }: Question2_2Props) => {
   return (
-    <div className="max-w-sm mx-auto px-4 py-6 space-y-6">
+    <div className="bg-white max-w-[360px] mx-auto px-5 pt-6">
       <ProgressBar step={2} />
-      <h2 className="font-bold text-lg">
+
+      <h2 className="text-2xl font-extrabold leading-snug mt-6">
         정확한 두피 분석을 위해, <br />
         생활 습관을 알려주세요!
       </h2>
 
-      <p className="text-sm mb-2">머리를 얼마나 자주 감으시나요?</p>
+      <p className="text-m text-black font-semibold mt-6 mb-4">
+        머리를 얼마나 자주 감으시나요?
+      </p>
 
-      <div className="grid gap-2">
+      <div className="grid gap-4">
         {options.map((opt) => {
           const enumValue = washingFrequencyMap[opt]
           return (
             <button
               key={opt}
               onClick={() => onChange('washingFrequency', enumValue)}
-              className={`w-full py-2 rounded border ${
-                form.washingFrequency === enumValue
-                  ? 'bg-black text-white'
-                  : 'bg-white text-black'
-              }`}
+              className={`w-full h-12 rounded-xl border px-4 text-left transition-colors
+                ${
+                  form.washingFrequency === enumValue
+                    ? 'bg-[#4E9366] text-white border-[#4E9366] font-semibold'
+                    : 'bg-white text-[#111] border-gray-300 hover:bg-gray-100'
+                }`}
             >
               {opt}
             </button>
@@ -51,16 +55,17 @@ const Question2_2 = ({ form, onChange, onNext, onPrev }: Question2_2Props) => {
         })}
       </div>
 
-      <div className="flex gap-4 pt-4">
+      {/* 하단 버튼 */}
+      <div className="flex gap-4 mt-21 mb-10">
         <button
           onClick={onPrev}
-          className="bg-[#D1D1D1] text-black font-semibold w-full py-3 mt-6 rounded"
+          className="w-full h-12 rounded-xl border border-gray-300 bg-[#E5E7EB] text-[#111] font-semibold transition-colors hover:bg-gray-200 active:bg-[#4E9366] active:text-white active:border-[#4E9366]"
         >
           이전
         </button>
         <button
           onClick={onNext}
-          className="bg-[#D1D1D1] text-black font-semibold w-full py-3 mt-6 rounded"
+          className="w-full h-12 rounded-xl border border-gray-300 bg-[#E5E7EB] text-[#111] font-semibold transition-colors hover:bg-gray-200 active:bg-[#4E9366] active:text-white active:border-[#4E9366]"
         >
           다음
         </button>

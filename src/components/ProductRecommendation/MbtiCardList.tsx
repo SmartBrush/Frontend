@@ -1,21 +1,68 @@
+// import { mbtiCardList } from '../../data/mbtiCardData'
+
+// interface MbtiCardProps {
+//   mbtiType: string
+// }
+
+// const MbtiCardList = ({ mbtiType }: MbtiCardProps) => {
+//   const card = mbtiCardList.find((c) => c.type === mbtiType)
+
+//   if (!card) return <p>해당 MBTI 카드가 없습니다.</p>
+
+//   return (
+//     <div className="relative bg-white rounded-xl shadow border p-4 pt-6">
+//       {/* MBTI 타입 태그 - 카드 밖 위에 떠있게 */}
+//       <div className="absolute -top-3 left-1 inline-flex items-center gap-2 px-3 py-1 bg-[#4E9366] text-white font-semibold text-sm rounded-xl shadow">
+//         <span>{card.title}</span>
+//       </div>
+
+//       {/* 카드 내용 */}
+//       <div className="space-y-2 text-sm text-black">
+//         <p>🔍 {card.description}</p>
+//         <p>✅ {card.good}</p>
+//         <p>❌ {card.bad}</p>
+//       </div>
+//     </div>
+//   )
+// }
+
+// export default MbtiCardList
+
 import { mbtiCardList } from '../../data/mbtiCardData'
 
-const MbtiCardList = () => {
+interface MbtiCardProps {
+  mbtiType: string
+}
+
+const MbtiCardList = ({ mbtiType }: MbtiCardProps) => {
+  const card = mbtiCardList.find((c) => c.type === mbtiType)
+  if (!card) return null
+
   return (
-    <div className="flex flex-wrap gap-4 justify-center">
-      {mbtiCardList.map((card, idx) => (
-        <div
-          key={idx}
-          className={`w-[300px] p-4 rounded-xl shadow ${card.color} space-y-2`}
-        >
-          <h3 className="text-base font-bold">
-            {card.icon} {card.title}
-          </h3>
-          <p className="text-sm">{card.description}</p>
-          <p className="text-sm">✅ {card.good}</p>
-          <p className="text-sm text-red-600">❌ {card.bad}</p>
+    <div className="relative mt-4">
+      {/* 내용 박스(크게) */}
+      <div className="w-full rounded-xl border border-gray-200 bg-white px-5 py-5 pt-7 shadow-sm">
+        <div className="text-sm text-gray-800 leading-6 whitespace-pre-line break-words space-y-2">
+          {card.description && <p>{card.description}</p>}
+          {card.good && (
+            <p className="flex gap-2">
+              <span>✅</span>
+              <span className="break-words">{card.good}</span>
+            </p>
+          )}
+          {card.bad && (
+            <p className="flex gap-2">
+              <span>❌</span>
+              <span className="break-words">{card.bad}</span>
+            </p>
+          )}
         </div>
-      ))}
+      </div>
+
+      {/* MBTI pill(상단에 겹치게 고정) */}
+      <div className="absolute -top-3 left-4 inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#4E9366] text-white text-sm font-bold shadow">
+        {card.title}
+      </div>
     </div>
   )
 }
