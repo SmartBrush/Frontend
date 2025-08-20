@@ -31,9 +31,10 @@ const MyPage = () => {
   if (!myPageData) return <div className="p-4">로딩 중...</div>
 
   return (
-    <div className="bg-[#f5f5f5] flex flex-col justify-between overflow-hidden">
+    <div className="bg-[#f5f5f5] flex flex-col min-h-screen justify-between overflow-hidden">
+      {/* 상단 콘텐츠 */}
       <div>
-        <div className="px-[20px] pt-[20px] flex items-center text-lg font-semibold text-gray-800">
+        <div className="px-[20px] py-[20px] flex items-center text-lg font-semibold text-gray-800">
           <button
             onClick={() => navigate('/')}
             className="mr-2 cursor-pointer"
@@ -55,10 +56,11 @@ const MyPage = () => {
           <MyPageMenuItem icon="📝" label="내가 작성한 게시물" />
           <MyPageMenuItem icon="💬" label="내가 작성한 댓글" />
         </div>
+      </div>
 
-        <div className="text-center text-gray-500 text-sm mt-6 underline">
-          로그아웃
-        </div>
+      {/* 하단 로그아웃 */}
+      <div className="text-center text-gray-500 text-sm underline mb-6">
+        로그아웃
       </div>
     </div>
   )

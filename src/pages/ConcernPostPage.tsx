@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Back from '../assets/back.svg'
 
 export default function ConcernPostPage() {
   const navigate = useNavigate()
@@ -44,29 +45,33 @@ export default function ConcernPostPage() {
 
   return (
     <div className="min-h-screen bg-white px-4 pt-6 pb-24 flex flex-col">
-      {/* 헤더 */}
-      <div className="flex items-center mb-4">
-        <button onClick={() => navigate(-1)} className="mr-2 text-xl">
-          {'<'}
+      {/* 위쪽: 뒤로가기 + 커뮤니티 텍스트 */}
+      <div className="pb-[12px] flex items-center text-[20px] font-semibold text-gray-800">
+        <button
+          onClick={() => navigate('/community/concerns')}
+          className="mr-2 cursor-pointer"
+          aria-label="뒤로가기"
+        >
+          <img src={Back} alt="뒤로가기" className="w-4 h-4" />
         </button>
         <span>커뮤니티</span>
       </div>
 
-      <h2 className="text-[18px] font-bold mb-6">고민을 작성해주세요!</h2>
+      <h2 className="text-[22px] font-bold mb-6">고민을 작성해주세요!</h2>
 
       {/* 제목 입력 */}
-      <label className="text-sm font-semibold mb-1">제목</label>
+      <label className="text-[20px] font-semibold mb-1">제목</label>
       <input
-        className="w-full border border-4E9366 rounded-xl p-3 mb-4 text-sm focus:outline-none"
+        className="w-full border h-[50px] border-[#4E9366] rounded-xl p-3 mb-4 text-sm focus:outline-none"
         placeholder="제목을 입력해주세요"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
 
       {/* 내용 입력 */}
-      <label className="text-sm font-semibold mb-1">내용</label>
+      <label className="text-[20px] font-semibold mb-1">내용</label>
       <textarea
-        className="w-full h-64 border border-[#4E9366] rounded-xl p-3 mb-6 text-sm resize-none focus:outline-none"
+        className="w-full h-[367px] border border-[#4E9366] rounded-xl p-3 mb-6 text-sm resize-none focus:outline-none"
         placeholder="내용을 입력해주세요"
         value={content}
         onChange={(e) => setContent(e.target.value)}
