@@ -48,31 +48,32 @@ const Question3_1 = ({ form, onChange, onNext, onPrev }: Question3_1Props) => {
   }
 
   return (
-    <div className="max-w-sm mx-auto px-4 py-6 space-y-6">
+    <div className="bg-white max-w-[360px] mx-auto px-5 pt-6">
       <ProgressBar step={2.5} />
 
-      <h2 className="font-bold text-lg">
+      <h2 className="text-2xl font-extrabold leading-snug mt-6">
         정확한 두피 분석을 위해, <br />
         생활 습관을 알려주세요!
       </h2>
 
-      <p className="text-sm mb-2">
+      <p className="text-m text-black font-semibold mt-6 mb-2">
         어떤 제품을 사용 중인가요?{' '}
-        <span className="text-gray-500 text-xs">(복수 선택 가능)</span>
+        <span className="text-gray-500 text-sm">(복수 선택 가능)</span>
       </p>
 
-      <div className="grid gap-2">
+      <div className="grid gap-3">
         {options.map((opt) => {
           const enumValue = productMap[opt]
           return (
             <button
               key={opt}
               onClick={() => toggleOption(opt)}
-              className={`w-full py-2 rounded border ${
-                form.usingProducts.includes(enumValue)
-                  ? 'bg-black text-white'
-                  : 'bg-white text-black'
-              }`}
+              className={`w-full h-12 rounded-xl border px-4 text-left transition-colors
+                ${
+                  form.usingProducts.includes(enumValue)
+                    ? 'bg-[#4E9366] text-white border-[#4E9366] font-semibold'
+                    : 'bg-white text-[#111] border-gray-300 hover:bg-gray-100'
+                }`}
             >
               {opt}
             </button>
@@ -80,16 +81,17 @@ const Question3_1 = ({ form, onChange, onNext, onPrev }: Question3_1Props) => {
         })}
       </div>
 
-      <div className="flex gap-4">
+      {/* 하단 버튼 */}
+      <div className="flex gap-4 mt-12 mb-10">
         <button
           onClick={onPrev}
-          className="bg-[#D1D1D1] text-black font-semibold w-full py-3 mt-6 rounded"
+          className="w-full h-12 rounded-xl border border-gray-300 bg-[#E5E7EB] text-[#111] font-semibold transition-colors hover:bg-gray-200 active:bg-[#4E9366] active:text-white active:border-[#4E9366]"
         >
           이전
         </button>
         <button
           onClick={onNext}
-          className="bg-[#D1D1D1] text-black font-semibold w-full py-3 mt-6 rounded"
+          className="w-full h-12 rounded-xl border border-gray-300 bg-[#E5E7EB] text-[#111] font-semibold transition-colors hover:bg-gray-200 active:bg-[#4E9366] active:text-white active:border-[#4E9366]"
         >
           다음
         </button>

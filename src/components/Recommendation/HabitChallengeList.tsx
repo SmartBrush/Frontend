@@ -290,7 +290,7 @@ const HabitChallengeList = ({ onComplete }: HabitChallengeListProps) => {
 
   return (
     <div className="relative bg-white p-4 rounded-xl space-y-4 border">
-      <h2 className="text-sm font-bold text-orange-500">습관 챌린지</h2>
+      <h2 className="text-sm font-bold text-orange-500">📆습관 챌린지</h2>
 
       {ORDER.map((cat) => {
         const items = data.itemsByCategory[cat] ?? []

@@ -12,7 +12,7 @@ const ProgressBar = ({ step }: ProgressBarProps) => {
       {[...Array(totalBlocks)].map((_, i) => {
         let bgColor = 'bg-gray-300'
         if (i < filledBlocks) {
-          bgColor = 'bg-[#4E9366]'
+          bgColor = 'bg-[#88D982]'
         } else if (i === filledBlocks && hasHalf) {
           bgColor = '' // half 색은 style로 별도 지정
         }
@@ -24,7 +24,7 @@ const ProgressBar = ({ step }: ProgressBarProps) => {
             style={{
               background:
                 i === filledBlocks && hasHalf
-                  ? 'linear-gradient(to right, #4E9366 50%, #D1D5DB 50%)'
+                  ? 'linear-gradient(to right, #88D982 50%, #D1D5DB 50%)'
                   : undefined,
             }}
           />

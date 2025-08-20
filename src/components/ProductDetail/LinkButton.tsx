@@ -13,7 +13,7 @@ const LinkButton = ({ product, label = '구매하러가기' }: LinkButtonProps) 
       href={product.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-block mt-2 px-2 py-1 rounded-full bg-green-200 text-green-900 text-xs font-semibold shadow hover:bg-green-300 transition"
+      className="inline-block mt-2 ml-1.5 px-2 py-1 bg-[#4E9366] rounded-full text-white text-[0.625rem] font-thin shadow transition"
     >
       {label}
     </a>

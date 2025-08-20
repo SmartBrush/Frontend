@@ -1,59 +1,67 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Heart } from 'lucide-react'
-import { fetchLikeStatus, toggleLike } from '../../apis/products'
+import { addWishlist, removeWishlist, isWishlisted } from '../../apis/products'
 
 interface LikeButtonProps {
   productId: number
+  size?: number
 }
 
-const LikeButton = ({ productId }: LikeButtonProps) => {
+const LikeButton = ({ productId, size = 36 }: LikeButtonProps) => {
   const navigate = useNavigate()
   const [liked, setLiked] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  //로그인 여부 확인
+  // 로그인 여부
   useEffect(() => {
     const token = localStorage.getItem('access_token')
     setIsLoggedIn(!!token)
   }, [])
 
-  //로그인 상태일때만 좋아요 상태 조회
+  // 초기 찜 상태
   useEffect(() => {
     if (!isLoggedIn) return
-
-    fetchLikeStatus(productId)
-      .then(({ liked }) => setLiked(liked))
+    isWishlisted(productId)
+      .then(setLiked)
       .catch((err) => {
-        console.error('좋아요 상태 조회 실패', err)
+        console.error('찜 상태 조회 실패', err)
         setLiked(false)
       })
   }, [productId, isLoggedIn])
 
+  // 토글
   const handleToggle = async () => {
     if (!isLoggedIn) {
       alert('로그인이 필요한 기능입니다.')
       navigate('/login')
       return
     }
+
+    const next = !liked
+    setLiked(next)
     try {
-      const { liked: newLiked } = await toggleLike(productId, liked)
-      setLiked(newLiked)
+      if (next) {
+        await addWishlist(productId)
+      } else {
+        await removeWishlist(productId)
+      }
     } catch (err) {
-      console.error('좋아요 토글 실패', err)
+      console.error('찜 토글 실패', err)
+      setLiked(!next) // 롤백
     }
   }
 
   return (
     <button
       onClick={handleToggle}
-      className="p-2 bg-white rounded-full shadow hover:scale-105 transition-transform"
       aria-label={liked ? '좋아요 취소' : '좋아요'}
+      className="bg-transparent p-0 rounded-none shadow-none transition-transform"
     >
       <Heart
-        size={28}
-        color="red"
-        fill={liked ? 'red' : 'none'}
+        size={size}
+        color="#ef4444"
+        fill={liked ? '#ef4444' : '#ffffff'}
         strokeWidth={liked ? 0 : 2}
       />
     </button>

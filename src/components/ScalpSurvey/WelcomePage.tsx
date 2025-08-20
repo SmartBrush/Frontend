@@ -9,8 +9,8 @@ interface WelcomePageProps {
 const WelcomePage = ({ onNext }: WelcomePageProps) => {
   return (
     <div className="text-center space-y-6 mt-20">
-      <h2 className="text-xl font-semibold">김도영님 환영합니다</h2>
-      <p className="text-xs text-black font-semibold">
+      <h2 className="text-3xl font-bold">김도영님 환영합니다</h2>
+      <p className="text-s text-black font-semibold">
         두피어나는 몇가지 질문들을 통해
         <br />
         당신을 위한 맞춤 두피 케어 정보를 제공합니다!
@@ -24,7 +24,7 @@ const WelcomePage = ({ onNext }: WelcomePageProps) => {
 
       <button
         onClick={onNext}
-        className="bg-[#4E9366] text-white py-3 px-6 rounded-full text-sm shadow-md mt-20"
+        className="bg-[#4E9366] text-white py-3 px-15 rounded-full text-sm shadow-md mt-25"
       >
         맞춤 두피 케어 받아보기
       </button>
