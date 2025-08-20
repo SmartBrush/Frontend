@@ -25,7 +25,7 @@ const ProductList = ({ category, onSelect }: Props) => {
         <ProductListItem
           key={item.id}
           product={item}
-          onClick={() => onSelect(item.id)}
+          onClick={() => onSelect(String(item.id))}
         />
       ))}
     </div>
