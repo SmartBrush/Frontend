@@ -32,6 +32,7 @@ export default function ConcernDetailPage() {
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null)
   const [editContent, setEditContent] = useState('')
   const [liked, setLiked] = useState(false)
+  const [likeCount, setLikeCount] = useState<number>(0)
 
   useEffect(() => {
     const token = localStorage.getItem('access_token')
@@ -78,6 +79,11 @@ export default function ConcernDetailPage() {
 
     fetchData()
   }, [id])
+
+  const handleToggleLike = () => {
+    setLiked((prev) => !prev)
+    setLikeCount((prev) => (liked ? prev - 1 : prev + 1))
+  }
 
   const handleAddComment = async () => {
     if (!comment.trim() || !id) return
@@ -220,14 +226,31 @@ export default function ConcernDetailPage() {
 
           {/* 하단: 버튼 2개 (아이콘 자체가 버튼) */}
           <div className="flex items-center gap-6 pt-2">
-            <button type="button" onClick={() => setLiked((prev) => !prev)}>
+            {/* 좋아요 */}
+            <button
+              type="button"
+              onClick={handleToggleLike}
+              className="relative"
+            >
               <img
                 src={liked ? likeIconPressed : likeIcon}
                 alt="좋아요"
                 className="w-[172px] h-[50px] transition hover:opacity-80"
               />
+              {/* 카운트 오버레이 */}
+              <span
+                className="
+    pointer-events-none
+    absolute left-[300px] top-1/2 -translate-y-[48%]
+    text-[13px] font-semibold text-[#8C8C8C]
+  "
+                aria-hidden
+              >
+                {likeCount}
+              </span>
             </button>
 
+            {/* 댓글 */}
             <button type="button">
               <img
                 src={commentIcon}
