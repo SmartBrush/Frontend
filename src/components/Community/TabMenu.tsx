@@ -33,7 +33,7 @@ const TabMenu = () => {
   return (
     <div className="flex flex-col font-[Pretendard] border-b border-gray-200 text-sm font-medium">
       {/* 위쪽: 뒤로가기 + 커뮤니티 텍스트 */}
-      <div className="px-[20px] pt-[20px] flex items-center text-lg font-semibold text-gray-800">
+      <div className="px-[20px] pt-[20px] flex items-center text-[20px] font-semibold text-gray-800">
         <button
           onClick={() => navigate('/')}
           className="mr-2 cursor-pointer"

@@ -2,6 +2,10 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/solid'
 import profileImg from '../assets/profile.png'
+import Back from '../assets/back.svg'
+import likeIcon from '../assets/like.svg'
+import likeIconPressed from '../assets/likepressed.svg'
+import commentIcon from '../assets/comment.svg'
 
 interface Comment {
   id: number
@@ -27,6 +31,8 @@ export default function ConcernDetailPage() {
   const [comment, setComment] = useState('')
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null)
   const [editContent, setEditContent] = useState('')
+  const [liked, setLiked] = useState(false)
+  const [likeCount, setLikeCount] = useState<number>(0)
 
   useEffect(() => {
     const token = localStorage.getItem('access_token')
@@ -73,6 +79,11 @@ export default function ConcernDetailPage() {
 
     fetchData()
   }, [id])
+
+  const handleToggleLike = () => {
+    setLiked((prev) => !prev)
+    setLikeCount((prev) => (liked ? prev - 1 : prev + 1))
+  }
 
   const handleAddComment = async () => {
     if (!comment.trim() || !id) return
@@ -179,31 +190,77 @@ export default function ConcernDetailPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <div className="flex-1 px-4 pt-4 pb-[120px]">
-        {/* 상단 */}
-        <div className="flex items-center gap-2 mb-4">
-          <button onClick={() => navigate(-1)} className="mr-2 text-xl">
-            {'<'}
+        {/* 위쪽: 뒤로가기 + 커뮤니티 텍스트 */}
+        <div className="pb-[12px] flex items-center text-[20px] font-semibold text-gray-800">
+          <button
+            onClick={() => navigate('/community/concerns')}
+            className="mr-2 cursor-pointer"
+            aria-label="뒤로가기"
+          >
+            <img src={Back} alt="뒤로가기" className="w-4 h-4" />
           </button>
           <span>커뮤니티</span>
         </div>
 
-        {/* 고민 내용 */}
-        <div className="mb-6">
-          <div className="flex items-center mb-2">
-            <img
-              src={profileImg}
-              alt="작성자 프로필"
-              className="w-8 h-8 rounded-full mr-2 object-cover"
-            />
-            <div>
-              <p className="text-sm font-medium">{concern.name}</p>
-              <p className="text-xs text-gray-400">{concern.date}</p>
+        <div className="mb-3 h-[215px] flex flex-col">
+          {/* 상단: 프로필/이름/날짜 */}
+          <div>
+            <div className="flex items-center mb-2">
+              <img
+                src={profileImg}
+                alt="작성자 프로필"
+                className="w-8 h-8 rounded-full mr-2 object-cover"
+              />
+              <div>
+                <p className="text-sm font-medium">{concern.name}</p>
+                <p className="text-xs text-gray-400">{concern.date}</p>
+              </div>
             </div>
+
+            {/* 제목/내용 */}
+            <h2 className="text-lg font-bold mb-2">{concern.title}</h2>
+            <p className="text-sm text-gray-700 mb-7 whitespace-pre-line">
+              {concern.content}
+            </p>
           </div>
-          <h2 className="text-lg font-bold mb-2">{concern.title}</h2>
-          <p className="text-sm text-gray-700 whitespace-pre-line">
-            {concern.content}
-          </p>
+
+          {/* 하단: 버튼 2개 (아이콘 자체가 버튼) */}
+          <div className="flex items-center gap-6 pt-2">
+            {/* 좋아요 */}
+            <button
+              type="button"
+              onClick={handleToggleLike}
+              className="relative"
+            >
+              <img
+                src={liked ? likeIconPressed : likeIcon}
+                alt="좋아요"
+                className="w-[172px] h-[50px] transition hover:opacity-80"
+              />
+              {/* 카운트 오버레이 */}
+              <span
+                className="
+    pointer-events-none
+    absolute left-[300px] top-1/2 -translate-y-[48%]
+    text-[13px] font-semibold text-[#8C8C8C]
+  "
+                aria-hidden
+              >
+                {likeCount}
+              </span>
+            </button>
+
+            {/* 댓글 */}
+            <button type="button">
+              <img
+                src={commentIcon}
+                alt="댓글"
+                className="w-[172px] h-[50px]"
+              />
+            </button>
+          </div>
+
+          <div className="mt-[15px] h-[2px] bg-[#E3E3E3] w-full" />
         </div>
 
         {/* 댓글 리스트 */}
