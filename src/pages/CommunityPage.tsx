@@ -1,6 +1,6 @@
 import TabMenu from '../components/Community/TabMenu'
 import SearchBar from './../components/Community/SearchBar'
-import HotTopicsSection from '../components/Community/HotTopicsSection'
+import MagazineSection from '../components/Community/MagazineSection'
 import SharedConcernsSection from './../components/Community/SharedConcernsSection'
 
 const CommunityPage = () => {
@@ -9,7 +9,7 @@ const CommunityPage = () => {
       <div>
         <TabMenu />
         <SearchBar />
-        <HotTopicsSection />
+        <MagazineSection />
         <SharedConcernsSection />
       </div>
     </div>
