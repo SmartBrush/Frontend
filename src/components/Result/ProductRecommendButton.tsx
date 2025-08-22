@@ -10,7 +10,7 @@ const ProductRecommendButton = () => {
   return (
     <button
       onClick={ButtonHandleClick}
-      className="w-93 text-center mt-8 px-4 py-2 bg-blue-200 text-black font-semibold rounded-full shadow-md hover:bg-blue-300 transition mx-auto block"
+      className="w-85 text-center mt-8 px-4 py-2 bg-[#4E9366] text-white font-semibold rounded-full shadow-md hover:bg-green-900 transition mx-auto block"
     >
       내 두피에 맞는 제품 보러가기
     </button>

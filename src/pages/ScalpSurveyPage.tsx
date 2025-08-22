@@ -14,12 +14,41 @@ import { submitSurvey } from '../apis/survey'
 // import axios from 'axios'
 // import { useNavigate } from 'react-router-dom'
 
+const looksLikeEmail = (s?: string) => !!s && /.+@.+\..+/.test(s)
+
+function safeGetLS(key: string): string | null {
+  try {
+    return localStorage.getItem(key)
+  } catch {
+    // localStorage 접근 불가(SSR/프라이버시 모드 등)
+    return null
+  }
+}
+
+function getStoredDisplayName(): string {
+  const keys = ['display_name', 'nickname', 'name', 'username'] as const
+  for (const k of keys) {
+    const v = safeGetLS(k)
+    if (v && !looksLikeEmail(v)) return v
+  }
+  return '회원'
+}
+
+function getStoredEmail(): string {
+  const emailKeys = ['email', 'username'] as const
+  for (const k of emailKeys) {
+    const v = safeGetLS(k)
+    if (v && looksLikeEmail(v)) return v
+  }
+  return ''
+}
+
 const ScalpSurveyPage = () => {
   const [page, setPage] = useState(0)
   // const navigate = useNavigate()
   const [form, setForm] = useState<SurveyForm>({
-    nickname: '김도영',
-    email: 'test@naver.com',
+    nickname: getStoredDisplayName(),
+    email: getStoredEmail(),
     gender: '',
     age: 0,
     hairLength: '',

@@ -2,41 +2,49 @@ import myIcon from '../../assets/my.png'
 
 type StatusSliderProps = {
   label: string
-  valuePosition: number //0 ~ 100(%)
+  valuePosition: number
   color: string
 }
 
-const StatusSlider = ({ label, valuePosition, color }: StatusSliderProps) => {
-  return (
-    <div className="my-2">
-      <p className="text-center text-lg font-bold mb-2">{label}</p>
+const clamp = (v: number) => Math.max(0, Math.min(100, v))
 
-      <div className="relative h-10">
+const StatusSlider = ({ label, valuePosition, color }: StatusSliderProps) => {
+  const pos = clamp(valuePosition) // 아이콘/채움 위치 (%)
+  const markerHalf = 10 // 아이콘 절반(px) = w-5(20px)/2
+
+  return (
+    <div className="my-4">
+      <p className="text-center text-lg font-extrabold mb-2">{label}</p>
+
+      {/* 바 + 아이콘 */}
+      <div className="relative w-full max-w-[320px] mx-auto mt-8">
+        {/* 바 본체 */}
+        <div className="w-full h-4 bg-[#E0DDDD] rounded relative overflow-hidden">
+          {/* 왼쪽부터 pos%까지 채움 */}
+          <div
+            className="absolute top-0 left-0 h-full"
+            style={{
+              width: `${pos}%`,
+              backgroundColor: color,
+            }}
+          />
+          {/* 중앙 점선 기준선 */}
+          <div className="absolute top-0 bottom-0 left-1/2 border-l border-dashed border-gray-300" />
+        </div>
+
+        {/* 내 위치 아이콘 */}
         <img
           src={myIcon}
           alt="my position"
-          className="absolute w-5 h-5 -top-0"
-          style={{
-            left: `calc(${valuePosition}% + 12.5% - 10px)`,
-            top: '15px',
-          }}
+          className="absolute w-5 h-5 -top-6"
+          style={{ left: `calc(${pos}% - ${markerHalf}px)` }}
         />
       </div>
 
-      {/* 슬라이더 바 */}
-      <div className="w-full bg-gray-300 h-2 rounded-full relative">
-        <div
-          className="absolute h-2 rounded-full"
-          style={{
-            left: `${valuePosition}%`,
-            width: `25%`,
-            backgroundColor: color,
-          }}
-        ></div>
-      </div>
-      <div className="flex justify-between text-s font-bold mt-1">
+      {/* 라벨 */}
+      <div className="flex justify-between text-sm font-bold mt-2 w-full max-w-[320px]">
         <span>주의</span>
-        <span>성별/연령대 평균</span>
+        <span className="text-gray-400">성별/연령대 평균</span>
         <span>양호</span>
       </div>
     </div>
