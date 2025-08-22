@@ -1,33 +1,3 @@
-// import { mbtiCardList } from '../../data/mbtiCardData'
-
-// interface MbtiCardProps {
-//   mbtiType: string
-// }
-
-// const MbtiCardList = ({ mbtiType }: MbtiCardProps) => {
-//   const card = mbtiCardList.find((c) => c.type === mbtiType)
-
-//   if (!card) return <p>해당 MBTI 카드가 없습니다.</p>
-
-//   return (
-//     <div className="relative bg-white rounded-xl shadow border p-4 pt-6">
-//       {/* MBTI 타입 태그 - 카드 밖 위에 떠있게 */}
-//       <div className="absolute -top-3 left-1 inline-flex items-center gap-2 px-3 py-1 bg-[#4E9366] text-white font-semibold text-sm rounded-xl shadow">
-//         <span>{card.title}</span>
-//       </div>
-
-//       {/* 카드 내용 */}
-//       <div className="space-y-2 text-sm text-black">
-//         <p>🔍 {card.description}</p>
-//         <p>✅ {card.good}</p>
-//         <p>❌ {card.bad}</p>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default MbtiCardList
-
 import { mbtiCardList } from '../../data/mbtiCardData'
 
 interface MbtiCardProps {

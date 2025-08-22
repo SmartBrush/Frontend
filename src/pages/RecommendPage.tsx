@@ -219,7 +219,6 @@
 
 // export default RecommendPage
 
-// src/pages/RecommendPage.tsx
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import API from '../apis/api'
@@ -334,7 +333,7 @@ const RecommendPage = () => {
               onClick={() => navigate('/productRecommendation')}
               className="text-sm text-gray-500"
             >
-              더 보기 &gt;
+              추천제품 더 보러가기 &gt;
             </button>
           </div>
           <ProductPreviewList
