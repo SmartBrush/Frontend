@@ -8,23 +8,26 @@ const ProgressBar = ({ step }: ProgressBarProps) => {
   const hasHalf = step % 1 !== 0 // 0.5 단계일 경우
 
   return (
-    <div className="flex justify-between items-center w-full max-w-xs mx-auto mt-4 mb-6 px-4">
+    <div className="flex justify-between items-center w-full max-w-xs mx-auto mt-4 mb-6">
       {[...Array(totalBlocks)].map((_, i) => {
         let bgColor = 'bg-gray-300'
         if (i < filledBlocks) {
-          bgColor = 'bg-[#88D982]'
+          bgColor = 'bg-[#4E9366]'
         } else if (i === filledBlocks && hasHalf) {
           bgColor = '' // half 색은 style로 별도 지정
         }
 
+        // ✅ 첫/끝 블록은 mx-0, 나머지는 mx-1
+        const marginClass = i === 0 || i === totalBlocks - 1 ? 'mx-0' : 'mx-1'
+
         return (
           <div
             key={i}
-            className={`h-2 flex-1 mx-1 rounded-full transition-all duration-300 ${bgColor}`}
+            className={`h-2 flex-1 rounded-full transition-all duration-300 ${bgColor} ${marginClass}`}
             style={{
               background:
                 i === filledBlocks && hasHalf
-                  ? 'linear-gradient(to right, #88D982 50%, #D1D5DB 50%)'
+                  ? 'linear-gradient(to right, #4E9366 50%, #D1D5DB 50%)'
                   : undefined,
             }}
           />
