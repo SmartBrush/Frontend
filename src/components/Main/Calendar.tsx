@@ -112,6 +112,7 @@ function Calendar({ dateCounts = [] }: CalendarProps) {
         setRemoteCounts(toDateCounts(raw))
       } catch (e) {
         if (!cancelled) setErrorMsg('달력 데이터를 불러오지 못했습니다.')
+        console.log(e)
       } finally {
         if (!cancelled) setLoading(false)
       }

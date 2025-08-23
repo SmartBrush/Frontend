@@ -1,8 +1,8 @@
 import type { DateCount } from './Calendar'
 import blankIcon from '../../assets/Blank.svg'
-import goodIcon from '../../assets/goodIcon.svg'
-import normalIcon from '../../assets/normalIcon.svg'
-import badIcon from '../../assets/badIcon.svg'
+import goodIcon from '../../assets/goodstatus.png'
+import normalIcon from '../../assets/normalIstatus.png'
+import badIcon from '../../assets/badstatus.png'
 
 interface CalendarGridProps {
   year: number
@@ -72,7 +72,7 @@ function CalendarGrid({ year, month, markedDates }: CalendarGridProps) {
               <img
                 src={statusIcon}
                 alt="status"
-                className="w-[28px] h-[35px] mb-[2px]"
+                className="w-[30px] h-[30px] mb-[2px]"
               />
               <span className="text-sm text-black mb-[2px]">{day}</span>
             </div>
