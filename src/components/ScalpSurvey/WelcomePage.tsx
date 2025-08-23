@@ -1,30 +1,26 @@
-import { useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import greenFace from '../../assets/goodstatus.png'
 import yellowFace from '../../assets/normalIstatus.png'
 import redFace from '../../assets/badstatus.png'
 import BlueBox from '../Auth/BlueBox'
+import { fetchDisplayName } from '../../apis/survey'
 
 interface WelcomePageProps {
   onNext: () => void
 }
 
-const looksLikeEmail = (s?: string) => !!s && /.+@.+\..+/.test(s)
-
-const getDisplayName = (): string => {
-  try {
-    const keys = ['display_name', 'nickname', 'name', 'username'] as const
-    for (const k of keys) {
-      const v = localStorage.getItem(k) || ''
-      if (v && !looksLikeEmail(v)) return v
-    }
-  } catch {
-    /* localStorage 미지원 환경 대비 */
-  }
-  return '회원'
-}
-
 const WelcomePage = ({ onNext }: WelcomePageProps) => {
-  const displayName = useMemo(getDisplayName, [])
+  const [displayName, setDisplayName] = useState<string>('회원')
+
+  useEffect(() => {
+    let mounted = true
+    fetchDisplayName().then((name) => {
+      if (mounted) setDisplayName(name)
+    })
+    return () => {
+      mounted = false
+    }
+  }, [])
 
   return (
     <div className="min-h-screen flex items-center justify-center">

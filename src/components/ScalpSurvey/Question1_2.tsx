@@ -9,6 +9,12 @@ interface Question1_2Props {
 }
 
 const Question1_2 = ({ form, onChange, onNext, onPrev }: Question1_2Props) => {
+  const isValid =
+    typeof form.dyedOrPermedRecently === 'boolean' &&
+    (form.familyHairLoss === 'EXISTS' ||
+      form.familyHairLoss === 'NONE' ||
+      form.familyHairLoss === 'UNKNOWN')
+
   return (
     <div className="bg-white max-w-[360px] mx-auto px-5 pt-6">
       <ProgressBar step={1} />
@@ -27,8 +33,9 @@ const Question1_2 = ({ form, onChange, onNext, onPrev }: Question1_2Props) => {
         </p>
         <div className="flex gap-4">
           <button
+            type="button"
             onClick={() => onChange('dyedOrPermedRecently', true)}
-            className={`flex-1 h-12 rounded-xl border transition-colors
+            className={`flex-1 h-12 rounded-xl border transition-colors cursor-pointer
               ${
                 form.dyedOrPermedRecently === true
                   ? 'bg-[#4E9366] text-white border-[#4E9366] font-semibold'
@@ -38,8 +45,9 @@ const Question1_2 = ({ form, onChange, onNext, onPrev }: Question1_2Props) => {
             예
           </button>
           <button
+            type="button"
             onClick={() => onChange('dyedOrPermedRecently', false)}
-            className={`flex-1 h-12 rounded-xl border transition-colors
+            className={`flex-1 h-12 rounded-xl border transition-colors cursor-pointer
               ${
                 form.dyedOrPermedRecently === false
                   ? 'bg-[#4E9366] text-white border-[#4E9366] font-semibold'
@@ -59,8 +67,9 @@ const Question1_2 = ({ form, onChange, onNext, onPrev }: Question1_2Props) => {
 
         <div className="grid gap-3">
           <button
+            type="button"
             onClick={() => onChange('familyHairLoss', 'EXISTS')}
-            className={`w-full h-12 rounded-xl border px-4 text-left transition-colors
+            className={`w-full h-12 rounded-xl border px-4 text-left transition-colors cursor-pointer
               ${
                 form.familyHairLoss === 'EXISTS'
                   ? 'bg-[#4E9366] text-white border-[#4E9366] font-semibold'
@@ -70,8 +79,9 @@ const Question1_2 = ({ form, onChange, onNext, onPrev }: Question1_2Props) => {
             있음
           </button>
           <button
+            type="button"
             onClick={() => onChange('familyHairLoss', 'NONE')}
-            className={`w-full h-12 rounded-xl border px-4 text-left transition-colors
+            className={`w-full h-12 rounded-xl border px-4 text-left transition-colors cursor-pointer
               ${
                 form.familyHairLoss === 'NONE'
                   ? 'bg-[#4E9366] text-white border-[#4E9366] font-semibold'
@@ -81,8 +91,9 @@ const Question1_2 = ({ form, onChange, onNext, onPrev }: Question1_2Props) => {
             없음
           </button>
           <button
+            type="button"
             onClick={() => onChange('familyHairLoss', 'UNKNOWN')}
-            className={`w-full h-12 rounded-xl border px-4 text-left transition-colors
+            className={`w-full h-12 rounded-xl border px-4 text-left transition-colors cursor-pointer
               ${
                 form.familyHairLoss === 'UNKNOWN'
                   ? 'bg-[#4E9366] text-white border-[#4E9366] font-semibold'
@@ -95,16 +106,28 @@ const Question1_2 = ({ form, onChange, onNext, onPrev }: Question1_2Props) => {
       </div>
 
       {/* 하단 버튼 */}
-      <div className="flex gap-4 mt-20 mb-10">
+      <div className="flex gap-4 mt-23 mb-10">
         <button
+          type="button"
           onClick={onPrev}
-          className="w-full h-12 rounded-xl border border-gray-300 bg-[#E5E7EB] text-[#111] font-semibold transition-colors hover:bg-gray-200 active:bg-[#4E9366] active:text-white active:border-[#4E9366]"
+          className="w-full h-12 rounded-xl border border-gray-300 bg-[#E5E7EB] text-[#111] font-semibold transition-colors hover:bg-gray-200 active:bg-[#4E9366] active:text-white active:border-[#4E9366] cursor-pointer"
         >
           이전
         </button>
         <button
-          onClick={onNext}
-          className="w-full h-12 rounded-xl border border-gray-300 bg-[#E5E7EB] text-[#111] font-semibold transition-colors hover:bg-gray-200 active:bg-[#4E9366] active:text-white active:border-[#4E9366]"
+          type="button"
+          onClick={() => {
+            if (isValid) onNext()
+          }}
+          disabled={!isValid}
+          aria-disabled={!isValid}
+          title={isValid ? '' : '필수 항목을 먼저 선택해주세요.'}
+          className={`w-full h-12 rounded-xl font-semibold border transition-colors
+            ${
+              isValid
+                ? 'bg-[#4E9366] text-white border-[#4E9366] hover:bg-[#4B8F63] cursor-pointer'
+                : 'bg-[#E5E7EB] text-[#111] border-gray-300 cursor-not-allowed'
+            }`}
         >
           다음
         </button>
