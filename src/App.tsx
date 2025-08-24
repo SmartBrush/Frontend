@@ -17,6 +17,7 @@ import ConcernDetailPage from './pages/ConcernDetailPage'
 import ConcernPostPage from './pages/ConcernPostPage'
 import ScalpSurveyPage from './pages/ScalpSurveyPage'
 import EditProfilePage from './pages/EditProfilePage'
+import MonthlyReportPage from './pages/MonthlyReportPage'
 
 const router = createBrowserRouter([
   {
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
       {
         path: 'question',
         element: <ScalpSurveyPage />,
+      },
+      {
+        path: 'reports',
+        element: <MonthlyReportPage />,
       },
     ],
   },

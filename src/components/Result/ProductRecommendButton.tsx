@@ -1,20 +1,14 @@
 import { useNavigate } from 'react-router-dom'
 
-const ProductRecommendButton = () => {
+export default function ProductRecommendButton() {
   const navigate = useNavigate()
-
-  const ButtonHandleClick = () => {
-    navigate('/recommend')
-  }
-
   return (
     <button
-      onClick={ButtonHandleClick}
-      className="w-85 text-center mt-8 px-4 py-2 bg-[#4E9366] text-white font-semibold rounded-full shadow-md hover:bg-green-900 transition mx-auto block"
+      type="button"
+      onClick={() => navigate('/recommend')}
+      className="mt-5 w-full rounded-full bg-[#4E9366] py-3 text-white text-sm font-semibold shadow-md active:opacity-90"
     >
-      내 두피에 맞는 제품 보러가기
+      두피 케어 제품 추천 바로가기
     </button>
   )
 }
-
-export default ProductRecommendButton
