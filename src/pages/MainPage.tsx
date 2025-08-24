@@ -42,7 +42,7 @@ const MainPage = () => {
 
   return (
     // 부모(main)의 높이를 그대로 채우고, 두 영역 비율을 68:32로 고정
-    <div className="h-full grid grid-rows-[60%_40%] gap-2 overflow-hidden">
+    <div className="h-full grid grid-rows-[63%_47%] gap-2 overflow-hidden">
       <section className="overflow-hidden">
         <Calendar />
       </section>

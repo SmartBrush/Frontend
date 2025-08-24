@@ -85,3 +85,62 @@ const CaptureImage = ({
 }
 
 export default CaptureImage
+
+// import { useRef } from 'react'
+
+// type CaptureImageProps = {
+//   showUploadButton?: boolean
+//   onPickFiles?: (files: FileList) => void
+// }
+
+// const CaptureImage = ({
+//   showUploadButton = false,
+//   onPickFiles,
+// }: CaptureImageProps) => {
+//   const inputRef = useRef<HTMLInputElement>(null)
+
+//   return (
+//     <div className="bg-white rounded-lg shadow-md p-4 mt-4">
+//       <div className="flex items-center justify-between mb-2">
+//         <h3 className="text-center font-bold text-lg flex-1">
+//           촬영된 사진을 확인해보세요!
+//         </h3>
+
+//         {showUploadButton && (
+//           <>
+//             <button
+//               className="ml-4 shrink-0 px-3 py-1.5 text-sm rounded-lg border border-gray-300"
+//               onClick={() => inputRef.current?.click()}
+//             >
+//               사진 추가
+//             </button>
+//             <input
+//               ref={inputRef}
+//               type="file"
+//               accept="image/*"
+//               multiple
+//               className="hidden"
+//               onChange={(e) => e.target.files && onPickFiles?.(e.target.files)}
+//             />
+//           </>
+//         )}
+//       </div>
+
+//       {/* 사진 하드코딩 */}
+//       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 justify-items-center">
+//         <div className="flex flex-col items-center w-24">
+//           <div className="relative">
+//             <img
+//               src="https://s3.us-east-1.amazonaws.com/dupiona.site/diagnosis/1234@naver.com/5871a80f-056d-47b7-b5e7-ce21fdb6ba13.jpg"
+//               alt="정수리"
+//               className="rounded-full w-24 h-24 aspect-square object-cover"
+//             />
+//           </div>
+//           {/* <p className="text-base text-center font-bold mt-2">정수리</p> */}
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }
+
+// export default CaptureImage
