@@ -91,7 +91,14 @@ import Navbar from '../components/NavBar/NavBar'
 
 const RootLayout = () => {
   const location = useLocation()
-  const isQuestionPage = location.pathname.startsWith('/question')
+  const pathname = location.pathname
+
+  // question 페이지나 login 페이지에서는 NavBar 숨김
+  const hideNavbar =
+    pathname.startsWith('/question') || pathname.startsWith('/login')
+
+  // / 일 때만 green, 나머지는 white
+  const navbarBg = pathname === '/' ? 'bg-[rgba(182,232,178,0.5)]' : 'bg-white'
 
   return (
     <div className="min-h-screen w-full flex justify-center bg-[#313131] font-[Pretendard]">
@@ -102,9 +109,9 @@ const RootLayout = () => {
           <Outlet />
         </main>
 
-        {/* NavBar는 question 아닐 때만 */}
-        {!isQuestionPage && (
-          <div className="h-[64px] w-full shrink-0 bg-white">
+        {/* NavBar는 hideNavbar 아닐 때만 */}
+        {!hideNavbar && (
+          <div className={`h-[72px] w-full shrink-0 ${navbarBg}`}>
             <Navbar />
           </div>
         )}
