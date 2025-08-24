@@ -27,8 +27,35 @@ export async function fetchTodayDiagnosis(): Promise<TodayDiagnosis> {
 }
 
 export const triggerCapture = async () => {
-  // 응답 바디를 쓰지 않으면 기본으로 OK만 받아도 됨
-  // 서버가 이미지 바이트를 바로 주는 구조라면 필요 시 responseType 조정
-  // return API.get('/api/capture', { responseType: 'blob' })
   return API.get('/api/capture')
+}
+
+export type Status = '양호' | '보통' | '심각'
+
+export type DiagnosisResult = {
+  scalpSensitivityValue: number
+  scalpSensitivityLevel: Status
+  densityValue: number
+  densityLevel: Status
+  sebumLevelValue: number
+  sebumLevel: Status
+  poreSizeValue: number
+  poreSizeLevel: Status
+  scalingValue: number
+  scalingLevel: Status
+  score: number
+  status: Status
+  images?: DiagnosisImage[]
+}
+
+export type DiagnosisImage = {
+  url: string
+  id?: number
+  label?: string
+}
+
+// 최신 4장으로 AI 진단 실행
+export async function uploadDiagnosis(): Promise<DiagnosisResult> {
+  const { data } = await API.post<DiagnosisResult>('/api/diagnosis/upload')
+  return data
 }

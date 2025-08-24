@@ -93,7 +93,7 @@ const SignInPage = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-[90vh]">
+    <div className="flex flex-col justify-center items-center min-h-[100vh]">
       <div className="w-[80%]">
         <h1 className="text-[40px] font-bold mb-8 text-center">로그인</h1>
         <div className="mb-5">
