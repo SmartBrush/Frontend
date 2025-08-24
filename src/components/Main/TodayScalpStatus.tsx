@@ -263,7 +263,7 @@ const TodayScalpStatus = () => {
   }
 
   return (
-    <div className="bg-[rgba(182,232,178,0.5)] rounded-t-[20px] px-5 py-4 text-black flex flex-col justify-start">
+    <div className="bg-[rgba(182,232,178,0.5)] rounded-t-[20px] px-5 py-4 pb-10 text-black flex flex-col justify-start">
       <div className="flex flex-col gap-1">
         <p className="text-[15px] font-semibold">🔥 1일째 연속 진단 중</p>
         <p className="text-[20px] font-semibold">{formatKoreanDate()}</p>
