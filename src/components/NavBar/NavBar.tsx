@@ -16,7 +16,7 @@ const NavBar = () => {
           label="커뮤니티"
         />
         <NavButton
-          to="/result"
+          to="/reports"
           iconSrc={ResultIcon}
           alt="Result"
           label="결과"
