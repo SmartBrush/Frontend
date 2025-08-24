@@ -239,7 +239,7 @@ const ScalpRadarChart = ({ data }: RadarDataProps) => {
   }, [statusLabels])
 
   const radarData = {
-    labels: ['두피 민감도', '모발 밀도', '피지 정도', '모발 굵기', '각질/비듬'],
+    labels: ['두피 민감도', '모발 밀도', '유분 정도', '모발 굵기', '각질/비듬'],
     datasets: [
       {
         label: '나의 상태',

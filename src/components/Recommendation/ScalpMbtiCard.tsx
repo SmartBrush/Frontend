@@ -1,220 +1,76 @@
-// import { useMemo } from 'react'
-// import type { ScalpMbtiType } from '../../types/scalp'
-// import BarChart from './BarChart'
-// import { mbtiData } from '../../data/mbtiData'
-
-// interface ScalpMbtiCardProps {
-//   mbtiType: ScalpMbtiType
-// }
-
-// const looksLikeEmail = (s?: string) => !!s && /.+@.+\..+/.test(s)
-
-// const getDisplayName = (): string => {
-//   try {
-//     const keys = ['display_name', 'nickname', 'name', 'username']
-//     for (const k of keys) {
-//       const v = localStorage.getItem(k) || ''
-//       if (v && !looksLikeEmail(v)) return v
-//     }
-//   } catch {
-//     // noop
-//   }
-//   return '회원'
-// }
-
-// const ScalpMbtiCard = ({ mbtiType }: ScalpMbtiCardProps) => {
-//   const { title, description, radarValues } = mbtiData[mbtiType]
-//   const displayName = useMemo(getDisplayName, [])
-
-//   return (
-//     <div className="bg-white p-4 rounded-2xl shadow flex items-center justify-between border border-black">
-//       {/* 좌측 텍스트 영역 */}
-//       <div className="flex-1 space-y-1">
-//         <p className="text-sm text-orange-600 font-semibold">
-//           🔥 {displayName}님의 두피 MBTI
-//         </p>
-//         <h2 className="text-lg font-bold text-gray-800">{title}</h2>
-//         <div>
-//           {description.split('\n').map((line, i) => (
-//             <p key={i} className="text-sm">
-//               {line}
-//             </p>
-//           ))}
-//         </div>
-//       </div>
-
-//       {/* 우측 간단 그래프 (아이콘처럼 축소) */}
-//       <div className="w-24">
-//         <BarChart data={radarValues.slice(0, 5)} />
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default ScalpMbtiCard
-
-// import { useEffect, useState } from 'react'
-// import type { ScalpMbtiType } from '../../types/scalp'
-// import BarChart from './BarChart'
-// import { mbtiData } from '../../data/mbtiData'
-
-// interface ScalpMbtiCardProps {
-//   mbtiType: ScalpMbtiType
-// }
-
-// const looksLikeEmail = (s?: string) => !!s && /.+@.+\..+/.test(s)
-
-// const readDisplayName = (): string => {
-//   try {
-//     const keys = ['display_name', 'nickname', 'name', 'username'] as const
-//     for (const k of keys) {
-//       const v = localStorage.getItem(k) || ''
-//       if (v && !looksLikeEmail(v)) return v
-//     }
-//   } catch {
-//     //NOOP
-//   }
-//   return '회원'
-// }
-
-// // TS에 커스텀 이벤트 타입 추가 (한 번만 선언되면 됨)
-// declare global {
-//   interface WindowEventMap {
-//     'profile-updated': Event
-//   }
-// }
-
-// const ScalpMbtiCard = ({ mbtiType }: ScalpMbtiCardProps) => {
-//   const { title, description, radarValues } = mbtiData[mbtiType]
-//   const [displayName, setDisplayName] = useState<string>(readDisplayName())
-
-//   useEffect(() => {
-//     const refresh = () => setDisplayName(readDisplayName())
-//     // 같은 탭: 우리가 쏘는 커스텀 이벤트
-//     window.addEventListener('profile-updated', refresh)
-//     // 다른 탭에서 localStorage 변경 시
-//     window.addEventListener('storage', refresh)
-//     return () => {
-//       window.removeEventListener('profile-updated', refresh)
-//       window.removeEventListener('storage', refresh)
-//     }
-//   }, [])
-
-//   return (
-//     <div className="bg-white p-4 rounded-2xl shadow flex items-center justify-between border border-black">
-//       <div className="flex-1 space-y-1">
-//         <p className="text-sm text-orange-600 font-semibold">
-//           🔥 {displayName}님의 두피 MBTI
-//         </p>
-//         <h2 className="text-lg font-bold text-gray-800">{title}</h2>
-//         <div>
-//           {description.split('\n').map((line, i) => (
-//             <p key={i} className="text-sm">
-//               {line}
-//             </p>
-//           ))}
-//         </div>
-//       </div>
-//       <div className="w-24">
-//         <BarChart data={radarValues.slice(0, 5)} />
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default ScalpMbtiCard
-
-// import { useEffect, useState } from 'react'
-// import type { ScalpMbtiType } from '../../types/scalp'
-// import BarChart from './BarChart'
-// import { mbtiData } from '../../data/mbtiData'
-
-// interface ScalpMbtiCardProps {
-//   mbtiType: ScalpMbtiType
-//   displayName?: string
-// }
-
-// const looksLikeEmail = (s?: string) => !!s && /.+@.+\..+/.test(s)
-// const readDisplayName = (): string => {
-//   try {
-//     const keys = ['display_name', 'nickname', 'name', 'username'] as const
-//     for (const k of keys) {
-//       const v = localStorage.getItem(k) || ''
-//       if (v && !looksLikeEmail(v)) return v
-//     }
-//   } catch {
-//     //noop
-//   }
-//   return '회원'
-// }
-
-// // 커스텀 이벤트 타입(프로젝트 어딘가 한 번만 선언되면 됨)
-// declare global {
-//   interface WindowEventMap {
-//     'profile-updated': Event
-//   }
-// }
-
-// const ScalpMbtiCard = ({ mbtiType, displayName }: ScalpMbtiCardProps) => {
-//   const { title, description, radarValues } = mbtiData[mbtiType]
-//   // 1) 우선 prop, 없으면 localStorage
-//   const [name, setName] = useState<string>(displayName ?? readDisplayName())
-
-//   // 2) 부모 prop이 바뀌면 즉시 반영 → “한박자 늦음” 해결 포인트
-//   useEffect(() => {
-//     if (displayName) setName(displayName)
-//   }, [displayName])
-
-//   // 3) 같은 탭/다른 탭에서 프로필 갱신되는 경우도 반영
-//   useEffect(() => {
-//     const refresh = () => setName(displayName ?? readDisplayName())
-//     window.addEventListener('profile-updated', refresh)
-//     window.addEventListener('storage', refresh) // 다른 탭
-//     return () => {
-//       window.removeEventListener('profile-updated', refresh)
-//       window.removeEventListener('storage', refresh)
-//     }
-//   }, [displayName])
-
-//   return (
-//     <div className="bg-white p-4 rounded-2xl shadow flex items-center justify-between border border-black">
-//       <div className="flex-1 space-y-1">
-//         <p className="text-sm text-orange-600 font-semibold">
-//           🔥 {name}님의 두피 MBTI
-//         </p>
-//         <h2 className="text-lg font-bold text-gray-800">{title}</h2>
-//         <div>
-//           {description.split('\n').map((line, i) => (
-//             <p key={i} className="text-sm">
-//               {line}
-//             </p>
-//           ))}
-//         </div>
-//       </div>
-//       <div className="w-24">
-//         <BarChart data={radarValues.slice(0, 5)} />
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default ScalpMbtiCard
-
-// src/components/Recommendation/ScalpMbtiCard.tsx
-import type { ScalpMbtiType } from '../../types/scalp'
+import type { ScalpMbtiType } from '../../types/scalp-mbti'
 import BarChart from './BarChart'
 import { mbtiData } from '../../data/mbtiData'
 
 interface ScalpMbtiCardProps {
-  mbtiType: ScalpMbtiType
-  displayName: string // ✅ 부모에서 내려주는 이름만 사용
+  /** 서버/부모에서 내려주는 진단 타입. 진단 전이면 null/undefined 로 넘겨주세요. */
+  mbtiType?: ScalpMbtiType | null
+  /** 상단에 보여줄 사용자명 */
+  displayName: string
+  /** (선택) 진단 완료 여부를 부모가 명시적으로 제어하고 싶을 때 */
+  diagnosed?: boolean
+  /** (선택) 진단하기 버튼을 쓸 경우 콜백 (없으면 버튼 안 보여줌) */
+  onClickDiagnose?: () => void
 }
 
-const ScalpMbtiCard = ({ mbtiType, displayName }: ScalpMbtiCardProps) => {
-  const { title, description, radarValues } = mbtiData[mbtiType]
+const DIAG_FLAG_KEY = 'scalp_diagnosed'
+
+const ScalpMbtiCard = ({
+  mbtiType,
+  displayName,
+  diagnosed,
+  onClickDiagnose,
+}: ScalpMbtiCardProps) => {
+  // 부모가 diagnosed를 내려주면 그걸 우선, 없으면 로컬스토리지 플래그 사용
+  const isDiagnosed =
+    typeof diagnosed === 'boolean'
+      ? diagnosed
+      : typeof window !== 'undefined' &&
+        localStorage.getItem(DIAG_FLAG_KEY) === '1'
+
+  // 진단 전 / 타입 없음 → 안내 카드
+  if (!isDiagnosed || !mbtiType) {
+    return (
+      <div className="bg-white p-4 rounded-2xl shadow border border-gray-200">
+        <p className="text-sm font-semibold text-gray-800">
+          {displayName}님의 두피 MBTI
+        </p>
+        <p className="mt-1 text-sm">두피 MBTI가 아직 없습니다!</p>
+        {onClickDiagnose && (
+          <button
+            type="button"
+            onClick={onClickDiagnose}
+            className="mt-3 px-3 py-2 rounded-lg bg-[#4E9366] text-white text-sm font-bold"
+          >
+            사진으로 진단하기
+          </button>
+        )}
+      </div>
+    )
+  }
+
+  // 타입 존재 시 데이터 조회 (안전 가드)
+  const info = mbtiData[mbtiType]
+  if (!info) {
+    return (
+      <div className="bg-white p-4 rounded-2xl shadow border border-gray-200">
+        <p className="text-sm font-semibold text-gray-800">
+          {displayName}님의 두피 MBTI
+        </p>
+        <p className="mt-1 text-sm text-red-600">
+          알 수 없는 MBTI 타입입니다. 다시 시도해 주세요.
+        </p>
+      </div>
+    )
+  }
+
+  const { title, description, radarValues } = info
 
   return (
-    <div className="bg-white p-4 rounded-2xl shadow flex items-center justify-between border border-black">
+    <div
+      className="bg-white p-4 rounded-2xl shadow flex items-center justify-between border border-black"
+      data-mbti-block
+    >
       <div className="flex-1 space-y-1">
         <p className="text-sm text-orange-600 font-semibold">
           🔥 {displayName}님의 두피 MBTI
