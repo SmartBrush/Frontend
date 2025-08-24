@@ -1,4 +1,4 @@
-import type { ScalpMbtiType } from '../types/scalp'
+import type { ScalpMbtiType } from '../types/scalp-mbti'
 
 export const mbtiData: Record<
   ScalpMbtiType,
@@ -59,8 +59,8 @@ export const mbtiData: Record<
     ],
   },
 
-  seborrheic_type: {
-    title: '🔥 깐깐 지성형',
+  clean_oily_type: {
+    title: '🔥 깔끔 지성형',
     description:
       '과도한 유분 + 저염증 + 자극적\n → 기름 + 민감한 자극 + 간지러움 적응',
     avoidIngredients: ['알코올', '향료', '황산염'],

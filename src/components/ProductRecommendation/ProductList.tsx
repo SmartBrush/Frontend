@@ -1,35 +1,68 @@
-// 내 두피에 맞는 제품 리스트
-import ProductListItem from './ProductListItem'
-import { useFetch } from '../../hooks/useFetch'
-import type { Product } from '../../apis/products'
+import { useEffect, useState } from 'react'
+import type { Category, Product } from '../../apis/products'
+import { fetchProducts, fetchProductsByCategory } from '../../apis/products'
 
-interface Props {
-  category: string
-  onSelect: (id: string) => void
+type Props = {
+  category: Category | 'all'
+  onSelect: (id: number | string) => void | Promise<void>
 }
 
-const ProductList = ({ category, onSelect }: Props) => {
-  const url =
-    category === 'all'
-      ? `${import.meta.env.VITE_API_BASE_URL}/api/products`
-      : `${import.meta.env.VITE_API_BASE_URL}/api/products/${category}`
+export default function ProductList({ category, onSelect }: Props) {
+  const [items, setItems] = useState<Product[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const { data: products, loading, error } = useFetch<Product[]>(url)
+  useEffect(() => {
+    let mounted = true
+    setLoading(true)
+    setError(null)
+    ;(async () => {
+      try {
+        const data =
+          category === 'all'
+            ? await fetchProducts(20)
+            : await fetchProductsByCategory(category, 20)
+        if (!mounted) return
+        setItems(data)
+      } catch {
+        if (!mounted) return
+        setItems([])
+        setError('상품을 가져오는 중 오류가 발생했어요. 콘솔을 확인해주세요.')
+      } finally {
+        if (mounted) setLoading(false)
+      }
+    })()
+    return () => {
+      mounted = false
+    }
+  }, [category])
 
-  if (loading) return <div>로딩 중...</div>
-  if (error || !products) return <div>에러가 발생했습니다.</div>
+  if (loading)
+    return <div className="p-2 text-sm text-gray-500">불러오는 중…</div>
+  if (error) return <div className="p-2 text-sm text-red-600">{error}</div>
+  if (!items.length)
+    return <div className="p-2 text-sm text-gray-500">상품이 없어요</div>
 
   return (
-    <div className="grid grid-cols-2 gap-3">
-      {products.map((item) => (
-        <ProductListItem
-          key={item.id}
-          product={item}
-          onClick={() => onSelect(String(item.id))}
-        />
+    <ul className="grid grid-cols-2 gap-3">
+      {items.map((p) => (
+        <li
+          key={p.id}
+          className="border border-gray-300 rounded-xl p-2 cursor-pointer bg-white"
+          onClick={() => onSelect(p.id)}
+        >
+          <img
+            src={p.image}
+            alt={p.name}
+            className="w-full h-28 object-cover rounded-md"
+          />
+          <div className="mt-2 text-sm font-semibold">{p.name}</div>
+          <div className="text-xs text-gray-500">{p.brand}</div>
+          <div className="text-sm font-bold mt-1">
+            {p.price.toLocaleString()}원
+          </div>
+        </li>
       ))}
-    </div>
+    </ul>
   )
 }
-
-export default ProductList

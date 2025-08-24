@@ -13,7 +13,7 @@ interface ProductPreviewListProps {
 const isNonEmptyString = (v: unknown): v is string =>
   typeof v === 'string' && v.trim().length > 0
 
-// 다양한 필드명에서 브랜드 추출 (any 금지: unknown+타입가드 사용)
+// 다양한 필드명에서 브랜드 추출
 const getBrand = (p: Product): string | null => {
   const rec = p as unknown as Record<string, unknown>
   const candidates = [
@@ -28,6 +28,23 @@ const getBrand = (p: Product): string | null => {
     if (isNonEmptyString(v)) return v
   }
   return null
+}
+
+const parsePrice = (v: unknown): number | null => {
+  if (typeof v === 'number' && Number.isFinite(v)) return v
+  if (typeof v === 'string') {
+    // "17,900원", "  17900  ", "₩12,000" 등 처리
+    const cleaned = v.replace(/[^\d.-]/g, '')
+    if (!cleaned) return null
+    const n = Number(cleaned)
+    return Number.isFinite(n) ? n : null
+  }
+  return null
+}
+
+const formatPriceKRW = (v: unknown): string => {
+  const n = parsePrice(v)
+  return n == null ? '가격 정보 없음' : `₩ ${n.toLocaleString('ko-KR')}`
 }
 
 const ProductPreviewList = ({
@@ -54,14 +71,27 @@ const ProductPreviewList = ({
     >
       {products.slice(0, limit).map((p) => {
         const brand = getBrand(p)
+        const priceLabel = formatPriceKRW(
+          // p.price가 string이든 number든 안전 처리됨
+          (p as unknown as { price?: unknown }).price,
+        )
 
         return (
           <SwiperSlide key={p.id} className="!w-[170px]">
             <div className="mb-1 relative bg-white rounded-xl shadow p-3 flex flex-col items-center">
-              <button
-                type="button"
+              {/* 바깥 버튼 대신 div + 접근성 */}
+              <div
+                role="button"
+                tabIndex={0}
+                aria-label={`${p.name} 상세보기`}
                 onClick={() => onSelect(p.id)}
-                className="flex flex-col items-center w-[160px]"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    onSelect(p.id)
+                  }
+                }}
+                className="flex flex-col items-center w-[160px] outline-none focus:ring-2 focus:ring-green-400 rounded-lg"
               >
                 <img
                   src={p.image}
@@ -83,13 +113,22 @@ const ProductPreviewList = ({
                 {/* 가격 + 버튼 */}
                 <div className="flex items-center justify-between w-full mt-2 px-1">
                   <span className="text-xs font-semibold text-gray-800 whitespace-nowrap">
-                    ₩ {p.price.toLocaleString()}
+                    {priceLabel}
                   </span>
-                  <button className="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full shadow-sm hover:bg-green-200 transition whitespace-nowrap">
+
+                  {/* 내부 버튼은 유지하되, 바깥 클릭 중복 방지 */}
+                  <button
+                    type="button"
+                    className="text-xs px-2 py-1 bg-[#4E9366] text-white rounded-full shadow-sm hover:bg-green-200 transition whitespace-nowrap"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onSelect(p.id)
+                    }}
+                  >
                     구매하러 가기
                   </button>
                 </div>
-              </button>
+              </div>
             </div>
           </SwiperSlide>
         )

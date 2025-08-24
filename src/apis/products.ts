@@ -1,6 +1,13 @@
 import API from './api'
+import axios, { isAxiosError, type AxiosInstance } from 'axios'
 
-/** 실제 화면에서 사용할 타입(통일된 형태) */
+export type Category =
+  | 'shampoo'
+  | 'conditioner'
+  | 'treatment'
+  | 'tonic'
+  | 'essence'
+
 export interface Product {
   id: number
   name: string
@@ -11,95 +18,129 @@ export interface Product {
   link: string
 }
 
-/** 서버 원본이 문자열일 수도 있으니 Raw 타입 분리 */
 type ProductRaw = {
   id: number | string
   name: string
   brand: string
   category: string
-  price: number | string // swagger는 string으로 표기됨
+  price: number | string
   image: string
   link: string
 }
 
-/** 원본 → 화면용 정규화 */
+type QueryParams =
+  | Record<string, string | number | boolean | undefined>
+  | undefined
+
+const toNumber = (v: number | string): number =>
+  typeof v === 'number' ? v : Number(String(v).replace(/[^\d.]/g, ''))
+
 const normalize = (p: ProductRaw): Product => ({
   id: Number(p.id),
   name: p.name,
   brand: p.brand,
   category: p.category,
-  // "13,000", "₩13000" 같은 문자열도 숫자로 변환
-  price:
-    typeof p.price === 'number'
-      ? p.price
-      : Number(String(p.price).replace(/[^\d.]/g, '')),
+  price: toNumber(p.price),
   image: p.image,
   link: p.link,
 })
 
-/** 전체 상품 */
-export async function fetchProducts(): Promise<Product[]> {
-  const { data } = await API.get<ProductRaw[]>('/api/products')
-  return data.map(normalize)
+// 슬래시 정리
+const BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '')
+
+// 전역 인터셉터 영향 없는 공개용 인스턴스
+const publicAxios: AxiosInstance = axios.create({
+  baseURL: BASE_URL,
+  headers: { 'Cache-Control': 'no-cache', Pragma: 'no-cache' },
+})
+
+async function publicGet<T>(path: string, params?: QueryParams) {
+  return publicAxios.get<T>(path, { params })
 }
 
-/** 카테고리별 (all이면 전체) */
-export async function fetchProductsByCategory(
-  category: string,
+async function authedGet<T>(path: string, params?: QueryParams) {
+  return API.get<T>(path, { params })
+}
+
+async function _getProducts(
+  params: { category?: Category | 'all'; size?: number } = {},
 ): Promise<Product[]> {
+  const { category, size = 20 } = params
   const path =
-    category === 'all' ? '/api/products' : `/api/products/${category}`
-  const { data } = await API.get<ProductRaw[]>(path)
-  return data.map(normalize)
+    category && category !== 'all'
+      ? `/api/products/${category}`
+      : '/api/products'
+
+  // 1) 공개 호출
+  try {
+    const res = await publicGet<ProductRaw[]>(path, { size })
+    const arr = Array.isArray(res.data) ? res.data : []
+    // ✅ 비로그인 응답이 빈 배열이면 토큰으로 재시도
+    if (arr.length > 0) return arr.map(normalize)
+  } catch (e) {
+    if (isAxiosError(e)) {
+      // eslint-disable-next-line no-console
+      console.debug(
+        '[products] public fail:',
+        e.response?.status,
+        e.response?.data || e.message,
+      )
+      // 401/403/0(네트워크) 등은 아래에서 인증 호출로 전환
+    } else {
+      throw e
+    }
+  }
+
+  // 2) 인증 호출 (토큰 필요 환경 대응)
+  try {
+    const { data } = await authedGet<ProductRaw[]>(path, { size })
+    return Array.isArray(data) ? data.map(normalize) : []
+  } catch (e) {
+    if (isAxiosError(e)) {
+      // eslint-disable-next-line no-console
+      console.debug(
+        '[products] authed fail:',
+        e.response?.status,
+        e.response?.data || e.message,
+      )
+    }
+    throw e
+  }
 }
 
-/** 단일 상품 조회
- *  상세 API가 없다면 전체 받아서 필터링(현재 방식)
- *  상세 API가 있으면 아래 주석처럼 교체 권장
- */
+export async function fetchProducts(size = 20): Promise<Product[]> {
+  return _getProducts({ size })
+}
+
+export async function fetchProductsByCategory(
+  category: Category | 'all',
+  size = 20,
+): Promise<Product[]> {
+  return _getProducts({ category, size })
+}
+
 export async function fetchProductById(id: string | number): Promise<Product> {
-  // ✅ 상세 API가 있다면 이걸로 교체:
-  // const { data } = await API.get<ProductRaw>(`/api/product/${id}`)
-  // return normalize(data)
-
-  const { data: all } = await API.get<ProductRaw[]>('/api/products')
+  const all = await fetchProducts(200)
   const targetId = Number(id)
-  const raw = all.find((p) => Number(p.id) === targetId)
-  if (!raw) throw new Error('Not Found')
-  return normalize(raw)
+  const found = all.find((p) => p.id === targetId)
+  if (!found) throw new Error('Not Found')
+  return found
 }
 
-export async function getWishlist() {
-  const { data } = await API.get('/api/wishlist', {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-    },
-  })
-  return data as Array<{ id: number } | { id: string }> // 최소 id만 쓰면 충분
+/* 위시리스트/좋아요 API는 그대로 API 인스턴스 사용 (변경 없음) */
+type WishlistItem = { id: number | string }
+export async function getWishlist(): Promise<WishlistItem[]> {
+  const { data } = await API.get<WishlistItem[]>('/api/wishlist')
+  return Array.isArray(data) ? data : []
 }
-
-/** 특정 상품이 찜되어 있는지 여부 */
 export async function isWishlisted(productId: number): Promise<boolean> {
   const list = await getWishlist()
   const pid = Number(productId)
-  type WithId = { id: number | string }
-  return list.some((it: WithId) => Number(it.id) === pid)
+  return list.some((it) => Number(it.id) === pid)
 }
-
-/** 찜하기 */
 export async function addWishlist(productId: number): Promise<void> {
-  await API.post(`/api/wishlist/${productId}`, null, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-    },
-  })
+  await API.post(`/api/wishlist/${productId}`)
 }
-
-/** 찜 해제 */
 export async function removeWishlist(productId: number): Promise<void> {
-  await API.delete(`/api/wishlist/${productId}`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-    },
-  })
+  await API.delete(`/api/wishlist/${productId}`)
 }

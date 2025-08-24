@@ -218,7 +218,7 @@ const ResultPage = () => {
 
 export default ResultPage
 
-// src/pages/ResultPage.tsx
+// src / pages / ResultPage.tsx
 // import { useEffect, useMemo, useState } from 'react'
 // import { useLocation } from 'react-router-dom'
 // import API from '../apis/api'
