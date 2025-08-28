@@ -30,7 +30,7 @@ export default function SummaryCard({
     >
       <div className="flex h-[110px] flex-col items-center justify-between px-3 py-3">
         <div className="text-[12px] font-semibold text-gray-600">{title}</div>
-        <div className="text-[30px] font-extrabold leading-none text-gray-900">
+        <div className="text-[30px] font-extrabold leading-none">
           {value.toFixed(1)}
         </div>
         <StatusBadge text={badgeText} className={badgeClass} />

@@ -191,7 +191,7 @@ export default function TrendChart({
   }, [chartData, selectedLabel])
 
   const displayLabel = current
-    ? `${current.month.slice(0, 4)}년 ${current.label}월 평균 ${current.value.toFixed(1)}%`
+    ? `${current.month.slice(0, 4)}년 ${current.label}월 평균 ${current.value.toFixed(1)}점`
     : ''
 
   const pickLabel = (s: unknown) => {
@@ -200,13 +200,13 @@ export default function TrendChart({
   }
 
   return (
-    <div className="relative rounded-2xl border border-black bg-white p-3 pt-7 shadow-sm">
+    <div className="relative rounded-2xl border border-black bg-white p-3 pt-10 shadow-sm">
       {/* 상단 중앙 라벨 */}
       {displayLabel && (
         <div
-          className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 mt-4 
-                     rounded-full border border-gray-300 bg-gray-200 px-3 py-1
-                     text-[11px] font-semibold text-gray-700 shadow"
+          className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 mt-5.5 
+                     rounded-full border border-gray-300 bg-gray-200 px-10 py-1.5
+                     text-[15px] font-semibold text-gray-700 shadow text-center z-5"
         >
           {displayLabel}
         </div>
@@ -220,6 +220,8 @@ export default function TrendChart({
             margin={{ left: 12, right: 12, top: 6, bottom: 6 }}
             onMouseDown={pickLabel}
             onTouchStart={pickLabel}
+            style={{ outline: 'none' }}
+            tabIndex={-1}
           >
             <CartesianGrid vertical={false} stroke="#E5E7EB" />
             <XAxis
