@@ -2,69 +2,87 @@ import { useEffect, useState } from 'react'
 import ConcernCard from '../components/Community/ConcernCard'
 import TabMenu from '../components/Community/TabMenu'
 import SearchBar from '../components/Community/SearchBar'
-
 import { useNavigate } from 'react-router-dom'
 import editIcon from '../assets/edit.png'
-
-interface Concern {
-  id: number
-  title: string
-  content: string
-  author: string
-  profileImage: string
-  createdAt: string
-}
+import {
+  fetchConcernList,
+  searchConcerns,
+  type Concern,
+} from '../apis/community'
 
 export default function ConcernListPage() {
   const navigate = useNavigate()
   const [concerns, setConcerns] = useState<Concern[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [keyword, setKeyword] = useState('')
 
-  useEffect(() => {
-    const fetchConcerns = async () => {
-      try {
-        const token = localStorage.getItem('access_token')
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/api/community/list`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        )
-
-        if (!response.ok) throw new Error('불러오기 실패')
-
-        const data = await response.json()
-        setConcerns(data)
-      } catch (error) {
-        console.error('고민 리스트 가져오기 오류:', error)
-      }
+  const handleSearch = async (kw: string) => {
+    setLoading(true)
+    setError(null)
+    try {
+      const trimmed = kw.trim()
+      const data =
+        trimmed.length === 0
+          ? await fetchConcernList()
+          : await searchConcerns(trimmed)
+      setConcerns(data)
+    } catch (e) {
+      setError('검색 중 오류가 발생했어요')
+      console.error(e)
+    } finally {
+      setLoading(false)
     }
+  }
 
-    fetchConcerns()
-  }, [])
+  // 입력 시 자동 검색(디바운스 300ms) + 초기 로드
+  useEffect(() => {
+    let alive = true
+    const timer = setTimeout(async () => {
+      if (!alive) return
+      await handleSearch(keyword)
+    }, 300)
+    return () => {
+      alive = false
+      clearTimeout(timer)
+    }
+  }, [keyword])
 
   return (
     <div className="min-h-screen bg-white flex flex-col relative">
       <TabMenu />
-      <SearchBar />
+
+      {/* onSubmit 제거 */}
+      <SearchBar value={keyword} onChange={setKeyword} />
+
       <div className="px-4 pb-24">
-        <div className="pt-2">
-          {concerns.map((item, index) => (
-            <div
-              key={item.id}
-              onClick={() => navigate(`/community/concerns/${item.id}`)}
-              className="cursor-pointer"
-            >
-              <ConcernCard
-                name={item.author || '익명'}
-                content={item.content}
-                date={item.createdAt?.slice(5, 10) || ''}
-                isLast={index === concerns.length - 1}
-              />
-            </div>
-          ))}
-        </div>
+        {loading && (
+          <div className="pt-2 text-sm text-gray-500">불러오는 중...</div>
+        )}
+        {error && <div className="pt-2 text-sm text-red-500">{error}</div>}
+
+        {!loading && !error && (
+          <div className="pt-2">
+            {concerns.length === 0 && (
+              <div className="text-sm text-gray-500">검색 결과가 없습니다.</div>
+            )}
+
+            {concerns.map((item, index) => (
+              <div
+                key={item.id}
+                onClick={() => navigate(`/community/concerns/${item.id}`)}
+                className="cursor-pointer"
+              >
+                <ConcernCard
+                  name={item.author || '익명'}
+                  content={item.content}
+                  date={(item.createdAt || '').slice(5, 10)}
+                  isLast={index === concerns.length - 1}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <button
