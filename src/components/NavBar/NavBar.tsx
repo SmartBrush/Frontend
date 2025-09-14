@@ -1,7 +1,7 @@
 import CommunityIcon from '../../assets/Community.svg'
 import ResultIcon from '../../assets/Result.svg'
 import MainIcon from '../../assets/Main.svg'
-import RecommendIcon from '../../assets/Recommendation.svg'
+import RecommendIcon from '../../assets/Recommendation.png'
 import MypageIcon from '../../assets/Mypage.svg'
 import NavButton from './NavButton'
 

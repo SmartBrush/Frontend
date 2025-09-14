@@ -18,6 +18,7 @@ import ConcernPostPage from './pages/ConcernPostPage'
 import ScalpSurveyPage from './pages/ScalpSurveyPage'
 import EditProfilePage from './pages/EditProfilePage'
 import MonthlyReportPage from './pages/MonthlyReportPage'
+import LastResultPage from './pages/LastResultPage'
 
 const router = createBrowserRouter([
   {
@@ -92,6 +93,10 @@ const router = createBrowserRouter([
       {
         path: 'reports',
         element: <MonthlyReportPage />,
+      },
+      {
+        path: 'result/:date',
+        element: <LastResultPage />,
       },
     ],
   },

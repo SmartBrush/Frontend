@@ -35,3 +35,8 @@ export async function fetchMonthlyStatuses(year: number, month1to12: number) {
   )
   return data
 }
+
+export const fetchDiagnosisByDate = async (date: string) => {
+  const response = await API.get(`/api/main/diagnosis/${date}`)
+  return response.data[0] // 1개의 결과만 반환하므로 배열의 첫 번째 요소 반환
+}

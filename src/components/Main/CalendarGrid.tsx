@@ -3,6 +3,7 @@ import blankIcon from '../../assets/Blank.svg'
 import goodIcon from '../../assets/goodstatus.png'
 import normalIcon from '../../assets/normalIstatus.png'
 import badIcon from '../../assets/badstatus.png'
+import { useNavigate } from 'react-router-dom'
 
 interface CalendarGridProps {
   year: number
@@ -30,6 +31,11 @@ function getCalendarDays(year: number, month: number): (number | null)[] {
 
 function CalendarGrid({ year, month, markedDates }: CalendarGridProps) {
   const calendarDays = getCalendarDays(year, month)
+  const navigate = useNavigate()
+
+  const handleDateClick = (date: string) => {
+    navigate(`/result/${date}`)
+  }
 
   return (
     <>
@@ -67,7 +73,8 @@ function CalendarGrid({ year, month, markedDates }: CalendarGridProps) {
           return (
             <div
               key={idx}
-              className="w-[30px] h-[52px] flex flex-col items-center justify-start mx-auto"
+              className="w-[30px] h-[52px] flex flex-col items-center justify-start mx-auto cursor-pointer"
+              onClick={() => handleDateClick(dateStr)}
             >
               <img
                 src={statusIcon}
