@@ -19,6 +19,9 @@ import ScalpSurveyPage from './pages/ScalpSurveyPage'
 import EditProfilePage from './pages/EditProfilePage'
 import MonthlyReportPage from './pages/MonthlyReportPage'
 import LastResultPage from './pages/LastResultPage'
+import MyPostsPage from './pages/MyPostsPage'
+import MyCommentsPage from './pages/MyCommentsPage'
+import WishlistPage from './pages/WishlistPage'
 
 const router = createBrowserRouter([
   {
@@ -69,6 +72,18 @@ const router = createBrowserRouter([
       {
         path: 'mypage',
         element: <MyPage />,
+      },
+      {
+        path: 'mypage/wishlist',
+        element: <WishlistPage />,
+      },
+      {
+        path: 'mypage/posts',
+        element: <MyPostsPage />,
+      },
+      {
+        path: 'mypage/comments',
+        element: <MyCommentsPage />,
       },
       {
         path: 'mypage/edit',

@@ -1,25 +1,47 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import profile from '../assets/profile.png'
 import { IoCamera } from 'react-icons/io5'
 import { ChevronLeft } from 'lucide-react'
-import API from '../apis/api'
+import { getMyPageData, updateMyProfile, type MyPageData } from '../apis/my'
 
 const EditProfilePage = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const state = location.state as {
+  const state = (location.state ?? {}) as {
     nickname?: string
     email?: string
     avatarUrl?: string
   }
 
-  const [nickname, setNickname] = useState(state?.nickname || '')
-  const [email, setEmail] = useState(state?.email || '')
+  const [nickname, setNickname] = useState(state?.nickname ?? '')
+  const [email, setEmail] = useState(state?.email ?? '')
   const [avatar, setAvatar] = useState(
     state?.avatarUrl?.trim() ? state.avatarUrl : profile,
   )
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    let alive = true
+    setLoading(true)
+    ;(async () => {
+      try {
+        const data: MyPageData = await getMyPageData()
+        if (!alive) return
+        setNickname(data.nickname ?? '')
+        setEmail(data.email ?? '')
+        setAvatar(data.profileImage?.trim() ? data.profileImage : profile)
+      } catch (err) {
+        console.error('마이페이지 조회 실패:', err)
+      } finally {
+        if (alive) setLoading(false)
+      }
+    })()
+    return () => {
+      alive = false
+    }
+  }, [])
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -34,12 +56,11 @@ const EditProfilePage = () => {
       const payload = {
         nickname,
         email,
+
         profileImage: avatar === profile ? '' : avatar,
       }
-
-      await API.patch('/api/mypage/update', payload)
-
-      navigate('/mypage')
+      await updateMyProfile(payload)
+      navigate('/mypage', { replace: true })
     } catch (err) {
       console.error('프로필 수정 실패:', err)
       alert('프로필 수정에 실패했습니다.')
@@ -47,11 +68,15 @@ const EditProfilePage = () => {
   }
 
   return (
-    <div className="bg-[#F3F3F3] flex flex-col justify-between overflow-hidden">
+    <div className="bg-[#F3F3F3] min-h-screen flex flex-col justify-between overflow-hidden">
       <div>
         {/* 헤더 */}
         <div className="px-[20px] pt-[20px] flex items-center text-[20px] font-semibold text-[#000000] pb-[10px]">
-          <button onClick={() => navigate('/')} className="mr-1">
+          <button
+            onClick={() => navigate('/mypage')}
+            className="mr-1"
+            aria-label="뒤로가기"
+          >
             <ChevronLeft size={22} />
           </button>
           <span>내 정보 수정</span>
@@ -92,6 +117,7 @@ const EditProfilePage = () => {
                 className="w-full mt-1 h-[52px] bg-white focus:none border-[#AAAAAA] rounded-[9.72px] px-[14.58px] text-[16px]"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
+                disabled={loading}
               />
             </div>
 
@@ -101,6 +127,7 @@ const EditProfilePage = () => {
                 className="w-full mt-1 h-[52px] bg-white focus:none border-[#AAAAAA] rounded-[9.72px] px-[14.58px] text-[16px]"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
               />
             </div>
           </div>
@@ -111,9 +138,10 @@ const EditProfilePage = () => {
       <div className="w-full px-[20px] pt-[70px] pb-8 bg-[#F3F3F3]">
         <button
           onClick={handleSave}
-          className="w-[335px] h-[52px] bg-white text-black rounded-[9.72px] text-[16px] font-semibold"
+          disabled={loading}
+          className="w-[335px] h-[52px] bg-white text-black rounded-[9.72px] text-[16px] font-semibold disabled:opacity-60"
         >
-          저장
+          {loading ? '불러오는 중…' : '저장'}
         </button>
       </div>
     </div>
