@@ -7,10 +7,10 @@ export type MetricKey =
 
 export interface MonthlyRecord {
   month: string // '2025-05' 형식
-  values: Record<MetricKey, number> // 0~100 가정
+  values: Record<MetricKey, number> // 0~100
 }
 
 export interface MonthlyReportResponse {
   userName: string
-  months: MonthlyRecord[] // 5~8월
+  months: MonthlyRecord[]
 }
