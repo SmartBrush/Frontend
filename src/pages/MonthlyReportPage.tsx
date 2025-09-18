@@ -7,56 +7,58 @@ import TrendChart from '../components/Monthly/TrendChart'
 import ProductRecommendButton from '../components/Result/ProductRecommendButton'
 import type { MetricKey, MonthlyRecord } from '../types/report'
 
+// 안전한 문자열만 통과
+const clean = (s: unknown): string =>
+  typeof s === 'string' && s.trim() !== '' && !s.includes('@') ? s.trim() : ''
+
+// 캐시된 닉네임 우선
 const pickCachedNickname = (): string => {
   const c =
     localStorage.getItem('user_nickname') ??
     localStorage.getItem('user_name') ??
     localStorage.getItem('nickname') ??
     ''
-  return c && !c.includes('@') ? c : '사용자'
+  return clean(c) || '사용자'
 }
 
+// JWT payload에서 name/nickname 추출
 const decodeJwt = (token: string) => {
   try {
     const part = token.split('.')[1]
     if (!part) return null
     const b64 = part.replace(/-/g, '+').replace(/_/g, '/')
     const pad = b64.length % 4 === 2 ? '==' : b64.length % 4 === 3 ? '=' : ''
-    return JSON.parse(atob(b64 + pad))
+    return JSON.parse(atob(b64 + pad)) as Record<string, unknown>
   } catch {
     return null
   }
 }
 
-const resolveNickname = async (): Promise<string> => {
+// 서버에서 이름 가져오기 → 보고서/토큰/캐시 순으로 폴백
+const resolveDisplayName = async (): Promise<string> => {
   try {
-    const r = await API.get('/api/mypage')
-    const raw = r?.data?.data ?? r?.data ?? {}
-    const rawNick: string = raw.nickname ?? raw.name ?? ''
-    const safe = rawNick && !rawNick.includes('@') ? rawNick : ''
-    if (safe) {
-      localStorage.setItem('user_nickname', safe)
-      localStorage.setItem('user_name', safe)
-      return safe
+    const r = await API.get<unknown>('/api/mypage')
+    if (r && typeof r === 'object') {
+      // r.data 또는 r.data.data 형태 모두 대응
+      const raw = (r as any).data?.data ?? (r as any).data ?? (r as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+      const name = clean(raw?.nickname ?? raw?.name)
+      if (name) return name
     }
   } catch {
-    //noop
+    /* noop */
   }
-
   try {
-    const r = await API.get('/api/users/me')
-    const raw = r?.data?.data ?? r?.data ?? {}
-    const rawNick: string = raw.nickname ?? raw.name ?? ''
-    const safe = rawNick && !rawNick.includes('@') ? rawNick : ''
-    if (safe) {
-      localStorage.setItem('user_nickname', safe)
-      localStorage.setItem('user_name', safe)
-      return safe
+    const r = await API.get<unknown>('/api/users/me')
+    if (r && typeof r === 'object') {
+      const raw = (r as any).data?.data ?? (r as any).data ?? (r as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+      const name = clean(raw?.nickname ?? raw?.name)
+      if (name) return name
     }
   } catch {
-    //noop
+    /* noop */
   }
 
+  // 2) 토큰
   const token =
     localStorage.getItem('access_token') ??
     localStorage.getItem('accessToken') ??
@@ -64,16 +66,11 @@ const resolveNickname = async (): Promise<string> => {
     ''
   if (token) {
     const p = decodeJwt(token)
-    const rawNick: string | undefined = (p?.nickname ?? p?.name) as
-      | string
-      | undefined
-    const safe = rawNick && !rawNick.includes('@') ? rawNick : ''
-    if (safe) {
-      localStorage.setItem('user_nickname', safe)
-      localStorage.setItem('user_name', safe)
-      return safe
-    }
+    const name = clean(p?.nickname ?? p?.name)
+    if (name) return name
   }
+
+  // 3) 캐시
   return pickCachedNickname()
 }
 
@@ -88,14 +85,25 @@ export default function MonthlyReportPage() {
   useEffect(() => {
     ;(async () => {
       try {
-        const resolved = await resolveNickname()
-        setName(resolved)
-        const report = await getMonthlyReport(resolved)
+        const [report, displayName] = await Promise.all([
+          getMonthlyReport(),
+          resolveDisplayName(),
+        ])
+
+        const finalName =
+          clean(displayName) || clean(report.userName) || pickCachedNickname()
+
+        setName(finalName)
         setMonths(report.months)
+
+        // 캐시 최신화
+        localStorage.setItem('user_nickname', finalName)
+        localStorage.setItem('user_name', finalName)
       } catch {
+        // 완전 실패 시에도 최소 폴백
         const fb = pickCachedNickname()
         setName(fb)
-        const report = await getMonthlyReport(fb)
+        const report = await getMonthlyReport()
         setMonths(report.months)
       } finally {
         setLoading(false)
@@ -135,10 +143,9 @@ export default function MonthlyReportPage() {
         <p className="mt-1 text-[15px] font-bold text-black">두피검사 요약</p>
       </header>
 
-      {/* 카드: 위 3개 / 아래 2개 */}
       <section className="mt-3 grid grid-cols-6 gap-3">
         {METRICS.map((m, idx) => {
-          // ✅ 핵심: 활성 지표만 선택한 월 값, 나머지는 최신 달 값
+          // 활성 지표만 선택한 월 값, 나머지는 최신 달 값
           const baseValue = latest.values[m.key]
           const value =
             m.key === metricKey && selectedRecord
