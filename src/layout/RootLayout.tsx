@@ -98,7 +98,7 @@ const RootLayout = () => {
     pathname.startsWith('/question') || pathname.startsWith('/login')
 
   // / 일 때만 green, 나머지는 white
-  const navbarBg = pathname === '/' ? 'bg-[rgba(182,232,178,0.5)]' : 'bg-white'
+  // const navbarBg = pathname === '/' ? 'bg-[rgba(182,232,178,0.5)]' : 'bg-white'
 
   return (
     <div className="min-h-screen w-full flex justify-center bg-[#313131] font-[Pretendard]">
@@ -107,14 +107,12 @@ const RootLayout = () => {
         {/* 안쪽에서만 스크롤 */}
         <main className="flex-1 overflow-y-auto bg-white">
           <Outlet />
+          {!hideNavbar && (
+            <div className={`h-[72px] w-full shrink-0 `}>
+              <Navbar />
+            </div>
+          )}
         </main>
-
-        {/* NavBar는 hideNavbar 아닐 때만 */}
-        {!hideNavbar && (
-          <div className={`h-[72px] w-full shrink-0 ${navbarBg}`}>
-            <Navbar />
-          </div>
-        )}
       </div>
     </div>
   )
