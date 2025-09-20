@@ -6,6 +6,8 @@ import SummaryCard from '../components/Monthly/SummaryCard'
 import TrendChart from '../components/Monthly/TrendChart'
 import ProductRecommendButton from '../components/Result/ProductRecommendButton'
 import type { MetricKey, MonthlyRecord } from '../types/report'
+import { useNavigate } from 'react-router-dom'
+import Back from '../assets/back.svg'
 
 // 안전한 문자열만 통과
 const clean = (s: unknown): string =>
@@ -45,7 +47,7 @@ const resolveDisplayName = async (): Promise<string> => {
       if (name) return name
     }
   } catch {
-    /* noop */
+    /* */
   }
   try {
     const r = await API.get<unknown>('/api/users/me')
@@ -55,7 +57,7 @@ const resolveDisplayName = async (): Promise<string> => {
       if (name) return name
     }
   } catch {
-    /* noop */
+    /* */
   }
 
   // 2) 토큰
@@ -75,6 +77,7 @@ const resolveDisplayName = async (): Promise<string> => {
 }
 
 export default function MonthlyReportPage() {
+  const navigate = useNavigate()
   const [name, setName] = useState<string>(pickCachedNickname())
   const [months, setMonths] = useState<MonthlyRecord[] | null>(null)
   const [loading, setLoading] = useState(true)
@@ -135,7 +138,18 @@ export default function MonthlyReportPage() {
   if (!months || !latest) return <div className="p-5">데이터가 없습니다.</div>
 
   return (
-    <div className="mx-auto max-w-[420px] p-4">
+    <div className="mx-auto max-w-[420px] px-4 py-[15px]">
+      <div className="pb-[15px] flex items-center text-[20px] font-semibold text-gray-800">
+        <button
+          onClick={() => navigate('/')}
+          className="mr-2 cursor-pointer"
+          aria-label="뒤로가기"
+        >
+          <img src={Back} alt="뒤로가기" className="w-4 h-4" />
+        </button>
+        <span>월별 레포트</span>
+      </div>
+
       <header className="mt-1">
         <h2 className="text-[20px] font-extrabold text-gray-900">
           {name}님의 월별 레포트

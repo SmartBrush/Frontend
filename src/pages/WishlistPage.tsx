@@ -32,7 +32,7 @@ const WishlistPage = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* 상단 바 */}
-      <div className="px-[20px] py-[20px] flex items-center text-lg font-semibold text-gray-800">
+      <div className="px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800">
         <button
           onClick={() => navigate(-1)}
           className="mr-2 cursor-pointer"
@@ -48,7 +48,9 @@ const WishlistPage = () => {
         {loading && <div className="text-sm text-gray-500">불러오는 중…</div>}
         {error && <div className="text-sm text-red-600">{error}</div>}
         {!loading && !error && items.length === 0 && (
-          <div className="text-sm text-gray-500">찜한 제품이 없어요.</div>
+          <div className="text-sm text-gray-500">
+            찜한 제품이 아직 없습니다.
+          </div>
         )}
 
         {!loading && !error && items.length > 0 && (

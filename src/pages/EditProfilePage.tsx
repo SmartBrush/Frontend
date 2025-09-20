@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import profile from '../assets/profile.png'
 import { IoCamera } from 'react-icons/io5'
-import { ChevronLeft } from 'lucide-react'
+import Back from '../assets/back.svg'
 import { getMyPageData, updateMyProfile, type MyPageData } from '../apis/my'
 
 const EditProfilePage = () => {
@@ -71,13 +71,13 @@ const EditProfilePage = () => {
     <div className="bg-[#F3F3F3] min-h-screen flex flex-col justify-between overflow-hidden">
       <div>
         {/* 헤더 */}
-        <div className="px-[20px] pt-[20px] flex items-center text-[20px] font-semibold text-[#000000] pb-[10px]">
+        <div className="px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800">
           <button
             onClick={() => navigate('/mypage')}
-            className="mr-1"
+            className="mr-2 cursor-pointer"
             aria-label="뒤로가기"
           >
-            <ChevronLeft size={22} />
+            <img src={Back} alt="뒤로가기" className="w-4 h-4" />
           </button>
           <span>내 정보 수정</span>
         </div>
