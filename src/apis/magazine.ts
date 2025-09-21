@@ -27,7 +27,7 @@ export const getAllMagazines = async (size = 20): Promise<Magazine[]> => {
 // 칼럼 검색 (title 기준)
 export const searchMagazines = async (
   keyword: string,
-  size = 20,
+  size = 100,
 ): Promise<Magazine[]> => {
   const { data } = await API.get<Magazine[]>('/api/magazines/search', {
     params: { keyword, size },

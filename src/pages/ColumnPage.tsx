@@ -23,13 +23,13 @@ const ColumnPage = () => {
       const trimmed = kw.trim()
 
       if (trimmed.length === 0) {
-        const data = await getAllMagazines(20)
+        const data = await getAllMagazines(100)
         if (data.length > 0) {
           setMain((prev) => prev ?? data[0])
           setList(data.slice(1))
         }
       } else {
-        const data = await searchMagazines(trimmed, 20)
+        const data = await searchMagazines(trimmed, 100)
         setList(data)
       }
     } catch (e) {
