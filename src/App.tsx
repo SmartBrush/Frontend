@@ -4,6 +4,7 @@ import RootLayout from './layout/RootLayout'
 import NotFoundPage from './pages/NotFoundPage'
 import Main from './pages/MainPage'
 import CommunityPage from './pages/CommunityPage'
+import ColumnPage from './pages/ColumnPage'
 import ResultPage from './pages/ResultPage'
 import RecommendPage from './pages/RecommendPage'
 import MyPage from './pages/Mypage'
@@ -12,7 +13,6 @@ import SignUpPage from './pages/SignUpPage'
 import SignInPage from './pages/SignInPage'
 import ProductRecommendationPage from './pages/ProductRecommendationPage'
 import ProductDetailPage from './pages/ProductDetailPage'
-import HotTopicDetailPage from './pages/HotTopicDetailPage'
 import ConcernDetailPage from './pages/ConcernDetailPage'
 import ConcernPostPage from './pages/ConcernPostPage'
 import ScalpSurveyPage from './pages/ScalpSurveyPage'
@@ -46,8 +46,8 @@ const router = createBrowserRouter([
         element: <CommunityPage />,
       },
       {
-        path: 'community/hot-topics/:id',
-        element: <HotTopicDetailPage />,
+        path: 'community/column',
+        element: <ColumnPage />,
       },
       {
         path: 'community/concerns/:id',
