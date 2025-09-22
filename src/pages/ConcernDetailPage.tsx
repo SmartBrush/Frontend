@@ -7,137 +7,92 @@ import likeIcon from '../assets/like.svg'
 import likeIconPressed from '../assets/likepressed.svg'
 import commentIcon from '../assets/comment.svg'
 
-interface Comment {
-  id: number
-  author: string
-  content: string
-  profileImage: string
-  createdAt: string
-}
-
-interface Concern {
-  id: number
-  name: string
-  title: string
-  content: string
-  date: string
-}
+import {
+  fetchConcernDetail,
+  fetchComments,
+  createComment,
+  updateComment,
+  deleteComment,
+  toggleLike,
+  type ConcernDetail,
+  type CommentItem,
+} from '../apis/community'
 
 export default function ConcernDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const [concern, setConcern] = useState<Concern | null>(null)
-  const [comments, setComments] = useState<Comment[]>([])
+
+  const [concern, setConcern] = useState<ConcernDetail | null>(null)
+  const [comments, setComments] = useState<CommentItem[]>([])
   const [comment, setComment] = useState('')
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null)
   const [editContent, setEditContent] = useState('')
-  const [liked, setLiked] = useState(false)
-  const [likeCount, setLikeCount] = useState<number>(0)
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token')
-    if (!id || !token) return
-
-    const fetchData = async () => {
+    if (!id) return
+    ;(async () => {
       try {
-        const concernRes = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/api/community/detail/${id}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        )
-        if (!concernRes.ok) throw new Error('상세 불러오기 실패')
-        const concernData = await concernRes.json()
-
-        setConcern({
-          id: concernData.id,
-          name: concernData.author || '익명',
-          title: concernData.title,
-          content: concernData.content,
-          date: new Date(concernData.createdAt).toLocaleString('ko-KR', {
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-          }),
-        })
-
-        const commentRes = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/api/community/${id}/comments`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        )
-        if (!commentRes.ok) throw new Error('댓글 불러오기 실패')
-        const commentData = await commentRes.json()
-
-        setComments(commentData)
-      } catch (err) {
-        console.error('불러오기 실패:', err)
+        const [detail, list] = await Promise.all([
+          fetchConcernDetail(id),
+          fetchComments(id),
+        ])
+        setConcern(detail)
+        setComments(list)
+        // setConcern(prev => prev ? { ...prev, commentCount: list.length } : prev)
+      } catch (e) {
+        console.error(e)
       }
-    }
-
-    fetchData()
+    })()
   }, [id])
 
-  const handleToggleLike = () => {
-    setLiked((prev) => !prev)
-    setLikeCount((prev) => (liked ? prev - 1 : prev + 1))
+  if (!concern) return <div className="p-4">Loading...</div>
+
+  const handleToggleLike = async () => {
+    if (!id || !concern) return
+    try {
+      const res = await toggleLike(id, concern.liked)
+      setConcern({ ...concern, liked: res.liked, likeCount: res.likeCount })
+    } catch (e) {
+      console.error(e)
+      alert('좋아요 처리에 실패했습니다.')
+    }
   }
 
+  // 댓글 추가
   const handleAddComment = async () => {
-    if (!comment.trim() || !id) return
-    const token = localStorage.getItem('access_token')
-    if (!token) return alert('로그인이 필요합니다.')
-
+    if (!id || !comment.trim() || !concern) return
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/community/${id}/comments`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ content: comment }),
-        },
-      )
+      const created = await createComment(id, comment.trim())
+      if ('id' in created) setComments((prev) => [...prev, created])
 
-      if (!response.ok) throw new Error('댓글 작성 실패')
-
-      const newComment = await response.json()
-      setComments((prev) => [...prev, newComment])
+      if (typeof (created as any)?.commentCount === 'number') {
+        setConcern({ ...concern, commentCount: (created as any).commentCount })
+      } else {
+        const fresh = await fetchConcernDetail(id)
+        setConcern(fresh)
+      }
       setComment('')
-    } catch (err) {
-      console.error('댓글 작성 오류:', err)
+    } catch (e) {
+      console.error(e)
       alert('댓글 작성에 실패했습니다.')
     }
   }
 
+  // 댓글 삭제
   const handleDelete = async (commentId: number) => {
-    const token = localStorage.getItem('access_token')
-    if (!token) return
-
+    if (!id || !concern) return
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/community/comments/${commentId}`,
-        {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-
-      if (!res.ok) {
-        if (res.status === 403) alert('본인 댓글만 삭제할 수 있어요!')
-        else throw new Error('삭제 실패')
-        return
-      }
-
+      const res = await deleteComment(commentId)
       setComments((prev) => prev.filter((c) => c.id !== commentId))
-    } catch (err) {
-      console.error('댓글 삭제 실패:', err)
+
+      if (typeof (res as any)?.commentCount === 'number') {
+        setConcern({ ...concern, commentCount: (res as any).commentCount })
+      } else {
+        const fresh = await fetchConcernDetail(id)
+        setConcern(fresh)
+      }
+    } catch (e) {
+      console.error(e)
       alert('댓글 삭제 중 문제가 발생했습니다.')
     }
   }
@@ -148,30 +103,9 @@ export default function ConcernDetailPage() {
   }
 
   const handleEditSubmit = async (commentId: number) => {
-    const token = localStorage.getItem('access_token')
-    if (!token || !editContent.trim()) return
-
+    if (!editContent.trim()) return
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/community/comments/${commentId}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ content: editContent }),
-        },
-      )
-
-      if (!res.ok) {
-        if (res.status === 403) alert('본인 댓글만 수정할 수 있어요!')
-        else throw new Error('수정 실패')
-        return
-      }
-
-      const updated = await res.json()
-
+      const updated = await updateComment(commentId, editContent.trim())
       setComments((prev) =>
         prev.map((c) =>
           c.id === commentId ? { ...c, content: updated.content } : c,
@@ -179,18 +113,15 @@ export default function ConcernDetailPage() {
       )
       setEditingCommentId(null)
       setEditContent('')
-    } catch (err) {
-      console.error('댓글 수정 실패:', err)
+    } catch (e) {
+      console.error(e)
       alert('댓글 수정에 실패했습니다.')
     }
   }
 
-  if (!concern) return <div className="p-4">Loading...</div>
-
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <div className="flex-1 px-4 pt-4 pb-[120px]">
-        {/* 위쪽: 뒤로가기 + 커뮤니티 텍스트 */}
         <div className="pb-[12px] flex items-center text-[20px] font-semibold text-gray-800">
           <button
             onClick={() => navigate('/community/concerns')}
@@ -203,7 +134,6 @@ export default function ConcernDetailPage() {
         </div>
 
         <div className="mb-3 h-[215px] flex flex-col">
-          {/* 상단: 프로필/이름/날짜 */}
           <div>
             <div className="flex items-center mb-2">
               <img
@@ -212,19 +142,26 @@ export default function ConcernDetailPage() {
                 className="w-8 h-8 rounded-full mr-2 object-cover"
               />
               <div>
-                <p className="text-sm font-medium">{concern.name}</p>
-                <p className="text-xs text-gray-400">{concern.date}</p>
+                <p className="text-sm font-medium">
+                  {concern.author || '익명'}
+                </p>
+                <p className="text-xs text-gray-400">
+                  {new Date(concern.createdAt).toLocaleString('ko-KR', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </p>
               </div>
             </div>
 
-            {/* 제목/내용 */}
             <h2 className="text-lg font-bold mb-2">{concern.title}</h2>
             <p className="text-sm text-gray-700 mb-7 whitespace-pre-line">
               {concern.content}
             </p>
           </div>
 
-          {/* 하단: 버튼 2개 (아이콘 자체가 버튼) */}
           <div className="flex items-center gap-6 pt-2">
             {/* 좋아요 */}
             <button
@@ -233,30 +170,29 @@ export default function ConcernDetailPage() {
               className="relative"
             >
               <img
-                src={liked ? likeIconPressed : likeIcon}
+                src={concern.liked ? likeIconPressed : likeIcon}
                 alt="좋아요"
                 className="w-[172px] h-[50px] transition hover:opacity-80"
               />
-              {/* 카운트 오버레이 */}
-              <span
-                className="
-    pointer-events-none
-    absolute left-[300px] top-1/2 -translate-y-[48%]
-    text-[13px] font-semibold text-[#8C8C8C]
-  "
-                aria-hidden
-              >
-                {likeCount}
+              <span className="pointer-events-none absolute right-[38px] top-1/2 -translate-y-1/2 text-[13px] font-semibold text-[#8C8C8C]">
+                {concern.likeCount}
               </span>
             </button>
 
             {/* 댓글 */}
-            <button type="button">
+            <button
+              type="button"
+              onClick={() => document.getElementById('commentInput')?.focus()}
+              className="relative"
+            >
               <img
                 src={commentIcon}
                 alt="댓글"
                 className="w-[172px] h-[50px]"
               />
+              <span className="pointer-events-none absolute right-[58px] top-1/2 -translate-y-1/2 text-[13px] font-semibold text-[#8C8C8C]">
+                {concern.commentCount}
+              </span>
             </button>
           </div>
 

@@ -11,6 +11,8 @@ const fmtDate = (iso: string) => {
   return `${mm}.${dd}`
 }
 
+const postDetailPath = (postId: number) => `/community/concerns/${postId}`
+
 const MyCommentsPage = () => {
   const navigate = useNavigate()
   const [comments, setComments] = useState<MyComment[]>([])
@@ -22,7 +24,7 @@ const MyCommentsPage = () => {
       try {
         const data = await getMyComments()
         setComments(data)
-      } catch (e) {
+      } catch {
         setError('댓글을 불러오지 못했습니다.')
       } finally {
         setLoading(false)
@@ -54,13 +56,25 @@ const MyCommentsPage = () => {
           </div>
         ) : (
           comments.map((c, i) => (
-            <ConcernCard
+            <div
               key={c.id}
-              name={c.author}
-              content={c.content}
-              date={fmtDate(c.createdAt)}
-              isLast={i === comments.length - 1}
-            />
+              role="button"
+              tabIndex={0}
+              onClick={() => navigate(postDetailPath(c.postId))}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  navigate(postDetailPath(c.postId))
+                }
+              }}
+              className="cursor-pointer select-none outline-none active:opacity-90"
+            >
+              <ConcernCard
+                name={c.author}
+                content={c.content}
+                date={fmtDate(c.createdAt)}
+                isLast={i === comments.length - 1}
+              />
+            </div>
           ))
         )}
       </div>
