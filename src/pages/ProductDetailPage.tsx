@@ -43,8 +43,8 @@ const ProductDetailPage = () => {
     (product?.name ? extractBrandFallback(product.name) : '')
 
   return (
-    <div className="min-h-screen px-4 py-[17px] bg-white">
-      <div className="pb-[17px] flex items-center text-[20px] font-semibold text-gray-800">
+    <>
+      <div className="sticky top-0 z-50 px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800 bg-white">
         <button
           onClick={() => navigate(-1)}
           className="mr-2 cursor-pointer"
@@ -54,75 +54,80 @@ const ProductDetailPage = () => {
         </button>
         <span> </span>
       </div>
-      {/* 이미지 카드 */}
-      <section className="relative rounded-2xl bg-white p-3 shadow">
-        <div className="overflow-hidden rounded-xl bg-gray-50">
-          {loading ? (
-            <div className="aspect-square animate-pulse bg-gray-200" />
-          ) : product ? (
-            // 이미지 비율 유지
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full object-contain"
-              style={{ aspectRatio: '1 / 1' }}
-            />
-          ) : (
-            <div className="aspect-square grid place-items-center bg-gray-100 text-gray-400">
-              이미지 없음
+
+      <div className="min-h-screen px-4 py-[17px] bg-white">
+        {/* 이미지 카드 */}
+        <section className="relative rounded-2xl bg-white p-3 shadow">
+          <div className="overflow-hidden rounded-xl bg-gray-50">
+            {loading ? (
+              <div className="aspect-square animate-pulse bg-gray-200" />
+            ) : product ? (
+              // 이미지 비율 유지
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-full object-contain"
+                style={{ aspectRatio: '1 / 1' }}
+              />
+            ) : (
+              <div className="aspect-square grid place-items-center bg-gray-100 text-gray-400">
+                이미지 없음
+              </div>
+            )}
+          </div>
+
+          {/* 좋아요 버튼 */}
+          {product && (
+            <div className="absolute bottom-3 right-5">
+              <LikeButton productId={product.id} />
             </div>
           )}
-        </div>
-
-        {/* 좋아요 버튼 */}
-        {product && (
-          <div className="absolute bottom-3 right-5">
-            <LikeButton productId={product.id} />
+        </section>
+        {/* 정보 영역 */}
+        {loading && (
+          <div className="mt-6 animate-pulse space-y-3">
+            <div className="h-3 w-20 rounded bg-gray-200" />
+            <div className="h-6 w-4/5 rounded bg-gray-200" />
+            <div className="h-5 w-24 rounded bg-gray-200" />
           </div>
         )}
-      </section>
-      {/* 정보 영역 */}
-      {loading && (
-        <div className="mt-6 animate-pulse space-y-3">
-          <div className="h-3 w-20 rounded bg-gray-200" />
-          <div className="h-6 w-4/5 rounded bg-gray-200" />
-          <div className="h-5 w-24 rounded bg-gray-200" />
-        </div>
-      )}
-      {error && (
-        <p className="mt-6 text-center text-sm text-red-600">{error}</p>
-      )}
-      {product && !loading && (
-        <>
-          {/* 브랜드 */}
-          {!!brand && (
-            <p className="mt-5 text-medium font-light text-gray-500">{brand}</p>
-          )}
+        {error && (
+          <p className="mt-6 text-center text-sm text-red-600">{error}</p>
+        )}
+        {product && !loading && (
+          <>
+            {/* 브랜드 */}
+            {!!brand && (
+              <p className="mt-5 text-medium font-light text-gray-500">
+                {brand}
+              </p>
+            )}
 
-          {/* 제품명 + 가격*/}
-          <div className="mt-1">
-            <h1 className="flex-1 text-xl font-extrabold leading-snug text-gray-900">
-              {product.name}
-            </h1>
-            <div className="mt-2 ml-50 text-right font-bold text-gray-900 text-[18px]">
-              ₩{product.price.toLocaleString()}
+            {/* 제품명 + 가격*/}
+            <div className="mt-1">
+              <h1 className="flex-1 text-xl font-extrabold leading-snug text-gray-900">
+                {product.name}
+              </h1>
+              <div className="mt-2 ml-50 text-right font-bold text-gray-900 text-[18px]">
+                ₩{product.price.toLocaleString()}
+              </div>
             </div>
-          </div>
 
-          {/* CTA */}
-          <div className="mt-8">
-            <a
-              href={product.link}
-              target="_blank"
-              rel="noreferrer"
-              className="block w-full rounded-full bg-[#4E9366] py-3 text-center font-semibold text-white shadow-md hover:opacity-95 active:opacity-90"
-            >
-              올리브영 바로가기
-            </a>
-          </div>
-        </>
-      )}
-    </div>
+            {/* CTA */}
+            <div className="mt-8">
+              <a
+                href={product.link}
+                target="_blank"
+                rel="noreferrer"
+                className="block w-full rounded-full bg-[#4E9366] py-3 text-center font-semibold text-white shadow-md hover:opacity-95 active:opacity-90"
+              >
+                올리브영 바로가기
+              </a>
+            </div>
+          </>
+        )}
+      </div>
+    </>
   )
 }
 

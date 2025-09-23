@@ -138,8 +138,11 @@ export default function MonthlyReportPage() {
   if (!months || !latest) return <div className="p-5">데이터가 없습니다.</div>
 
   return (
-    <div className="mx-auto max-w-[420px] px-4 py-[15px]">
-      <div className="pb-[15px] flex items-center text-[20px] font-semibold text-gray-800">
+    <>
+      <div
+        className="sticky top-0 z-50 bg-white
+                px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800"
+      >
         <button
           onClick={() => navigate('/')}
           className="mr-2 cursor-pointer"
@@ -149,55 +152,56 @@ export default function MonthlyReportPage() {
         </button>
         <span>월별 레포트</span>
       </div>
+      <div className="mx-auto max-w-[420px] px-4 pb-[15px]">
+        <header>
+          <h2 className="text-[20px] font-extrabold text-gray-900">
+            {name}님의 월별 레포트
+          </h2>
+          <p className="mt-1 text-[15px] font-bold text-black">두피검사 요약</p>
+        </header>
 
-      <header className="mt-1">
-        <h2 className="text-[20px] font-extrabold text-gray-900">
-          {name}님의 월별 레포트
-        </h2>
-        <p className="mt-1 text-[15px] font-bold text-black">두피검사 요약</p>
-      </header>
+        <section className="mt-3 grid grid-cols-6 gap-3">
+          {METRICS.map((m, idx) => {
+            // 활성 지표만 선택한 월 값, 나머지는 최신 달 값
+            const baseValue = latest.values[m.key]
+            const value =
+              m.key === metricKey && selectedRecord
+                ? selectedRecord.values[m.key]
+                : baseValue
 
-      <section className="mt-3 grid grid-cols-6 gap-3">
-        {METRICS.map((m, idx) => {
-          // 활성 지표만 선택한 월 값, 나머지는 최신 달 값
-          const baseValue = latest.values[m.key]
-          const value =
-            m.key === metricKey && selectedRecord
-              ? selectedRecord.values[m.key]
-              : baseValue
+            const { label, tone } = scoreToStatus(value, m.direction)
 
-          const { label, tone } = scoreToStatus(value, m.direction)
+            let pos = 'col-span-2'
+            if (idx === 3) pos += ' col-start-2'
+            if (idx === 4) pos += ' col-start-4'
 
-          let pos = 'col-span-2'
-          if (idx === 3) pos += ' col-start-2'
-          if (idx === 4) pos += ' col-start-4'
+            return (
+              <div key={m.key} className={pos}>
+                <SummaryCard
+                  title={m.label}
+                  value={value}
+                  badgeText={label}
+                  badgeClass={toneToBadge(tone)}
+                  active={m.key === metricKey}
+                  onClick={() => setMetricKey(m.key)}
+                />
+              </div>
+            )
+          })}
+        </section>
 
-          return (
-            <div key={m.key} className={pos}>
-              <SummaryCard
-                title={m.label}
-                value={value}
-                badgeText={label}
-                badgeClass={toneToBadge(tone)}
-                active={m.key === metricKey}
-                onClick={() => setMetricKey(m.key)}
-              />
-            </div>
-          )
-        })}
-      </section>
+        {/* 선택 지표 차트 (선택 월 상태를 공유) */}
+        <section className="mt-4">
+          <TrendChart
+            data={months}
+            metricKey={metricKey}
+            selectedLabel={selectedLabel}
+            onSelectLabel={setSelectedLabel}
+          />
+        </section>
 
-      {/* 선택 지표 차트 (선택 월 상태를 공유) */}
-      <section className="mt-4">
-        <TrendChart
-          data={months}
-          metricKey={metricKey}
-          selectedLabel={selectedLabel}
-          onSelectLabel={setSelectedLabel}
-        />
-      </section>
-
-      <ProductRecommendButton />
-    </div>
+        <ProductRecommendButton />
+      </div>
+    </>
   )
 }

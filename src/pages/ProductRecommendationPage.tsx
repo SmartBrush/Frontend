@@ -57,7 +57,10 @@ export default function ProductRecommendationPage() {
   return (
     <div className="min-h-screen px-4 pb-16 bg-white">
       {/* 헤더 */}
-      <div className="flex items-center text-[20px] font-semibold text-gray-800">
+      <div
+        className="sticky top-0 z-50 bg-white
+                py-[15px] flex items-center text-[20px] font-semibold text-gray-800"
+      >
         <button
           onClick={() => navigate('/')}
           className="mr-2 cursor-pointer"
