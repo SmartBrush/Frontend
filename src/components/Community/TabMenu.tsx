@@ -32,8 +32,7 @@ const TabMenu = () => {
 
   return (
     <div className="flex flex-col font-[Pretendard] border-b border-gray-200 text-sm font-medium">
-      {/* 위쪽: 뒤로가기 + 커뮤니티 텍스트 */}
-      <div className="px-[20px] pt-[20px] flex items-center text-[20px] font-semibold text-gray-800">
+      <div className="px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800">
         <button
           onClick={() => navigate('/')}
           className="mr-2 cursor-pointer"
@@ -44,13 +43,13 @@ const TabMenu = () => {
         <span>커뮤니티</span>
       </div>
 
-      {/* 아래쪽: 탭 메뉴 */}
+      {/* 탭 메뉴 */}
       <div className="flex justify-center">
         {tabs.map((tab) => (
           <button
             key={tab}
             onClick={() => handleTabClick(tab)}
-            className={`flex-1 py-2 text-center transition-colors duration-200
+            className={`flex-1 py-2 text-center transition-colors duration-200 cursor-pointer
             ${
               activeTab === tab
                 ? 'text-[#4E9366] border-b-2 border-[#4E9366] font-semibold text-[15px]'

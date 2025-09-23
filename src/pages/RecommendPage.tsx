@@ -52,10 +52,10 @@ const RecommendPage = () => {
   return (
     <>
       {/* 상단 헤더 */}
-      <div className="pt-[10px] pr-[20px] pl-2 flex items-center text-lg font-semibold text-gray-800">
+      <div className="px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800">
         <button
           onClick={() => navigate('/')}
-          className="mr-2"
+          className="mr-2 cursor-pointer"
           aria-label="뒤로가기"
         >
           <img src={Back} alt="뒤로가기" className="w-4 h-4" />
