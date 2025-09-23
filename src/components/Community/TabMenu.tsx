@@ -10,7 +10,7 @@ const TabMenu = () => {
 
   // 현재 경로에 따라 탭 상태 설정
   useEffect(() => {
-    if (location.pathname.includes('/community/hot-topics')) {
+    if (location.pathname.includes('/community/column')) {
       setActiveTab('칼럼')
     } else if (location.pathname.includes('/community/concerns')) {
       setActiveTab('고민공유')
@@ -22,7 +22,7 @@ const TabMenu = () => {
   const handleTabClick = (tab: string) => {
     // 클릭 시 경로 이동
     if (tab === '칼럼') {
-      navigate('/community/hot-topics')
+      navigate('/community/column')
     } else if (tab === '고민공유') {
       navigate('/community/concerns')
     } else {
