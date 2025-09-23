@@ -54,7 +54,7 @@ const MyPage = () => {
 
         <UserProfile
           name={myPageData.nickname}
-          attendanceDays={myPageData.attendanceDays}
+          // attendanceDays={myPageData.attendanceDays}
           avatarUrl={myPageData.profileImage || '/avatar.png'}
         />
 
