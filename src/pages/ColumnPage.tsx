@@ -57,7 +57,7 @@ const ColumnPage = () => {
   }, [])
 
   return (
-    <div className="min-h-screen font-[Pretendard] bg-white flex flex-col justify-between">
+    <div className="min-h-screen mb-5 font-[Pretendard] bg-white flex flex-col justify-between">
       <div>
         <TabMenu />
         <ColumnSearchBar value={keyword} onChange={setKeyword} />
