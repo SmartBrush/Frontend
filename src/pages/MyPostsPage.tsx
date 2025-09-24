@@ -62,36 +62,37 @@ const MyPostsPage = () => {
 
       <div className="bg-[#f5f5f5] min-h-screen">
         <div className="bg-white px-[20px]">
-        {posts.length === 0 ? (
-          <div className="py-12 text-center text-[#8C8C8C] text-[14px]">
-            작성한 게시물이 없습니다.
-          </div>
-        ) : (
-          <ul className="divide-y divide-[#E3E3E3]">
-            {posts.map((p) => (
-              <li
-                key={p.id}
-                className="px-[20px] cursor-pointer"
-                onClick={() => navigate(`/community/concerns/${p.id}`)}
-                role="link"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    navigate(`/community/concerns/${p.id}`)
-                  }
-                }}
-              >
-                <ConcernCard
-                  name={p.author}
-                  content={p.title}
-                  date={fmtDate(p.createdAt)}
-                />
-              </li>
-            ))}
-          </ul>
-        )}
-       </div>
+          {posts.length === 0 ? (
+            <div className="py-12 text-center text-[#8C8C8C] text-[14px]">
+              작성한 게시물이 없습니다.
+            </div>
+          ) : (
+            <ul className="divide-y divide-[#E3E3E3]">
+              {posts.map((p) => (
+                <div
+                  key={p.id}
+                  className="px-[20px] cursor-pointer"
+                  onClick={() => navigate(`/community/concerns/${p.id}`)}
+                  role="link"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      navigate(`/community/concerns/${p.id}`)
+                    }
+                  }}
+                >
+                  <ConcernCard
+                    name={p.author}
+                    content={p.title}
+                    date={fmtDate(p.createdAt)}
+                  />
+                </div>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
     </>
   )
 }
