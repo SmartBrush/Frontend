@@ -18,6 +18,7 @@ export type MyComment = {
   author: string
   profileImage: string
   createdAt: string
+  postId: number
 }
 
 export const getMyComments = async (): Promise<MyComment[]> => {

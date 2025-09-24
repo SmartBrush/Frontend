@@ -59,6 +59,7 @@ const MyPostsPage = () => {
         </button>
         <span>내가 작성한 게시물</span>
       </div>
+
       <div className="bg-[#f5f5f5] min-h-screen">
         <div className="bg-white px-[20px]">
           {posts.length === 0 ? (
@@ -66,20 +67,29 @@ const MyPostsPage = () => {
               작성한 게시물이 없습니다.
             </div>
           ) : (
-            posts.map((p, i) => (
-              <div
-                key={p.id}
-                onClick={() => navigate(`/community/concerns/${p.id}`)}
-                className="cursor-pointer"
-              >
-                <ConcernCard
-                  name={p.author}
-                  content={p.title}
-                  date={fmtDate(p.createdAt)}
-                  isLast={i === posts.length - 1}
-                />
-              </div>
-            ))
+            <ul className="divide-y divide-[#E3E3E3]">
+              {posts.map((p) => (
+                <div
+                  key={p.id}
+                  className="px-[20px] cursor-pointer"
+                  onClick={() => navigate(`/community/concerns/${p.id}`)}
+                  role="link"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      navigate(`/community/concerns/${p.id}`)
+                    }
+                  }}
+                >
+                  <ConcernCard
+                    name={p.author}
+                    content={p.title}
+                    date={fmtDate(p.createdAt)}
+                  />
+                </div>
+              ))}
+            </ul>
           )}
         </div>
       </div>

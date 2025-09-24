@@ -11,6 +11,8 @@ const fmtDate = (iso: string) => {
   return `${mm}.${dd}`
 }
 
+const postDetailPath = (postId: number) => `/community/concerns/${postId}`
+
 const MyCommentsPage = () => {
   const navigate = useNavigate()
   const [comments, setComments] = useState<MyComment[]>([])
@@ -22,9 +24,8 @@ const MyCommentsPage = () => {
       try {
         const data = await getMyComments()
         setComments(data)
-      } catch (e) {
+      } catch {
         setError('댓글을 불러오지 못했습니다.')
-        console.log(e)
       } finally {
         setLoading(false)
       }
@@ -47,25 +48,36 @@ const MyCommentsPage = () => {
         </button>
         <span>내가 작성한 댓글</span>
       </div>
-
       <div className="bg-[#f5f5f5] min-h-screen">
-        <div className="bg-white px-[20px]">
-          {comments.length === 0 ? (
-            <div className="py-12 text-center text-[#8C8C8C] text-[14px]">
-              작성한 댓글이 없습니다.
-            </div>
-          ) : (
-            comments.map((c, i) => (
-              <ConcernCard
+        {comments.length === 0 ? (
+          <div className="py-12 text-center text-[#8C8C8C] text-[14px]">
+            작성한 댓글이 없습니다.
+          </div>
+        ) : (
+          <ul className="divide-y divide-[#E3E3E3]">
+            {comments.map((c) => (
+              <li
                 key={c.id}
-                name={c.author}
-                content={c.content}
-                date={fmtDate(c.createdAt)}
-                isLast={i === comments.length - 1}
-              />
-            ))
-          )}
-        </div>
+                className="px-[20px] cursor-pointer select-none outline-none active:opacity-90"
+                role="link"
+                tabIndex={0}
+                onClick={() => navigate(postDetailPath(c.postId))}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    navigate(postDetailPath(c.postId))
+                  }
+                }}
+              >
+                <ConcernCard
+                  name={c.author}
+                  content={c.content}
+                  date={fmtDate(c.createdAt)}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   )
