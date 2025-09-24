@@ -5,6 +5,11 @@ export type MonthlyStatusItem = {
   date: string // 'YYYY-MM-DD'
 }
 
+export type AttendanceResponse = {
+  email?: string
+  currentStreak: number
+}
+
 // 상태 → 달력 아이콘 카운트 매핑
 export function mapStatusToCount(status: string): number {
   switch (status) {
@@ -39,4 +44,13 @@ export async function fetchMonthlyStatuses(year: number, month1to12: number) {
 export const fetchDiagnosisByDate = async (date: string) => {
   const response = await API.get(`/api/main/diagnosis/${date}`)
   return response.data[0] // 1개의 결과만 반환하므로 배열의 첫 번째 요소 반환
+}
+
+//연속 출석 일 수
+export async function fetchAttendance(): Promise<AttendanceResponse> {
+  const token = localStorage.getItem('access_token') ?? ''
+  const { data } = await API.get<AttendanceResponse>('/api/attendance', {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  })
+  return data
 }

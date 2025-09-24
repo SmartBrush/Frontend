@@ -1,14 +1,36 @@
 import profile from '../../assets/profile.png'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { fetchAttendance } from '../../apis/main'
 
 interface UserProfileProps {
   name: string
-  attendanceDays: number
   avatarUrl: string
 }
 
-const UserProfile = ({ name, attendanceDays, avatarUrl }: UserProfileProps) => {
+const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
   const navigate = useNavigate()
+  const [streak, setStreak] = useState<number | null>(null)
+
+  useEffect(() => {
+    let mounted = true
+    fetchAttendance()
+      .then((res) => {
+        if (!mounted) return
+        setStreak(
+          typeof res?.currentStreak === 'number' ? res.currentStreak : 0,
+        )
+      })
+      .catch(() => {
+        if (!mounted) return
+        setStreak(0)
+      })
+    return () => {
+      mounted = false
+    }
+  }, [])
+
+  const showStreak = typeof streak === 'number' && streak > 0
 
   return (
     <div className="bg-[rgba(182,232,178,0.7)] h-[235px] flex items-center">
@@ -25,9 +47,13 @@ const UserProfile = ({ name, attendanceDays, avatarUrl }: UserProfileProps) => {
 
         <div className="pl-[35px]">
           <div className="font-bold text-[18px] text-[#4E9366]">{name} 님</div>
-          <div className="text-[14px] text-black">
-            {attendanceDays}일 째 연속 출석 중
-          </div>
+
+          {showStreak && (
+            <div className="text-[14px] text-black">
+              {streak}일 째 연속 출석 중
+            </div>
+          )}
+
           <button
             className="mt-[10px] w-[106.33px] h-[27.5px] rounded-[18.33px] bg-[#EBEBEB] text-[12px] text-gray-700 hover:bg-gray-300 transition cursor-pointer"
             onClick={() =>

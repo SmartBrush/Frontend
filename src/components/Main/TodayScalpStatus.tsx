@@ -206,11 +206,13 @@ import {
   type DiagnosisResult,
 } from '../../apis/diagnosis'
 import LoadingOverlay from './LoadingOverlay'
+import { fetchAttendance } from '../../apis/main'
 
 const TodayScalpStatus = () => {
   const navigate = useNavigate()
   const [diagnosis, setDiagnosis] = useState<TodayDiagnosis | null>(null)
   const [loading, setLoading] = useState(false)
+  const [streak, setStreak] = useState<number | null>(null)
 
   const statusColor = {
     양호: 'bg-[#24C205]',
@@ -245,22 +247,32 @@ const TodayScalpStatus = () => {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
+    const run = async () => {
       try {
-        const data = await fetchTodayDiagnosis()
-        setDiagnosis(data)
+        const [today, attendance] = await Promise.all([
+          fetchTodayDiagnosis().catch(() => null),
+          fetchAttendance().catch(() => null),
+        ])
+        if (today) setDiagnosis(today)
+        if (attendance) setStreak(attendance.currentStreak)
       } catch (err) {
-        console.error('오늘 진단 결과 조회 실패:', err)
+        console.error('초기 데이터 로드 실패:', err)
         setDiagnosis(null)
+        setStreak(null)
       }
     }
-    fetchData()
+    run()
   }, [])
 
   const emptyText =
     diagnosis && !isDiagnosisOk(diagnosis) && 'message' in diagnosis
       ? `${diagnosis.nickname}님, ${diagnosis.message}`
       : '사용자님, 아직 두피 진단 결과가 없어요!'
+
+  const streakText =
+    typeof streak === 'number' && streak > 0
+      ? `🔥${streak}일째 연속 진단 중`
+      : null
 
   // 업로드+진단 실행 → ResultPage로 이동
   const handleUploadAndGo = async () => {
@@ -310,7 +322,9 @@ const TodayScalpStatus = () => {
       )}
       <div className="bg-[rgba(182,232,178,0.5)] rounded-t-[20px] px-5 py-4 pb-10 text-black flex flex-col justify-start">
         <div className="flex flex-col gap-1">
-          <p className="text-[15px] font-semibold">🔥 1일째 연속 진단 중</p>
+          {streakText && (
+            <p className="text-[15px] font-semibold">{streakText}</p>
+          )}
           <p className="text-[20px] font-semibold">{formatKoreanDate()}</p>
         </div>
 

@@ -55,7 +55,7 @@ export default function ConcernListPage() {
       {/* onSubmit 제거 */}
       <SearchBar value={keyword} onChange={setKeyword} />
 
-      <div className="px-4 pb-24">
+      <div className="px-4 pb-5">
         {loading && (
           <div className="pt-2 text-sm text-gray-500">불러오는 중...</div>
         )}
