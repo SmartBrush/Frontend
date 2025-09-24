@@ -48,8 +48,8 @@ const MyPostsPage = () => {
   if (error) return <div className="p-4">{error}</div>
 
   return (
-    <div className="bg-[#f5f5f5] min-h-screen">
-      <div className="px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800">
+    <>
+      <div className="sticky top-0 z-50 px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800 bg-[#f5f5f5]">
         <button
           onClick={() => navigate(-1)}
           className="mr-2 cursor-pointer"
@@ -60,7 +60,8 @@ const MyPostsPage = () => {
         <span>내가 작성한 게시물</span>
       </div>
 
-      <div className="bg-white">
+      <div className="bg-[#f5f5f5] min-h-screen">
+        <div className="bg-white px-[20px]">
         {posts.length === 0 ? (
           <div className="py-12 text-center text-[#8C8C8C] text-[14px]">
             작성한 게시물이 없습니다.
@@ -90,8 +91,8 @@ const MyPostsPage = () => {
             ))}
           </ul>
         )}
-      </div>
-    </div>
+       </div>
+    </>
   )
 }
 

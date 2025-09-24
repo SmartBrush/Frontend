@@ -43,21 +43,19 @@ const ProductDetailPage = () => {
     (product?.name ? extractBrandFallback(product.name) : '')
 
   return (
-    <div className="min-h-screen bg-white mt-5">
-      <div className="mx-auto w-full max-w-[360px] px-4 pt-4 pb-24">
-        {/* 헤더 */}
-        <header className="mb-4 flex items-center">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="p-0 bg-transparent" // CHANGED: 배경 제거
-            aria-label="뒤로가기"
-          >
-            <img src={Back} alt="뒤로가기" className="w-4 h-4" />{' '}
-            {/* CHANGED: 아이콘만 */}
-          </button>
-        </header>
+    <>
+      <div className="sticky top-0 z-50 px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800 bg-white">
+        <button
+          onClick={() => navigate(-1)}
+          className="mr-2 cursor-pointer"
+          aria-label="뒤로가기"
+        >
+          <img src={Back} alt="뒤로가기" className="w-4.5 h-4.5" />
+        </button>
+        <span> </span>
+      </div>
 
+      <div className="min-h-screen px-4 py-[17px] bg-white">
         {/* 이미지 카드 */}
         <section className="relative rounded-2xl bg-white p-3 shadow">
           <div className="overflow-hidden rounded-xl bg-gray-50">
@@ -85,7 +83,6 @@ const ProductDetailPage = () => {
             </div>
           )}
         </section>
-
         {/* 정보 영역 */}
         {loading && (
           <div className="mt-6 animate-pulse space-y-3">
@@ -94,11 +91,9 @@ const ProductDetailPage = () => {
             <div className="h-5 w-24 rounded bg-gray-200" />
           </div>
         )}
-
         {error && (
           <p className="mt-6 text-center text-sm text-red-600">{error}</p>
         )}
-
         {product && !loading && (
           <>
             {/* 브랜드 */}
@@ -132,7 +127,7 @@ const ProductDetailPage = () => {
           </>
         )}
       </div>
-    </div>
+    </>
   )
 }
 

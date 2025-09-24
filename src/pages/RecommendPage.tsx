@@ -51,8 +51,10 @@ const RecommendPage = () => {
 
   return (
     <>
-      {/* 상단 헤더 */}
-      <div className="px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800">
+      <div
+        className="sticky top-0 z-50 bg-white
+                px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800"
+      >
         <button
           onClick={() => navigate('/')}
           className="mr-2 cursor-pointer"

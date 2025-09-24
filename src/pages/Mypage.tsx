@@ -38,10 +38,12 @@ const MyPage = () => {
   if (!myPageData) return <div className="p-4">로딩 중...</div>
 
   return (
-    <div className="bg-[#f5f5f5] flex flex-col min-h-screen justify-between overflow-hidden">
-      {/* 상단 콘텐츠 */}
+    <div className="bg-[#f5f5f5] flex flex-col min-h-screen justify-between">
       <div>
-        <div className="px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800">
+        <div
+          className="sticky top-0 z-50 bg-white
+                px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800"
+        >
           <button
             onClick={() => navigate('/')}
             className="mr-2 cursor-pointer"
@@ -54,7 +56,7 @@ const MyPage = () => {
 
         <UserProfile
           name={myPageData.nickname}
-          attendanceDays={myPageData.attendanceDays}
+          // attendanceDays={myPageData.attendanceDays}
           avatarUrl={myPageData.profileImage || '/avatar.png'}
         />
 

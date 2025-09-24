@@ -55,12 +55,15 @@ export default function ProductRecommendationPage() {
   const category = CATEGORY_MAP[filter]
 
   return (
-    <div className="min-h-screen px-3 pb-16 bg-white">
+    <div className="min-h-screen px-4 pb-16 bg-white">
       {/* 헤더 */}
-      <div className="pl-0 pr-[20px] pt-[20px] ml-1 flex items-center text-lg font-semibold text-gray-800">
+      <div
+        className="sticky top-0 z-50 bg-white
+                py-[15px] flex items-center text-[20px] font-semibold text-gray-800"
+      >
         <button
           onClick={() => navigate('/')}
-          className="mr-2"
+          className="mr-2 cursor-pointer"
           aria-label="뒤로가기"
         >
           <img src={Back} alt="뒤로가기" className="w-4 h-4" />
@@ -70,7 +73,10 @@ export default function ProductRecommendationPage() {
 
       {/* 상단: MBTI 카드(있으면) / 없으면 안내 */}
       {mbtiType ? (
-        <div className="bg-[#B6E8B2]/50 rounded-xl p-3 mb-6" data-mbti-block>
+        <div
+          className="bg-[rgba(182,232,178,0.7)] rounded-xl p-3 mb-6"
+          data-mbti-block
+        >
           <h1 className="text-xl font-extrabold leading-snug text-black">
             또또가 추천하는 <br />
             <span className="text-[#111]">

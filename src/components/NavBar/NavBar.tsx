@@ -7,7 +7,7 @@ import NavButton from './NavButton'
 
 const NavBar = () => {
   return (
-    <div className="fixed bottom-0 h-[64px] w-full max-w-[400px] bg-[#F5F5F5] justify-center rounded-t-[30px] shadow-md border-t border-gray-300 navbar">
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 h-[72px] w-full max-w-[400px] bg-[#F5F5F5] rounded-t-[30px] shadow-md border-t border-gray-300">
       <div className="flex justify-around items-center py-3">
         <NavButton
           to="/community"

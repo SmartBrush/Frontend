@@ -26,6 +26,7 @@ const MyCommentsPage = () => {
         setComments(data)
       } catch {
         setError('댓글을 불러오지 못했습니다.')
+        console.log(e)
       } finally {
         setLoading(false)
       }
@@ -37,8 +38,8 @@ const MyCommentsPage = () => {
   if (error) return <div className="p-4">{error}</div>
 
   return (
-    <div className="bg-[#f5f5f5] min-h-screen">
-      <div className="px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800">
+    <>
+      <div className="sticky top-0 z-50 px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800 bg-[#f5f5f5]">
         <button
           onClick={() => navigate(-1)}
           className="mr-2 cursor-pointer"
@@ -48,8 +49,7 @@ const MyCommentsPage = () => {
         </button>
         <span>내가 작성한 댓글</span>
       </div>
-
-      <div className="bg-white px-[20px]">
+      <div className="bg-[#f5f5f5] min-h-screen">
         {comments.length === 0 ? (
           <div className="py-12 text-center text-[#8C8C8C] text-[14px]">
             작성한 댓글이 없습니다.
@@ -80,7 +80,7 @@ const MyCommentsPage = () => {
           </ul>
         )}
       </div>
-    </div>
+    </>
   )
 }
 
