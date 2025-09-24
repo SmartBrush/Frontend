@@ -62,25 +62,34 @@ export default function ConcernListPage() {
         {error && <div className="pt-2 text-sm text-red-500">{error}</div>}
 
         {!loading && !error && (
-          <div className="pt-2">
-            {concerns.length === 0 && (
+          <div className="pt-1">
+            {concerns.length === 0 ? (
               <div className="text-sm text-gray-500">검색 결과가 없습니다.</div>
+            ) : (
+              <ul className="divide-y divide-[#E3E3E3]">
+                {concerns.map((item) => (
+                  <li
+                    key={item.id}
+                    className="cursor-pointer outline-none select-none"
+                    role="link"
+                    tabIndex={0}
+                    onClick={() => navigate(`/community/concerns/${item.id}`)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        navigate(`/community/concerns/${item.id}`)
+                      }
+                    }}
+                  >
+                    <ConcernCard
+                      name={item.author || '익명'}
+                      content={item.content}
+                      date={(item.createdAt || '').slice(5, 10)}
+                    />
+                  </li>
+                ))}
+              </ul>
             )}
-
-            {concerns.map((item, index) => (
-              <div
-                key={item.id}
-                onClick={() => navigate(`/community/concerns/${item.id}`)}
-                className="cursor-pointer"
-              >
-                <ConcernCard
-                  name={item.author || '익명'}
-                  content={item.content}
-                  date={(item.createdAt || '').slice(5, 10)}
-                  isLast={index === concerns.length - 1}
-                />
-              </div>
-            ))}
           </div>
         )}
       </div>

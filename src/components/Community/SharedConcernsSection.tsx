@@ -46,7 +46,7 @@ const SharedConcernsSection = () => {
 
   return (
     <section className="px-4 pt-4">
-      <div className="bg-white border border-gray-200 rounded-xl p-4">
+      <div className="bg-white border border-gray-200 rounded-xl px-4 pt-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-base font-semibold">고민을 나눠보아요! 💕</h2>
           <Link to="/community/concerns">
@@ -54,17 +54,23 @@ const SharedConcernsSection = () => {
           </Link>
         </div>
 
-        <div className="mt-[12px] h-[1px] bg-[#E3E3E3] w-full" />
-
-        <div>
-          {concerns.map((item, idx) => (
-            <ConcernCard
-              key={idx}
-              {...item}
-              isLast={idx === concerns.length - 1}
-            />
-          ))}
-        </div>
+        {concerns.length === 0 ? (
+          <div className="py-8 text-center text-[#8C8C8C] text-sm">
+            아직 올라온 고민이 없습니다.
+          </div>
+        ) : (
+          <ul className="divide-y divide-[#E3E3E3]">
+            {concerns.map((item, idx) => (
+              <li key={`${item.name}-${idx}`} className="py-3">
+                <ConcernCard
+                  name={item.name}
+                  content={item.content}
+                  date={item.date}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </section>
   )

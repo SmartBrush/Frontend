@@ -55,27 +55,29 @@ const MyCommentsPage = () => {
             작성한 댓글이 없습니다.
           </div>
         ) : (
-          comments.map((c, i) => (
-            <div
-              key={c.id}
-              role="button"
-              tabIndex={0}
-              onClick={() => navigate(postDetailPath(c.postId))}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  navigate(postDetailPath(c.postId))
-                }
-              }}
-              className="cursor-pointer select-none outline-none active:opacity-90"
-            >
-              <ConcernCard
-                name={c.author}
-                content={c.content}
-                date={fmtDate(c.createdAt)}
-                isLast={i === comments.length - 1}
-              />
-            </div>
-          ))
+          <ul className="divide-y divide-[#E3E3E3]">
+            {comments.map((c) => (
+              <li
+                key={c.id}
+                className="px-[20px] cursor-pointer select-none outline-none active:opacity-90"
+                role="link"
+                tabIndex={0}
+                onClick={() => navigate(postDetailPath(c.postId))}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    navigate(postDetailPath(c.postId))
+                  }
+                }}
+              >
+                <ConcernCard
+                  name={c.author}
+                  content={c.content}
+                  date={fmtDate(c.createdAt)}
+                />
+              </li>
+            ))}
+          </ul>
         )}
       </div>
     </div>
