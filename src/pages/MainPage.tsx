@@ -41,8 +41,8 @@ const MainPage = () => {
   }, [navigate])
 
   return (
-    // 부모(main)의 높이를 그대로 채우고, 두 영역 비율을 68:32로 고정
-    <div className="h-full grid grid-rows-[63%_47%] gap-2 overflow-hidden">
+    // 전체 높이를 강제로 나누지 않고, 자식이 필요한 만큼만 차지
+    <div className="flex flex-col gap-2 overflow-y-auto">
       <section className="overflow-hidden">
         <Calendar />
       </section>

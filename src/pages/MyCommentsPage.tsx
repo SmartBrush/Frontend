@@ -38,7 +38,7 @@ const MyCommentsPage = () => {
 
   return (
     <div className="bg-[#f5f5f5] min-h-screen">
-      <div className="px-[20px] py-[20px] flex items-center text-lg font-semibold text-gray-800">
+      <div className="px-4 py-[15px] flex items-center text-[20px] font-semibold text-gray-800">
         <button
           onClick={() => navigate(-1)}
           className="mr-2 cursor-pointer"

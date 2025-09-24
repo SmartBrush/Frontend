@@ -9,7 +9,7 @@ const MyPageMenuItem = ({ icon, label, onClick }: MyPageMenuItemProps) => {
     <button
       type="button"
       onClick={onClick}
-      className="flex justify-between items-center bg-white w-[351px] h-[76px] rounded-[20px] px-4 py-3 shadow-sm"
+      className="flex justify-between items-center bg-white w-[351px] h-[76px] rounded-[20px] px-4 py-3 shadow-sm cursor-pointer"
     >
       <div className="flex items-center gap-2 text-[16px] text-black">
         <span>{icon}</span>

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { fetchDiagnosisByDate } from '../apis/main'
 import ScalpStatusCard from '../components/Result/ScalpStatusCard'
 import ScalpRadarChart from '../components/Result/ScalpRadarChart'
 import StatusSlider from '../components/Result/StatusSlider'
 import ProductRecommendButton from '../components/Result/ProductRecommendButton'
+import Back from '../assets/back.svg'
 
 type Status = '양호' | '보통' | '심각'
 
@@ -80,8 +81,8 @@ const LastResultPage = () => {
   const hasDiag = !!diagnosisData
   const bgColor = getStatusColor(diagnosisData?.status)
   const valuePosition = Math.round(((diagnosisData?.score ?? 0) / 10) * 100)
+  const navigate = useNavigate()
 
-  // DiagnosisDetail에서 객체로 전달되는 level과 value를 풀어서 새로운 형태로 변환
   const transformedDiagnosis = hasDiag
     ? {
         scalpSensitivityValue: diagnosisData?.scalpSensitivity.value,
@@ -105,9 +106,20 @@ const LastResultPage = () => {
   }
 
   return (
-    <div className="p-4 bg-gray-100 min-h-screen pb-20">
+    <div className="px-4 bg-gray-100 min-h-screen pb-10">
+      <div className="py-[15px] flex items-center text-[20px] font-semibold text-gray-800">
+        <button
+          onClick={() => navigate('/')}
+          className="mr-2 cursor-pointer"
+          aria-label="뒤로가기"
+        >
+          <img src={Back} alt="뒤로가기" className="w-4 h-4" />
+        </button>
+        <span>두피 분석 결과</span>
+      </div>
+
       <p className="text-center text-3xl font-bold mt-5">{date}</p>
-      <p className="text-center text-3xl font-bold mb-2">두피 분석 결과</p>
+      {/* <p className="text-center text-3xl font-bold mb-2">두피 분석 결과</p> */}
       {/* <p className="text-center text-blue-500">
         {displayName}님의 두피 분석 결과입니다!
       </p> */}

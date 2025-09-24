@@ -29,7 +29,7 @@ const UserProfile = ({ name, attendanceDays, avatarUrl }: UserProfileProps) => {
             {attendanceDays}일 째 연속 출석 중
           </div>
           <button
-            className="mt-[10px] w-[106.33px] h-[27.5px] rounded-[18.33px] bg-[#EBEBEB] text-[12px] text-gray-700 hover:bg-gray-300 transition"
+            className="mt-[10px] w-[106.33px] h-[27.5px] rounded-[18.33px] bg-[#EBEBEB] text-[12px] text-gray-700 hover:bg-gray-300 transition cursor-pointer"
             onClick={() =>
               navigate('/mypage/edit', {
                 state: {
