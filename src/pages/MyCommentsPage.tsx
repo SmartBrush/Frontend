@@ -26,7 +26,6 @@ const MyCommentsPage = () => {
         setComments(data)
       } catch {
         setError('댓글을 불러오지 못했습니다.')
-        console.log(e)
       } finally {
         setLoading(false)
       }
