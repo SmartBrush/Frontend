@@ -75,7 +75,7 @@ async function _getProducts(
   try {
     const res = await publicGet<ProductRaw[]>(path, { size })
     const arr = Array.isArray(res.data) ? res.data : []
-    // ✅ 비로그인 응답이 빈 배열이면 토큰으로 재시도
+    // 비로그인 응답이 빈 배열이면 토큰으로 재시도
     if (arr.length > 0) return arr.map(normalize)
   } catch (e) {
     if (isAxiosError(e)) {
