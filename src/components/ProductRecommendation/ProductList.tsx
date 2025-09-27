@@ -81,7 +81,7 @@ const ProductList = ({ category, onSelect }: Props) => {
             <div className="mt-2 flex items-center justify-between">
               <div className="text-xs font-bold">
                 {'\u20A9'}
-                {p.price.toLocaleString()}원
+                {p.price.toLocaleString()}
               </div>
 
               {externalUrl ? (
