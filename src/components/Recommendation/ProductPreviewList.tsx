@@ -98,7 +98,7 @@ const ProductPreviewList = ({
                 <img
                   src={p.image}
                   alt={p.name}
-                  className="w-[100px] h-[100px] object-contain mx-auto"
+                  className="w-full h-40 object-cover rounded-md"
                 />
 
                 {brand && (
