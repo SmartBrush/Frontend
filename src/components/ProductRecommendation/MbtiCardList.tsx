@@ -12,7 +12,7 @@ const MbtiCardList = ({ mbtiType }: MbtiCardProps) => {
   return (
     <div className="relative mt-4">
       {/* 내용 박스 */}
-      <div className="w-full rounded-xl border border-gray-200 bg-white px-5 py-5 pt-7 shadow-sm">
+      <div className="w-full rounded-2xl border-[1px] border-black bg-white px-5 py-5 pt-7 ">
         <div className="text-sm text-gray-800 leading-6 whitespace-pre-line break-words space-y-2">
           {card.description && <p>{card.description}</p>}
           {card.good && (

@@ -44,7 +44,7 @@ export default function ProductRecommendationPage() {
         if (s.nickname && s.nickname.trim()) setDisplayName(s.nickname.trim())
         setMbtiType(toCardKeyFromKo(s.scalpMbti)) // 한글 라벨 → 카드 키
       } catch {
-        // 무시: 닉네임 '회원', MBTI 카드 미표시 상태 유지
+        // null
       }
     })()
     return () => {
@@ -55,7 +55,7 @@ export default function ProductRecommendationPage() {
   const category = CATEGORY_MAP[filter]
 
   return (
-    <div className="min-h-screen px-4 pb-16 bg-white">
+    <div className="min-h-screen bg-white">
       {/* 헤더 */}
       <div
         className="sticky top-0 z-50 bg-white
@@ -73,10 +73,7 @@ export default function ProductRecommendationPage() {
 
       {/* 상단: MBTI 카드(있으면) / 없으면 안내 */}
       {mbtiType ? (
-        <div
-          className="bg-[rgba(182,232,178,0.7)] rounded-xl p-3 mb-6"
-          data-mbti-block
-        >
+        <div className="bg-[rgba(182,232,178,0.7)] p-3  mb-1" data-mbti-block>
           <h1 className="text-xl font-extrabold leading-snug text-black">
             또또가 추천하는 <br />
             <span className="text-[#111]">
@@ -84,7 +81,7 @@ export default function ProductRecommendationPage() {
             </span>
             <span className="inline-block ml-1">💖</span>
           </h1>
-          <p className="text-sm font-semibold text-[#1270B0] mt-2">
+          <p className="text-sm font-semibold text-[#1270B0] mt-2 mb-6">
             진단 결과를 바탕으로 내 두피에 딱 맞는 제품을 만나보세요
           </p>
           <div className="mt-4">
@@ -108,7 +105,7 @@ export default function ProductRecommendationPage() {
       )}
 
       {/* 제품 영역 */}
-      <section className="bg-white rounded-xl shadow-md px-1 py-3">
+      <section className="bg-white rounded-xl ml-4 mr-4 px-1 py-3">
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-base font-extrabold text-black">
             유형별 추천 제품을 확인하세요!
@@ -116,7 +113,7 @@ export default function ProductRecommendationPage() {
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value as FilterLabel)}
-            className="px-2 py-1 border border-gray-300 rounded-full text-sm bg-white shadow-sm"
+            className="px-2 py-1 border border-black rounded-full text-sm bg-white shadow-sm text-center"
           >
             {FILTERS.map((f) => (
               <option key={f} value={f}>

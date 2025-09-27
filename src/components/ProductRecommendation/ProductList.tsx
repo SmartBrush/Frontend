@@ -44,11 +44,11 @@ export default function ProductList({ category, onSelect }: Props) {
     return <div className="p-2 text-sm text-gray-500">상품이 없어요</div>
 
   return (
-    <ul className="grid grid-cols-2 gap-3">
+    <ul className="grid grid-cols-2 gap-4">
       {items.map((p) => (
         <li
           key={p.id}
-          className="border border-gray-300 rounded-xl p-2 cursor-pointer bg-white"
+          className="rounded-xl p-2 cursor-pointer bg-[#F5F5F5] shadow-md"
           onClick={() => onSelect(p.id)}
         >
           <img
@@ -56,9 +56,10 @@ export default function ProductList({ category, onSelect }: Props) {
             alt={p.name}
             className="w-full h-28 object-cover rounded-md"
           />
-          <div className="mt-2 text-sm font-semibold">{p.name}</div>
-          <div className="text-xs text-gray-500">{p.brand}</div>
+          <div className="text-xs text-gray-500 mt-2">{p.brand}</div>
+          <div className="text-[14px] font-semibold">{p.name}</div>
           <div className="text-sm font-bold mt-1">
+            {'\u20A9'}
             {p.price.toLocaleString()}원
           </div>
         </li>
