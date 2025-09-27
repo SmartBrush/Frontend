@@ -9,22 +9,13 @@ interface ProductPreviewListProps {
   limit?: number
 }
 
-// 안전한 문자열 체크
 const isNonEmptyString = (v: unknown): v is string =>
   typeof v === 'string' && v.trim().length > 0
 
-// 다양한 필드명에서 브랜드 추출
 const getBrand = (p: Product): string | null => {
-  const rec = p as unknown as Record<string, unknown>
-  const candidates = [
-    'brand',
-    'brandName',
-    'manufacturer',
-    'maker',
-    'company',
-  ] as const
+  const candidates: (keyof Product)[] = ['brand']
   for (const k of candidates) {
-    const v = rec[k]
+    const v = p[k]
     if (isNonEmptyString(v)) return v
   }
   return null
@@ -33,7 +24,6 @@ const getBrand = (p: Product): string | null => {
 const parsePrice = (v: unknown): number | null => {
   if (typeof v === 'number' && Number.isFinite(v)) return v
   if (typeof v === 'string') {
-    // "17,900원", "  17900  ", "₩12,000" 등 처리
     const cleaned = v.replace(/[^\d.-]/g, '')
     if (!cleaned) return null
     const n = Number(cleaned)
@@ -45,6 +35,20 @@ const parsePrice = (v: unknown): number | null => {
 const formatPriceKRW = (v: unknown): string => {
   const n = parsePrice(v)
   return n == null ? '가격 정보 없음' : `₩ ${n.toLocaleString('ko-KR')}`
+}
+
+// URL 유효성 검사 + https 보정
+const getExternalUrl = (raw: string): string | null => {
+  const trimmed = raw.trim()
+  const withProto = /^https?:\/\//i.test(trimmed)
+    ? trimmed
+    : `https://${trimmed}`
+  try {
+    const u = new URL(withProto)
+    return u.toString()
+  } catch {
+    return null
+  }
 }
 
 const ProductPreviewList = ({
@@ -71,15 +75,13 @@ const ProductPreviewList = ({
     >
       {products.slice(0, limit).map((p) => {
         const brand = getBrand(p)
-        const priceLabel = formatPriceKRW(
-          // p.price가 string이든 number든 안전 처리됨
-          (p as unknown as { price?: unknown }).price,
-        )
+        const priceLabel = formatPriceKRW(p.price)
+        const externalUrl = getExternalUrl(p.link)
 
         return (
           <SwiperSlide key={p.id} className="!w-[170px]">
             <div className="mb-1 relative bg-white rounded-xl shadow p-3 flex flex-col items-center">
-              {/* 바깥 버튼 대신 div + 접근성 */}
+              {/* 카드 전체 클릭 → 내부 상세 */}
               <div
                 role="button"
                 tabIndex={0}
@@ -105,28 +107,35 @@ const ProductPreviewList = ({
                   </span>
                 )}
 
-                {/* 제품명 */}
                 <h3 className="text-sm font-medium text-black text-center mt-2 line-clamp-2">
                   {p.name}
                 </h3>
 
-                {/* 가격 + 버튼 */}
                 <div className="flex items-center justify-between w-full mt-2 px-1">
                   <span className="text-xs font-semibold text-gray-800 whitespace-nowrap">
                     {priceLabel}
                   </span>
 
-                  {/* 내부 버튼은 유지하되, 바깥 클릭 중복 방지 */}
-                  <button
-                    type="button"
-                    className="text-xs px-2 py-1 bg-[#4E9366] text-white rounded-full shadow-sm hover:bg-green-200 transition whitespace-nowrap"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      onSelect(p.id)
-                    }}
-                  >
-                    구매하러 가기
-                  </button>
+                  {/* 구매하러 가기 → 올리브영 URL 새창 이동 */}
+                  {externalUrl ? (
+                    <a
+                      href={externalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      onClick={(e) => e.stopPropagation()} // 카드 클릭 막기
+                      className="text-xs px-2 py-1 bg-[#4E9366] text-white rounded-full shadow-sm hover:bg-green-200 transition whitespace-nowrap"
+                    >
+                      구매하러 가기
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled
+                      className="text-xs px-2 py-1 bg-gray-300 text-white rounded-full shadow-sm cursor-not-allowed whitespace-nowrap"
+                    >
+                      링크 없음
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
