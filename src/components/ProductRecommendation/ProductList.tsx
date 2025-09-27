@@ -68,7 +68,7 @@ const ProductList = ({ category, onSelect }: Props) => {
             <img
               src={p.image}
               alt={p.name}
-              className="w-full h-28 object-cover rounded-md"
+              className="w-full h-40 object-cover rounded-md"
               loading="lazy"
             />
 
