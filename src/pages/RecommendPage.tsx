@@ -89,9 +89,7 @@ const RecommendPage = () => {
 
         <section className="my-[24px]">
           <div className="flex justify-between items-baseline mb-[8px]">
-            <h2 className="text-lg font-semibold">
-              {displayName}님을 위한 추천 제품🛍️
-            </h2>
+            <h2 className="text-lg font-semibold">추천 제품🛍️</h2>
             <button
               type="button"
               onClick={() => navigate('/productRecommendation')}
