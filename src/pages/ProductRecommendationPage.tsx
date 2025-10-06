@@ -108,7 +108,7 @@ export default function ProductRecommendationPage() {
       )}
 
       {/* 제품 영역 */}
-      <section className="bg-white rounded-xl ml-4 mr-4 px-1 py-3">
+      <section className="bg-white rounded-xl ml-4 mr-4 px-1 py-3 mb-3">
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-base font-extrabold text-black">
             유형별 추천 제품을 확인하세요!
