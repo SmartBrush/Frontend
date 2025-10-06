@@ -62,13 +62,26 @@ const ProductList = ({ category, onSelect }: Props) => {
         return (
           <li
             key={p.id}
-            className="rounded-xl p-2 cursor-pointer bg-[#F5F5F5] shadow-md"
+            tabIndex={0}
+            className={[
+              'group rounded-xl p-2 cursor-pointer bg-[#F5F5F5] shadow-md',
+              'motion-safe:transition-all motion-safe:duration-200',
+              'hover:shadow-lg hover:-translate-y-0.5',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4E9366]/40',
+            ].join(' ')}
             onClick={() => onSelect(p.id)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') onSelect(p.id)
+            }}
           >
             <img
               src={p.image}
               alt={p.name}
-              className="w-full h-40 object-cover rounded-md"
+              className={[
+                'w-full h-40 object-cover rounded-md',
+                'motion-safe:transition-transform motion-safe:duration-200',
+                'group-hover:scale-[1.02]',
+              ].join(' ')}
               loading="lazy"
             />
 
@@ -77,7 +90,6 @@ const ProductList = ({ category, onSelect }: Props) => {
               {p.name}
             </div>
 
-            {/* 하단 행: 가격 + 구매 버튼 */}
             <div className="mt-2 flex items-center justify-between">
               <div className="text-xs font-bold">
                 {'\u20A9'}
@@ -89,8 +101,12 @@ const ProductList = ({ category, onSelect }: Props) => {
                   href={externalUrl}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  onClick={(e) => e.stopPropagation()} // 카드 클릭 막기
-                  className="inline-block px-3 py-1 rounded-full bg-[#4E9366] text-white text-[9px]  shadow-sm hover:opacity-90"
+                  onClick={(e) => e.stopPropagation()}
+                  className={[
+                    'inline-block px-3 py-1 rounded-full bg-[#4E9366] text-white text-[9px] shadow-sm',
+                    'motion-safe:transition-colors motion-safe:duration-200',
+                    'hover:bg-[#437e58] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4E9366]/40',
+                  ].join(' ')}
                   aria-label="올리브영 상세 페이지로 이동"
                 >
                   구매하러가기
