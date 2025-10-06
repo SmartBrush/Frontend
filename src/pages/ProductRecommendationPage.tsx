@@ -58,7 +58,7 @@ export default function ProductRecommendationPage() {
     <div className="min-h-screen bg-white">
       {/* 헤더 */}
       <div
-        className="sticky top-0 z-50 bg-white
+        className="sticky top-0 z-50 bg-white px-4
                 py-[15px] flex items-center text-[20px] font-semibold text-gray-800"
       >
         <button
@@ -73,7 +73,10 @@ export default function ProductRecommendationPage() {
 
       {/* 상단: MBTI 카드(있으면) / 없으면 안내 */}
       {mbtiType ? (
-        <div className="bg-[rgba(182,232,178,0.7)] p-3  mb-1" data-mbti-block>
+        <div
+          className="bg-[rgba(182,232,178,0.7)] p-3 px-4 mb-1"
+          data-mbti-block
+        >
           <h1 className="text-xl font-extrabold leading-snug text-black">
             또또가 추천하는 <br />
             <span className="text-[#111]">

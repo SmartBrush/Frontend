@@ -108,7 +108,7 @@ const RootLayout = () => {
         <main className="flex-1 overflow-y-auto bg-white">
           <Outlet />
           {!hideNavbar && (
-            <div className={`h-[72px] w-full shrink-0 `}>
+            <div className="h-[72px] w-full shrink-0">
               <Navbar />
             </div>
           )}

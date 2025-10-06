@@ -14,18 +14,17 @@ interface CalendarGridProps {
 const WEEK_DAYS = ['일', '월', '화', '수', '목', '금', '토']
 
 function getCalendarDays(year: number, month: number): (number | null)[] {
-  const firstDay = new Date(year, month, 1).getDay()
-  const lastDate = new Date(year, month + 1, 0).getDate()
+  const firstDay = new Date(year, month, 1).getDay() // 해당 달 1일의 요일(0~6)
+  const lastDate = new Date(year, month + 1, 0).getDate() // 해당 달 마지막 날짜
+  const totalCells = firstDay + lastDate // 실제로 필요한 칸 수(빈칸 포함)
+
+  // 5주(35칸)로 충분하면 35칸, 아니면 6주(42칸)
+  const targetCells = totalCells <= 35 ? 35 : 42
+
   const days: (number | null)[] = Array(firstDay).fill(null)
-  for (let i = 1; i <= lastDate; i++) {
-    days.push(i)
-  }
+  for (let i = 1; i <= lastDate; i++) days.push(i)
 
-  // ✅ 항상 6줄(6*7=42칸) 유지
-  while (days.length < 42) {
-    days.push(null)
-  }
-
+  while (days.length < targetCells) days.push(null)
   return days
 }
 
