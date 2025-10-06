@@ -65,7 +65,7 @@ async function authedGet<T>(path: string, params?: QueryParams) {
 async function _getProducts(
   params: { category?: Category | 'all'; size?: number } = {},
 ): Promise<Product[]> {
-  const { category, size = 20 } = params
+  const { category, size = 50 } = params
   const path =
     category && category !== 'all'
       ? `/api/products/${category}`
@@ -108,13 +108,13 @@ async function _getProducts(
   }
 }
 
-export async function fetchProducts(size = 20): Promise<Product[]> {
+export async function fetchProducts(size = 50): Promise<Product[]> {
   return _getProducts({ size })
 }
 
 export async function fetchProductsByCategory(
   category: Category | 'all',
-  size = 20,
+  size = 50,
 ): Promise<Product[]> {
   return _getProducts({ category, size })
 }
