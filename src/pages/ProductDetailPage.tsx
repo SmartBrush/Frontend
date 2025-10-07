@@ -55,9 +55,9 @@ const ProductDetailPage = () => {
         <span> </span>
       </div>
 
-      <div className="ml-5 mr-5 px-4 py-[17px] bg-white">
+      <div className="mx-5 px-4 pb-5 bg-white">
         {/* 이미지 카드 */}
-        <section className="mt-7 relative rounded-2xl bg-[#F5F5F5] p-3 shadow-md">
+        <section className="mt-1 relative rounded-2xl bg-[#F5F5F5] p-3 shadow-md">
           <div className="overflow-hidden rounded-xl bg-gray-50">
             {loading ? (
               <div className="aspect-square animate-pulse bg-gray-200" />
@@ -98,7 +98,7 @@ const ProductDetailPage = () => {
           <>
             {/* 브랜드 */}
             {!!brand && (
-              <p className="mt-10 text-[18px] font-light text-gray-500">
+              <p className="mt-5 text-[18px] font-light text-gray-500">
                 {brand}
               </p>
             )}
@@ -108,7 +108,7 @@ const ProductDetailPage = () => {
               <h1 className="flex-1 text-xl font-extrabold leading-snug text-gray-900">
                 {product.name}
               </h1>
-              <div className="mt-8 ml-50 text-right font-bold text-gray-900 text-[18px]">
+              <div className="mt-5 ml-50 text-right font-bold text-gray-900 text-[18px]">
                 ₩{product.price.toLocaleString()}
               </div>
             </div>

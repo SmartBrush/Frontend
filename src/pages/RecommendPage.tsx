@@ -68,10 +68,9 @@ const RecommendPage = () => {
       {/* 본문 */}
       <div
         id="confetti-container"
-        className="relative min-h-screen px-4 pt-[10px]
-                   bg-[linear-gradient(to_bottom,_#CEF7D0_0%,_#EFFEEC_12%,_#FFFFFF_35%)]"
+        className="relative px-4 pt-[10px] pb-2 bg-[rgba(182,232,178,0.7)]"
       >
-        <header className="mb-[10px]">
+        <header className="mb-[10px] ">
           <h1 className="text-xl font-bold mb-1">
             {displayName}님을 위해 또또가 준비했어요
           </h1>
@@ -86,25 +85,25 @@ const RecommendPage = () => {
         <section className="my-[24px]">
           <HabitChallengeList onComplete={() => fireHeartConfetti()} />
         </section>
-
-        <section className="my-[24px]">
-          <div className="flex justify-between items-baseline mb-[8px]">
-            <h2 className="text-lg font-semibold">추천 제품🛍️</h2>
-            <button
-              type="button"
-              onClick={() => navigate('/productRecommendation')}
-              className="text-sm text-gray-500"
-            >
-              추천제품 더 보러가기 &gt;
-            </button>
-          </div>
-
-          <ProductPreviewList
-            onSelect={(id) => navigate(`/product/${id}`)}
-            limit={5}
-          />
-        </section>
       </div>
+
+      <section className="my-[24px] px-4">
+        <div className="flex justify-between items-baseline mb-[8px]">
+          <h2 className="text-lg font-semibold">추천 제품🛍️</h2>
+          <button
+            type="button"
+            onClick={() => navigate('/productRecommendation')}
+            className="text-sm text-gray-500 cursor-pointer hover:text-black"
+          >
+            더보기 &gt;
+          </button>
+        </div>
+
+        <ProductPreviewList
+          onSelect={(id) => navigate(`/product/${id}`)}
+          limit={5}
+        />
+      </section>
     </>
   )
 }

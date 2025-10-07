@@ -80,7 +80,14 @@ const ProductPreviewList = ({
 
         return (
           <SwiperSlide key={p.id} className="!w-[170px]">
-            <div className="mb-1 relative bg-white rounded-xl shadow p-3 flex flex-col items-center">
+            <div
+              className={[
+                'group rounded-xl p-2 cursor-pointer bg-[#F5F5F5] shadow-md pb-2',
+                'motion-safe:transition-all motion-safe:duration-200',
+                'hover:shadow-lg hover:-translate-y-0.5',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4E9366]/40',
+              ].join(' ')}
+            >
               {/* 카드 전체 클릭 → 내부 상세 */}
               <div
                 role="button"
@@ -93,12 +100,16 @@ const ProductPreviewList = ({
                     onSelect(p.id)
                   }
                 }}
-                className="flex flex-col items-center w-[160px] outline-none focus:ring-2 focus:ring-green-400 rounded-lg"
+                className="flex flex-col items-center w-[160px] outline-none focus-visible:ring-2 focus-visible:ring-[#4E9366]/40 rounded-lg"
               >
                 <img
                   src={p.image}
                   alt={p.name}
-                  className="w-full h-40 object-cover rounded-md"
+                  className={[
+                    'w-full h-40 object-cover rounded-md',
+                    'motion-safe:transition-transform motion-safe:duration-200',
+                    'group-hover:scale-[1.02]',
+                  ].join(' ')}
                 />
 
                 {brand && (
@@ -116,14 +127,17 @@ const ProductPreviewList = ({
                     {priceLabel}
                   </span>
 
-                  {/* 구매하러 가기 → 올리브영 URL 새창 이동 */}
                   {externalUrl ? (
                     <a
                       href={externalUrl}
                       target="_blank"
                       rel="noopener noreferrer nofollow"
-                      onClick={(e) => e.stopPropagation()} // 카드 클릭 막기
-                      className="text-xs px-2 py-1 bg-[#4E9366] text-white rounded-full shadow-sm hover:bg-green-200 transition whitespace-nowrap"
+                      onClick={(e) => e.stopPropagation()}
+                      className={[
+                        'text-xs px-2 py-1 rounded-full text-white shadow-sm whitespace-nowrap',
+                        'bg-[#4E9366] motion-safe:transition-colors motion-safe:duration-200',
+                        'hover:bg-[#3f7c55] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4E9366]/40',
+                      ].join(' ')}
                     >
                       구매하러 가기
                     </a>

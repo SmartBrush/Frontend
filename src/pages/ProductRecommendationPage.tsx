@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ProductList from '../components/ProductRecommendation/ProductList'
 import MbtiCardList from '../components/ProductRecommendation/MbtiCardList'
@@ -34,6 +34,22 @@ export default function ProductRecommendationPage() {
   const [displayName, setDisplayName] = useState<string>('회원')
   const [mbtiType, setMbtiType] = useState<MbtiCardKey | null>(null)
 
+  const [open, setOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false)
+      }
+    }
+    window.addEventListener('mousedown', handleClickOutside)
+    return () => window.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   // 서버의 단일 엔드포인트로 닉네임+MBTI 동시 확보
   useEffect(() => {
     let cancelled = false
@@ -58,7 +74,7 @@ export default function ProductRecommendationPage() {
     <div className="min-h-screen bg-white">
       {/* 헤더 */}
       <div
-        className="sticky top-0 z-50 bg-white
+        className="sticky top-0 z-50 bg-white px-4
                 py-[15px] flex items-center text-[20px] font-semibold text-gray-800"
       >
         <button
@@ -73,7 +89,10 @@ export default function ProductRecommendationPage() {
 
       {/* 상단: MBTI 카드(있으면) / 없으면 안내 */}
       {mbtiType ? (
-        <div className="bg-[rgba(182,232,178,0.7)] p-3  mb-1" data-mbti-block>
+        <div
+          className="bg-[rgba(182,232,178,0.7)] p-3 px-4 mb-1"
+          data-mbti-block
+        >
           <h1 className="text-xl font-extrabold leading-snug text-black">
             또또가 추천하는 <br />
             <span className="text-[#111]">
@@ -105,22 +124,64 @@ export default function ProductRecommendationPage() {
       )}
 
       {/* 제품 영역 */}
-      <section className="bg-white rounded-xl ml-4 mr-4 px-1 py-3">
+      <section className="bg-white rounded-xl ml-4 mr-4 px-1 py-3 mb-3">
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-base font-extrabold text-black">
             유형별 추천 제품을 확인하세요!
           </h2>
-          <select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value as FilterLabel)}
-            className="px-2 py-1 border border-black rounded-full text-sm bg-white shadow-sm text-center"
+          <div
+            ref={dropdownRef}
+            className="relative cursor-pointer"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="카테고리 선택"
           >
-            {FILTERS.map((f) => (
-              <option key={f} value={f}>
-                {f}
-              </option>
-            ))}
-          </select>
+            {/* 트리거 버튼 */}
+            <div className="flex items-center justify-between text-sm rounded-full px-3 py-[6px] bg-white border border-[#AAAAAA] min-w-[120px]">
+              <span className="whitespace-nowrap">{filter}</span>
+              <svg
+                className={`w-4 h-4 ml-2 text-black transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+
+            {/* 옵션 리스트 */}
+            {open && (
+              <div className="absolute right-0 mt-1 w-44 bg-white border border-gray-200 rounded shadow z-10 max-h-60 overflow-auto">
+                {FILTERS.map((opt) => {
+                  const selected = opt === filter
+                  return (
+                    <div
+                      key={opt}
+                      className={[
+                        'px-3 py-2 text-sm cursor-pointer',
+                        selected
+                          ? 'bg-[#E6F4EA] font-semibold'
+                          : 'hover:bg-[#c6efd2]',
+                      ].join(' ')}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setFilter(opt as FilterLabel)
+                        setOpen(false)
+                      }}
+                    >
+                      {opt}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
         </div>
         <ProductList
           category={category}
