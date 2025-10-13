@@ -116,7 +116,7 @@ export default function TrendChart({
             )}
 
             <Line
-              type="monotone"
+              type="linear"
               dataKey="value"
               stroke="#9CA3AF"
               strokeWidth={3.5}
