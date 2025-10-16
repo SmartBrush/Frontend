@@ -85,7 +85,7 @@ export default function InlineResizablePanel({
       </div>
 
       {/* 내용 영역: 패널 높이 내에서 스크롤 */}
-      <div className="h-[calc(100%-50px)] overflow-auto">{children}</div>
+      <div className="h-[calc(100%)] overflow-auto">{children}</div>
     </div>
   )
 }

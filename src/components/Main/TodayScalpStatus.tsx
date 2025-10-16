@@ -124,7 +124,7 @@ const TodayScalpStatus = () => {
       {loading && (
         <LoadingOverlay message="정확한 진단을 위해 잠시만 기다려주세요." />
       )}
-      <div className="bg-[rgba(182,232,178,0.5)] rounded-t-[20px] px-5 py-4 text-black flex flex-col justify-start">
+      <div className="bg-[rgba(182,232,178,0.5)] rounded-t-[20px] px-5 pt-4 pb-0 text-black flex flex-col justify-start">
         <div className="flex flex-col gap-1">
           {streakText && (
             <p className="text-[15px] font-semibold">{streakText}</p>
@@ -182,7 +182,7 @@ const TodayScalpStatus = () => {
                 ))}
               </div>
 
-              <div className="flex items-center gap-3 mt-4">
+              <div className="flex items-center gap-3 mt-4 mb-5">
                 <button
                   onClick={handleUploadAndGo}
                   disabled={loading}
