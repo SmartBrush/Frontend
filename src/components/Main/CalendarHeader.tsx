@@ -188,7 +188,7 @@ function CalendarHeader({ year, month, onSelect }: CalendarHeaderProps) {
   }, [open, year, month])
 
   return (
-    <div className="relative flex items-center justify-between px-4 py-3 border-b border-gray-200">
+    <div className="relative flex items-center justify-between px-4 py-3">
       {/* 현재 연/월 */}
       <button
         onClick={() => setOpen((p) => !p)}
@@ -204,7 +204,7 @@ function CalendarHeader({ year, month, onSelect }: CalendarHeaderProps) {
         )}
       </button>
 
-      {/* ✅ 도움말 버튼 + 말풍선 */}
+      {/* 도움말 버튼 + 말풍선 */}
       <div className="relative" ref={tooltipRef}>
         <button
           type="button"
@@ -242,7 +242,7 @@ function CalendarHeader({ year, month, onSelect }: CalendarHeaderProps) {
         )}
       </div>
 
-      {/* ▼ 드롭다운 */}
+      {/* 드롭다운 */}
       {open && (
         <div
           ref={popRef}
