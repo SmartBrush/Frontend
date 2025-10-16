@@ -257,7 +257,7 @@ const ScalpRadarChart = ({ data }: RadarDataProps) => {
       },
       {
         label: '평균',
-        data: [60, 63, 60, 55, 68],
+        data: [45, 57, 60, 55, 53],
         borderColor: '#B5B2B2',
         backgroundColor: 'transparent',
         borderWidth: 2,
