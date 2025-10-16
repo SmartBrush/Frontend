@@ -52,8 +52,8 @@ export default function NavBar() {
                   <>
                     <div
                       className="w-[48px] h-[48px] rounded-full flex items-center justify-center
-                                 bg-[linear-gradient(180deg,#5B8CFF_0%,#3F6BFF_100%)]
-                                 shadow-[0_6px_16px_rgba(0,0,0,0.18)]"
+                 bg-[linear-gradient(180deg,#4C8D63_0%,#47875e_55%,#2F5B3E_100%)]
+                 shadow-[0_6px_16px_rgba(0,0,0,0.18)]"
                     >
                       <img
                         src={link.icon}
