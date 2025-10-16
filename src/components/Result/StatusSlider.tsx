@@ -42,10 +42,10 @@ const StatusSlider = ({ label, valuePosition, color }: StatusSliderProps) => {
       </div>
 
       {/* 라벨 */}
-      <div className="flex justify-between text-sm font-bold mt-2 w-full max-w-[320px]">
-        <span>주의</span>
+      <div className="flex justify-between text-sm font-bold mt-2 w-full  px-2">
+        <span className="pl-1">주의</span>
         <span className="text-gray-400">성별/연령대 평균</span>
-        <span>양호</span>
+        <span className="pr-1">양호</span>
       </div>
     </div>
   )
