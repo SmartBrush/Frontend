@@ -107,7 +107,10 @@ const LastResultPage = () => {
 
   return (
     <div className="px-4 bg-gray-100 min-h-screen pb-10">
-      <div className="py-[15px] flex items-center text-[20px] font-semibold text-gray-800">
+      <div
+        className="sticky top-0 z-50 bg-[#F3F3F3]
+                py-[15px] flex items-center text-[20px] font-semibold text-gray-800"
+      >
         <button
           onClick={() => navigate('/')}
           className="mr-2 cursor-pointer"

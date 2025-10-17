@@ -32,8 +32,8 @@ export default function NavBar() {
   const activePath = getActivePath(pathname)
 
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[400px] z-[100]">
-      {/* 바 배경 (모서리 둥근 것 제거) */}
+    <div className="relative w-full z-[10]">
+      {/* 바 배경 */}
       <div className="relative w-full max-h-[95px] flex items-end">
         <div className="relative w-full h-[64px] bg-[#F5F5F5] border-t border-gray-300 shadow-md overflow-hidden rounded-none" />
       </div>
@@ -52,8 +52,8 @@ export default function NavBar() {
                   <>
                     <div
                       className="w-[48px] h-[48px] rounded-full flex items-center justify-center
-                                 bg-[linear-gradient(180deg,#5B8CFF_0%,#3F6BFF_100%)]
-                                 shadow-[0_6px_16px_rgba(0,0,0,0.18)]"
+                      bg-[linear-gradient(180deg,#4C8D63_0%,#3D7450_55%,#2F5B3E_100%)]
+                      shadow-[0_6px_16px_rgba(0,0,0,0.18)]"
                     >
                       <img
                         src={link.icon}

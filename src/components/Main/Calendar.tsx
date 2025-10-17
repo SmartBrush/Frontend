@@ -130,15 +130,22 @@ function Calendar({ dateCounts = [] }: CalendarProps) {
     return Array.from(map.entries()).map(([date, count]) => ({ date, count }))
   }, [dateCounts, remoteCounts])
 
-  const moveMonth = (direction: number) => {
-    const newDate = new Date(year, month + direction, 1)
-    setYear(newDate.getFullYear())
-    setMonth(newDate.getMonth())
-  }
+  // const moveMonth = (direction: number) => {
+  //   const newDate = new Date(year, month + direction, 1)
+  //   setYear(newDate.getFullYear())
+  //   setMonth(newDate.getMonth())
+  // }
 
   return (
     <div className="max-w-md mx-auto text-white h-full flex flex-col">
-      <CalendarHeader year={year} month={month} onMoveMonth={moveMonth} />
+      <CalendarHeader
+        year={year}
+        month={month}
+        onSelect={(yy, mm) => {
+          setYear(yy)
+          setMonth(mm) // 0~11
+        }}
+      />
       <div className="flex-1">
         {errorMsg ? (
           <div className="text-red-600 text-sm px-2">{errorMsg}</div>
