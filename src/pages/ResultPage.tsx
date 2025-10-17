@@ -6,7 +6,6 @@ import ScalpRadarChart from '../components/Result/ScalpRadarChart'
 import StatusSlider from '../components/Result/StatusSlider'
 import CaptureImage from '../components/Result/CaptureImage'
 import ProductRecommendButton from '../components/Result/ProductRecommendButton'
-import sample2 from '../assets/hair.png'
 
 type Status = '양호' | '보통' | '심각'
 
@@ -74,10 +73,24 @@ const ResultPage = () => {
       safeParse<ImageItem[]>(sessionStorage.getItem(SKEY_IMAGES)) ?? [
         {
           id: 1,
-          src: 'https://s3.us-east-1.amazonaws.com/dupiona.site/diagnosis/1234@naver.com/5871a80f-056d-47b7-b5e7-ce21fdb6ba13.jpg',
+          src: 'https://s3.us-east-1.amazonaws.com/dupiona.site/diagnosis/siyun%40naver.com/1.png',
           label: '',
         },
-        { id: 2, src: sample2, label: '' },
+        {
+          id: 2,
+          src: 'https://s3.us-east-1.amazonaws.com/dupiona.site/diagnosis/siyun%40naver.com/2.png',
+          label: '',
+        },
+        {
+          id: 3,
+          src: 'https://s3.us-east-1.amazonaws.com/dupiona.site/diagnosis/siyun%40naver.com/3.png',
+          label: '',
+        },
+        {
+          id: 4,
+          src: 'https://s3.us-east-1.amazonaws.com/dupiona.site/diagnosis/siyun%40naver.com/4.png',
+          label: '',
+        },
       ]
     )
   })
