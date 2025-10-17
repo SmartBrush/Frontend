@@ -133,16 +133,16 @@ const TodayScalpStatus = () => {
         </div>
 
         {diagnosis && isDiagnosisOk(diagnosis) ? (
-          <div className="flex items-center gap-[15%] mt-2">
+          <div className="flex items-center gap-[15%] mt-2 mb-10">
             <img
               src={statusImage[diagnosis.status]}
               alt={diagnosis.status}
               className="w-[100px] h-auto object-contain"
             />
-            <div className="flex flex-col gap-1 flex-1 mt-3">
+            <div className="flex flex-col gap-1 flex-1 mt-5">
               <p className="text-[10px] font-semibold">
                 <span className="text-[20px] font-bold mt-2">
-                  {diagnosis.nickname}님,
+                  {diagnosis.nickname}님의
                 </span>
               </p>
               <p className="text-[18px]">
@@ -153,11 +153,11 @@ const TodayScalpStatus = () => {
                   {diagnosis.status}
                 </span>
               </p>
-              <div className="mt-6">
+              <div className="mt-7">
                 <button
                   onClick={handleUploadAndGo}
                   disabled={loading}
-                  className="px-4 py-2 rounded-full bg-[#4E9366] text-white text-sm hover:bg-[#3D7450] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="px-4 py-2 mb-5 rounded-full bg-[#4E9366] text-white text-sm hover:bg-[#3D7450] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {loading ? '진단 중…' : '두피 다시 진단하기'}
                 </button>

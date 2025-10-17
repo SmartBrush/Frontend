@@ -62,12 +62,12 @@ const MainPage = () => {
 
   return (
     <div className="relative flex flex-col h-[calc(100%)] overflow-hidden justify-between">
-      {/* ✅ 달력 영역 높이 제한 */}
+      {/* 달력 영역 높이 제한 */}
       <section className="max-h-[55vh] overflow-y-auto flex-shrink-0">
         <Calendar />
       </section>
 
-      {/* ✅ 740px 미만일 때만 드래그 패널 활성화 */}
+      {/* 740px 미만일 때만 드래그 패널 활성화 */}
       {isSmallScreen ? (
         <InlineResizablePanel
           initialHeight="43vh"
