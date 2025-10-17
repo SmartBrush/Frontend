@@ -52,7 +52,7 @@ const CaptureImage = ({
           아직 업로드된 사진이 없습니다.
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 justify-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 justify-items-center">
           {images.map((img) => (
             <div key={img.id} className="flex flex-col items-center w-24">
               <div className="relative">
