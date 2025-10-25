@@ -70,27 +70,28 @@ const ResultPage = () => {
   const [images, setImages] = useState<ImageItem[]>(() => {
     return (
       state.images ??
-      safeParse<ImageItem[]>(sessionStorage.getItem(SKEY_IMAGES)) ?? [
-        {
-          id: 1,
-          src: 'https://s3.us-east-1.amazonaws.com/dupiona.site/diagnosis/siyun%40naver.com/1.png',
-          label: '',
-        },
-        {
-          id: 2,
-          src: 'https://s3.us-east-1.amazonaws.com/dupiona.site/diagnosis/siyun%40naver.com/2.png',
-          label: '',
-        },
-        {
-          id: 3,
-          src: 'https://s3.us-east-1.amazonaws.com/dupiona.site/diagnosis/siyun%40naver.com/3.png',
-          label: '',
-        },
-        {
-          id: 4,
-          src: 'https://s3.us-east-1.amazonaws.com/dupiona.site/diagnosis/siyun%40naver.com/4.png',
-          label: '',
-        },
+      safeParse<ImageItem[]>(sessionStorage.getItem(SKEY_IMAGES)) ??
+      [
+        // {
+        //   id: 1,
+        //   src: 'https://s3.us-east-1.amazonaws.com/dupiona.site/diagnosis/siyun%40naver.com/1.png',
+        //   label: '',
+        // },
+        // {
+        //   id: 2,
+        //   src: 'https://s3.us-east-1.amazonaws.com/dupiona.site/diagnosis/siyun%40naver.com/2.png',
+        //   label: '',
+        // },
+        // {
+        //   id: 3,
+        //   src: 'https://s3.us-east-1.amazonaws.com/dupiona.site/diagnosis/siyun%40naver.com/3.png',
+        //   label: '',
+        // },
+        // {
+        //   id: 4,
+        //   src: 'https://s3.us-east-1.amazonaws.com/dupiona.site/diagnosis/siyun%40naver.com/4.png',
+        //   label: '',
+        // },
       ]
     )
   })

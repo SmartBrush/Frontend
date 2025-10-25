@@ -36,8 +36,26 @@ type RadarDataProps = {
     scalingLevel: string
   }
 }
+// 1. 지표메타 (라벨 + 방향 )
+const METRICS = [
+  { key: 'scalpSensitivityValue', label: '두피 민감도', higherIsBetter: false }, // 낮을수록 좋음
+  { key: 'densityValue', label: '모발 밀도', higherIsBetter: true }, // 높을수록 good
+  { key: 'sebumLevelValue', label: '유분 정도', higherIsBetter: false }, // 낮을수록 좋음
+  { key: 'poreSizeValue', label: '모발 굵기', higherIsBetter: true }, // 높을수록 good
+  { key: 'scalingValue', label: '각질/비듬', higherIsBetter: false }, // 낮을수록 좋음
+] as const
+
+type MetricKey = (typeof METRICS)[number]['key']
+
+const clamp100 = (v: number) => Math.max(0, Math.min(100, v ?? 0))
+// “좋음=바깥쪽” 표시값으로 변환
+const toDisplay = (raw: number, hib: boolean) => {
+  const c = clamp100(raw)
+  return hib ? c : 100 - c
+}
 
 const ScalpRadarChart = ({ data }: RadarDataProps) => {
+  // 상태 배지용 라벨 (기존 그대로 함ㅁ)
   const statusLabels = useMemo(
     () => [
       data.scalpSensitivityLevel,
@@ -47,6 +65,20 @@ const ScalpRadarChart = ({ data }: RadarDataProps) => {
       data.scalingLevel,
     ],
     [data],
+  )
+
+  // 2. 원시값/ 표시값
+  const labels = METRICS.map((m) => m.label)
+  const mineRaw = METRICS.map(
+    (m) => (data as any)[m.key as MetricKey] as number,
+  )
+  const avgRaw = [45, 57, 60, 55, 53] // 현재 고정 평균 (원시값)
+
+  const mineDisplay = METRICS.map((m, i) =>
+    toDisplay(mineRaw[i], m.higherIsBetter),
+  )
+  const avgDisplay = METRICS.map((m, i) =>
+    toDisplay(avgRaw[i], m.higherIsBetter),
   )
 
   useEffect(() => {
@@ -120,7 +152,7 @@ const ScalpRadarChart = ({ data }: RadarDataProps) => {
         const cX = scale.xCenter
         const cY = scale.yCenter
 
-        // 라벨 "두피 민감도" 직접 추가
+        // 라벨 "두피 민감도"
         ctx.save()
         ctx.font = 'bold 16px sans-serif'
         ctx.fillStyle = '#000'
@@ -238,36 +270,47 @@ const ScalpRadarChart = ({ data }: RadarDataProps) => {
     return () => ChartJS.unregister(plugin)
   }, [statusLabels])
 
+  //4. 데이터셋 : radar에는 표시값, 원시값은 커스텀 필드에 보관
   const radarData = {
-    labels: ['두피 민감도', '모발 밀도', '유분 정도', '모발 굵기', '각질/비듬'],
+    labels,
     datasets: [
       {
         label: '나의 상태',
-        data: [
-          data.scalpSensitivityValue,
-          data.densityValue,
-          data.sebumLevelValue,
-          data.poreSizeValue,
-          data.scalingValue,
-        ],
+        data: mineDisplay,
         backgroundColor: 'rgba(225, 246, 215, 0.64)',
         borderWidth: 0,
         pointRadius: 0,
         pointHoverRadius: 0,
-      },
+        // 커스텀(툴팁에서 원시값 사용)
+        raws: mineRaw,
+        displays: mineDisplay,
+        meta: METRICS,
+      } as any,
       {
         label: '평균',
-        data: [45, 57, 60, 55, 53],
+        data: avgDisplay,
         borderColor: '#B5B2B2',
         backgroundColor: 'transparent',
         borderWidth: 2,
         pointRadius: 0,
         pointHoverRadius: 0,
-      },
+        raws: avgRaw,
+        displays: avgDisplay,
+        meta: METRICS,
+      } as any,
     ],
   }
 
+  // 5) 툴팁: 원시값 + (그래프 표시값) 모두 노출
   const options: ChartOptions<'radar'> = {
+    // 히트 영역 키우기
+    elements: {
+      point: {
+        radius: 0, // 점은 안 보이게
+        hitRadius: 10, // 근처 10px 범위에서도 터치/마우스 이벤트 감지
+        hoverRadius: 6, // 호버 시 반응 범위 (시각적 반응 없음)
+      },
+    },
     maintainAspectRatio: false,
     scales: {
       r: {
@@ -278,9 +321,8 @@ const ScalpRadarChart = ({ data }: RadarDataProps) => {
           font: { size: 16, weight: 'bold' },
           color: '#000',
           padding: 10,
-          callback: (label: string, idx: number) => {
-            return idx === 0 ? '' : label
-          },
+          // 상단 라벨은 플러그인에서 직접 그림 → 여기선 숨김
+          callback: (label: string, idx: number) => (idx === 0 ? '' : label),
         },
         suggestedMin: 0,
         suggestedMax: 100,
@@ -289,6 +331,24 @@ const ScalpRadarChart = ({ data }: RadarDataProps) => {
     },
     plugins: {
       legend: { display: false },
+      tooltip: {
+        backgroundColor: '#222',
+        titleColor: '#fff',
+        bodyColor: '#fff',
+        callbacks: {
+          title: (items) => {
+            const i = items[0].dataIndex
+            return METRICS[i].label
+          },
+          label: (ctx) => {
+            const ds: any = ctx.dataset
+            const i = ctx.dataIndex
+            const who = ctx.datasetIndex === 0 ? '나의 지표값' : '평균 지표값'
+            const raw = (ds.raws?.[i] ?? ctx.raw) as number
+            return `${who}: ${Math.round(raw)}`
+          },
+        },
+      },
     },
   }
 
