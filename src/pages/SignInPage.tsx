@@ -90,7 +90,7 @@ const SignInPage = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-[100vh] relative">
+    <div className="flex flex-col justify-center items-center min-h-[100%] relative">
       {loading && (
         <LoadingOverlay message="빗과 연결중입니다. 잠시만 기다려주세요." />
       )}
