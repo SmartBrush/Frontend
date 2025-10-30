@@ -89,7 +89,7 @@ const SignUpPage = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-[90vh]">
+    <div className="flex flex-col justify-center items-center min-h-[100%]">
       <div className="w-[80%]">
         <h1 className="text-[40px] font-bold mb-3 text-center">회원가입</h1>
         <div className="mb-4">
