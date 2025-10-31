@@ -67,7 +67,7 @@ const ResultPage = () => {
   const [displayName, setDisplayName] = useState<string>('회원')
 
   // 이미지
-  const [images, setImages] = useState<ImageItem[]>(() => {
+  const [, setImages] = useState<ImageItem[]>(() => {
     return (
       state.images ??
       safeParse<ImageItem[]>(sessionStorage.getItem(SKEY_IMAGES)) ??
@@ -204,7 +204,7 @@ const ResultPage = () => {
         </div>
       )}
 
-      <CaptureImage images={images} />
+      {/* <CaptureImage images={images} /> */}
     </div>
   )
 }
