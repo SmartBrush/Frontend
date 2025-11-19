@@ -5,7 +5,7 @@ import ScalpStatusCard from '../components/Result/ScalpStatusCard'
 import ScalpRadarChart from '../components/Result/ScalpRadarChart'
 import StatusSlider from '../components/Result/StatusSlider'
 import ProductRecommendButton from '../components/Result/ProductRecommendButton'
-import CaptureImage from '../components/Result/CaptureImage'
+// import CaptureImage from '../components/Result/CaptureImage'
 
 type Status = '양호' | '보통' | '심각'
 
@@ -67,7 +67,7 @@ const ResultPage = () => {
   const [displayName, setDisplayName] = useState<string>('회원')
 
   // 이미지
-  const [images, setImages] = useState<ImageItem[]>(() => {
+  const [, setImages] = useState<ImageItem[]>(() => {
     return (
       state.images ??
       safeParse<ImageItem[]>(sessionStorage.getItem(SKEY_IMAGES)) ?? [
