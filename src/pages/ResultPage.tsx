@@ -203,7 +203,7 @@ const ResultPage = () => {
         </div>
       )}
 
-      <CaptureImage images={images} />
+      {/* <CaptureImage images={images} /> */}
     </div>
   )
 }
